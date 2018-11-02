@@ -3,69 +3,97 @@
 <mapper namespace="com.hz.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.hz.domain.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, age
+    id, create_time, password, status, username
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from t_user
+    from shiro_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from shiro_user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_user
+    delete from shiro_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.User" >
-    insert into t_user (id, name, age
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}
-      )
+    insert into shiro_user (id, create_time, password, 
+      status, username)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.User" >
-    insert into t_user
+    insert into shiro_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="createTime != null" >
+        create_time,
       </if>
-      <if test="age != null" >
-        age,
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="username != null" >
+        username,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="age != null" >
-        #{age,jdbcType=INTEGER},
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.User" >
-    update t_user
+    update shiro_user
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="age != null" >
-        age = #{age,jdbcType=INTEGER},
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.User" >
-    update t_user
-    set name = #{name,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER}
+    update shiro_user
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      password = #{password,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

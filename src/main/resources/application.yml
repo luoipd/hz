@@ -3,7 +3,7 @@
 
 server:
   port: 8080
-  context-path: /hz
+  context-path: /
 
 spring:
   mvc:
@@ -27,10 +27,30 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
-  thymeleaf:
-    prefix: classpath:/templates/ #添加路径前缀
+#  thymeleaf:
+#    prefix: classpath:/templates/ #添加路径前缀
 
 ## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.hz.domain  # 注意：对应实体类的路径
+
+
+shiro:
+  realm-class: com.hz.shiro.shiroFunction.UserRealm
+  custom-authc-filter-class: com.hz.shiro.shiroFunction.AjaxAuthorizationFilter
+  login-url: /login
+  success-url: /admin/sysFunctionManager/role_manager
+  retry-max: 5
+  retry-expire-time-redis: 5
+  authorization-expire-time-redis: 10
+  hash-iterations: 1024
+  hash-algorithm-name: MD5
+  stored-credentials-hex-encoded: false
+  session:
+    global-session-timeout: 180000
+    validation-interval: 1000
+    validation-scheduler-enabled: true
+  filter-chain-definitions:
+    /static/**: anon
+    /admin/**: authc

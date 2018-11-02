@@ -14,17 +14,17 @@ public class TestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/testUser", method = RequestMethod.GET)
-    public User findUser() {
-        return userService.getUser(1);
-    }
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(ModelMap modelMap) {
-        User user = userService.getUser(1);
-        modelMap.addAttribute("user",user);
-
-        return "/first";
-    }
+//    @RequestMapping(value = "/testUser", method = RequestMethod.GET)
+//    public User findUser() {
+//        return userService.getUser(1);
+//    }
+//    @RequestMapping(value = "/index1", method = RequestMethod.GET)
+//    public String index(ModelMap modelMap) {
+//        User user = userService.getUser(1);
+//        modelMap.addAttribute("user",user);
+//
+//        return "/login";
+//    }
 
 
 
