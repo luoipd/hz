@@ -10,6 +10,7 @@
     <result column="level" property="level" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, function_name, permission_name, pid, url, level, create_time
@@ -17,15 +18,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from shiro_function
+    from s_function
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from shiro_function
+    delete from s_function
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.Function" >
-    insert into shiro_function (id, function_name, permission_name, 
+    insert into s_function (id, function_name, permission_name,
       pid, url, level, create_time
       )
     values (#{id,jdbcType=INTEGER}, #{functionName,jdbcType=VARCHAR}, #{permissionName,jdbcType=VARCHAR}, 
@@ -33,7 +34,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.Function" >
-    insert into shiro_function
+    insert into s_function
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -82,7 +83,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.Function" >
-    update shiro_function
+    update s_function
     <set >
       <if test="functionName != null" >
         function_name = #{functionName,jdbcType=VARCHAR},
@@ -106,7 +107,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.Function" >
-    update shiro_function
+    update s_function
     set function_name = #{functionName,jdbcType=VARCHAR},
       permission_name = #{permissionName,jdbcType=VARCHAR},
       pid = #{pid,jdbcType=INTEGER},
@@ -118,8 +119,24 @@
 
   <select id="getFunctionsByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select a.role_id,b.id,b.function_name,b.create_time,b.permission_name
-    ,b.pid from shiro_role_function a join shiro_function b on a.function_id = b.id where a.role_id =
+    ,b.pid,b.url,b.level from s_role_function a join s_function b on a.function_id = b.id where a.role_id =
     #{roleId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="getFunctionsByRolePid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select a.role_id,b.id,b.function_name,b.create_time,b.permission_name
+    ,b.pid,b.url,b.level from s_role_function a join s_function b on a.function_id = b.id
+    <where>
+      <if test="id!=null">a.role_id =
+        #{id,jdbcType=INTEGER}</if>
+      <if test="pId!=null"> and b.pid = #{pId,jdbcType=INTEGER} </if>
+    </where>
+  </select>
+
+  <select id="getFunctionsByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select     <include refid="Base_Column_List" />
+    from s_function where FIND_IN_SET(id,getChildList(#{pid})) and level != null
   </select>
 
 </mapper>

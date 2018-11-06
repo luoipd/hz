@@ -6,6 +6,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="uid" property="uid" javaType="INTEGER"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, create_time, role_name
@@ -13,21 +14,31 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from shiro_role
+    from s_role
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from shiro_role
+    delete from s_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.Role" >
-    insert into shiro_role (id, create_time, role_name
+    insert into s_role (id, create_time, role_name
       )
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{roleName,jdbcType=VARCHAR}
       )
   </insert>
+
+  <select id="selectRoleByRole" parameterType="com.hz.domain.Role" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from s_role
+    <where>
+      <if test="id!=null">id = #{id,jdbcType=INTEGER}</if>
+      <if test="roleName!=null">and role_name = #{roleName,jdbcType=VARCHAR}</if>
+    </where>
+  </select>
   <insert id="insertSelective" parameterType="com.hz.domain.Role" >
-    insert into shiro_role
+    insert into s_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -52,7 +63,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.Role" >
-    update shiro_role
+    update s_role
     <set >
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -64,7 +75,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.Role" >
-    update shiro_role
+    update s_role
     set create_time = #{createTime,jdbcType=TIMESTAMP},
       role_name = #{roleName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -72,7 +83,7 @@
 
   <select id="getRoleList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 
-    select a.user_id,b.id,b.role_name,b.create_time from shiro_user_role a join shiro_role b on a.role_id = b.id
+    select a.user_id,b.id,b.role_name,b.create_time from s_user_role a join s_role b on a.role_id = b.id
     where a.user_id = #{user_id,jdbcType=INTEGER}
   </select>
 </mapper>

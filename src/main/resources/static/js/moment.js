@@ -414,7 +414,7 @@
 
     var formatTokenFunctions = {};
 
-    // token:    'M'
+    // interceptor:    'M'
     // padded:   ['MM', 2]
     // ordinal:  'Mo'
     // callback: function () { this.month() + 1 }
@@ -1177,7 +1177,7 @@
                 string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
                 totalParsedInputLength += parsedInput.length;
             }
-            // don't parse if it's not a known token
+            // don't parse if it's not a known interceptor
             if (formatTokenFunctions[token]) {
                 if (parsedInput) {
                     getParsingFlags(config).empty = false;

@@ -1,4 +1,4 @@
-package com.hz.util;
+package com.hz.domain;
 
 /**
  * @author lyp
@@ -8,8 +8,7 @@ public class RequestParams {
 
     private int pageSize;
     private int pageNum;
-    private String json;
-    private Object o;
+    private Object data;
 
     public int getPageSize() {
         return pageSize;
@@ -27,19 +26,11 @@ public class RequestParams {
         this.pageNum = pageNum;
     }
 
-    public String getJson() {
-        return json;
+    public Object getData() {
+        return data;
     }
 
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    public Object getO() {
-        return o;
-    }
-
-    public void setO(Object o) {
-        this.o = o;
+    public void setData(Object data) {
+        this.data = data;
     }
 }

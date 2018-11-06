@@ -4,7 +4,7 @@ import com.hz.service.FunctionService;
 import com.hz.service.RoleService;
 import com.hz.service.UserService;
 import com.hz.shiro.shiroFunction.UserRealm;
-import com.hz.util.RequestParams;
+import com.hz.domain.RequestParams;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;

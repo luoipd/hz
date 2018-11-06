@@ -7,34 +7,68 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    <result column="token" property="token" jdbcType="VARCHAR"/>
+    <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, create_time, password, status, username
+    id, create_time, password, status, username,token,update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from shiro_user
+    from s_user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List" />
-    from shiro_user
-    where username = #{username,jdbcType=VARCHAR}
+    from s_user
+    where username = #{username,jdbcType=VARCHAR} and status = 1
   </select>
+  <select id="selectUserList" resultMap="BaseResultMap" parameterType="com.hz.domain.User">
+    <if test="username!=null"><bind name="pattern" value="'%'+username+'%'"></bind></if>
+    select a.id,a.username,a.status,c.id as role_id,c.role_name as role_name  from s_user a left join s_user_role b on a.id  = b.user_id left  join s_role c on b.role_id = c.id
+    <where>
+      <if test="username!=null">username like #{pattern}</if>
+      <if test="roleId!=null">and c.role_id = #{roleId,jdbcType=INTEGER} </if>
+      <if test="status!=null">and a.status = #{status,jdbcType=INTEGER}</if>
+    </where> order by id desc
+
+  </select>
+  <select id="countUserList" resultType="java.lang.Integer" parameterType="com.hz.domain.User">
+    <if test="username!=null"><bind name="pattern" value="'%'+username+'%'"></bind></if>
+    select count(distinct a.id) from s_user a left join s_user_role b on a.id  = b.user_id left  join s_role c on b.role_id = c.id
+    <where>
+      <if test="username!=null">username like #{pattern}</if>
+      <if test="roleId!=null">and c.role_id = #{roleId,jdbcType=INTEGER} </if>
+      <if test="status!=null">and a.status = #{status,jdbcType=INTEGER}</if>
+    </where>
+  </select>
+
+  <select id="selectRoleByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select a.id,a.username,a.status,a.token ,c.id as role_id,c.role_name from s_user a join s_user_role b on a.id  = b.user_id left outer join s_role c on b.role_id = c.id
+where username = #{username,jdbcType=VARCHAR} and status = 1
+  </select>
+
+  <select id="selectUserInfoById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select a.id,a.username,a.status,a.token ,c.id as role_id,c.role_name from s_user a join s_user_role b on a.id  = b.user_id left outer join s_role c on b.role_id = c.id
+where a.id = #{id,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from shiro_user
+    delete from s_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.User" >
-    insert into shiro_user (id, create_time, password, 
+    insert into s_user (id, create_time, password,
       status, username)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.User" >
-    insert into shiro_user
+    insert into s_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -55,7 +89,7 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
-      </if>
+      </if>updateByPrimaryKey
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -71,7 +105,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.User" >
-    update shiro_user
+    update s_user
     <set >
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -85,15 +119,23 @@
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.User" >
-    update shiro_user
+    update s_user
     set create_time = #{createTime,jdbcType=TIMESTAMP},
       password = #{password,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      username = #{username,jdbcType=VARCHAR}
+      username = #{username,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

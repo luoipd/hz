@@ -1,6 +1,7 @@
 package com.hz.dao;
 
 import com.hz.domain.Function;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,7 @@ public interface FunctionMapper {
     int updateByPrimaryKey(Function record);
 
     List<Function> getFunctionsByRoleId(Integer id);
+    List<Function> getFunctionsByRolePid(@Param("id")Integer id, @Param("pId")Integer pId);
+
+    List<Function> getFunctionsByPid(int pId);
 }

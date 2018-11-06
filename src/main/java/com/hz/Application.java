@@ -1,8 +1,12 @@
 package com.hz;
 
+import com.github.pagehelper.PageHelper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.util.Properties;
 
 /**
  * Spring Boot 应用启动类
@@ -14,6 +18,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // mapper 接口类扫描包配置
 @MapperScan("com.hz.dao")
 public class Application {
+
+    @Bean
+    public PageHelper pageHelper(){
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("offsetAsPageNum","true");
+        properties.setProperty("rowBoundsWithCount","true");
+        properties.setProperty("reasonable","true");
+        properties.setProperty("dialect","mysql");    //配置mysql数据库的方言
+        pageHelper.setProperties(properties);
+        return pageHelper;
+    }
 
     public static void main(String[] args) {
         // 程序启动入口

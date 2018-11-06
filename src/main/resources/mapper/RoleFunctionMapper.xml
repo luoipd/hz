@@ -4,13 +4,15 @@
   <resultMap id="BaseResultMap" type="com.hz.domain.RoleFunction" >
     <result column="role_id" property="roleId" jdbcType="INTEGER" />
     <result column="function_id" property="functionId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <insert id="insert" parameterType="com.hz.domain.RoleFunction" >
-    insert into shiro_role_function (role_id, function_id)
+    insert into s_role_function (role_id, function_id)
     values (#{roleId,jdbcType=INTEGER}, #{functionId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.RoleFunction" >
-    insert into shiro_role_function
+    insert into s_role_function
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="roleId != null" >
         role_id,

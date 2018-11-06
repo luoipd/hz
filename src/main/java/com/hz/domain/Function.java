@@ -17,6 +17,8 @@ public class Function {
 
     private Date createTime;
 
+    private Date updateTime;
+
     private Integer roleId;
 
     public Integer getId() {
@@ -81,5 +83,13 @@ public class Function {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

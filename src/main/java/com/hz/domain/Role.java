@@ -11,6 +11,8 @@ public class Role {
 
     private Integer uid;
 
+    private Date updateTime;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class Role {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
