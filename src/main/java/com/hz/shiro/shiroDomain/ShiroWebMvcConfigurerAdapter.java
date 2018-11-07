@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction.shiro;
+package com.hz.shiro.shiroDomain;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

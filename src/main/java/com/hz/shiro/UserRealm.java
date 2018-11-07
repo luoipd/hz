@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
 import com.hz.domain.Function;
 import com.hz.domain.Role;
@@ -59,7 +59,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         for(Function function : functions) {
             roleSet.add(String.valueOf(function.getRoleId()));
-            pemissionSet.add(  function.getPermissionName() );
+            pemissionSet.add(  function.getUrl() );
         }
          // 将角色名称提供给授权info
         authorizationInfo.setRoles( roleSet );

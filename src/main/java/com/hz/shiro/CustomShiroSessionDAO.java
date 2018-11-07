@@ -1,6 +1,6 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
-import com.hz.shiro.shiroFunction.shiro.ShiroSessionRepository;
+import com.hz.shiro.shiroDomain.ShiroSessionRepository;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;

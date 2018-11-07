@@ -1,5 +1,7 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 
@@ -21,9 +23,12 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		// super.onAccessDenied(request, response);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		// HttpServletResponse httpResponse = (HttpServletResponse) response;
-
+		String token = httpRequest.getHeader("token");
 		Subject subject = getSubject(request, response);
+//		httpRequest.setAttribute();
+
+		Session session = subject.getSession();
+		System.out.println(session);
 		// If the subject isn't identified, redirect to login URL
 		if (subject.getPrincipal() == null) {
 			if (isAjaxRequest(httpRequest)) {

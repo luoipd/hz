@@ -1,7 +1,7 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
 
-import com.hz.shiro.shiroFunction.shiro.ShiroSessionRepository;
+import com.hz.shiro.shiroDomain.ShiroSessionRepository;
 import com.hz.util.Constants;
 import com.hz.util.RedisUtil;
 import org.apache.shiro.session.Session;

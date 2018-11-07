@@ -20,6 +20,7 @@ public interface FunctionMapper {
 
     List<Function> getFunctionsByRoleId(Integer id);
     List<Function> getFunctionsByRolePid(@Param("id")Integer id, @Param("pId")Integer pId);
-
     List<Function> getFunctionsByPid(int pId);
+
+    List<Function> getFunctionsByPidPer(int pId);
 }

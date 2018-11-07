@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
 import com.hz.domain.User;
 import org.apache.shiro.crypto.RandomNumberGenerator;

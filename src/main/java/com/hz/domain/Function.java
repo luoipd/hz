@@ -1,8 +1,10 @@
 package com.hz.domain;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class Function {
+public class Function implements Serializable {
     private Integer id;
 
     private String functionName;
@@ -20,6 +22,8 @@ public class Function {
     private Date updateTime;
 
     private Integer roleId;
+
+    private List<Function> childFunctions;
 
     public Integer getId() {
         return id;
@@ -91,5 +95,13 @@ public class Function {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<Function> getChildFunctions() {
+        return childFunctions;
+    }
+
+    public void setChildFunctions(List<Function> childFunctions) {
+        this.childFunctions = childFunctions;
     }
 }

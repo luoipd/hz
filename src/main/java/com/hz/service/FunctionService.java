@@ -1,6 +1,7 @@
 package com.hz.service;
 
 import com.hz.domain.Function;
+import com.hz.domain.FunctionTreeBean;
 import com.hz.domain.RoleFunction;
 
 import java.util.List;
@@ -21,5 +22,7 @@ public interface FunctionService {
     void addFunction(Function function);
 
     void editFunction(Function function);
+
+    List<FunctionTreeBean> selectFunctionByPid(int pId);
 
 }

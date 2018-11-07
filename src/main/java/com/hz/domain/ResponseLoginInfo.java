@@ -1,12 +1,13 @@
 package com.hz.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author lyp
  * @date 2018/11/2
  */
-public class ResponseLoginInfo {
+public class ResponseLoginInfo implements Serializable {
 
 
     User user;

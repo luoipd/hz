@@ -1,6 +1,6 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
-import com.hz.shiro.shiroFunction.shiro.*;
+import com.hz.shiro.shiroDomain.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.CipherService;

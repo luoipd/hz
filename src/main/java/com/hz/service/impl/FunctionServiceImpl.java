@@ -3,11 +3,13 @@ package com.hz.service.impl;
 import com.hz.dao.FunctionMapper;
 import com.hz.dao.RoleFunctionMapper;
 import com.hz.domain.Function;
+import com.hz.domain.FunctionTreeBean;
 import com.hz.domain.RoleFunction;
 import com.hz.service.FunctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +58,30 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public void editFunction(Function function) {
         functionMapper.updateByPrimaryKeySelective(function);
+    }
+
+    @Override
+    public List<FunctionTreeBean> selectFunctionByPid(int pId) {
+
+        List<Function> functions = functionMapper.getFunctionsByPid(pId);
+        List<FunctionTreeBean> list2 =new ArrayList<FunctionTreeBean>();
+        for(Function function:functions)  {
+            FunctionTreeBean functionTreeBean = new FunctionTreeBean();
+            functionTreeBean.setId(function.getId());
+            functionTreeBean.setPId(function.getPid());
+            functionTreeBean.setName(function.getFunctionName());
+            list2.add(functionTreeBean);
+        }
+
+
+//        Function function = functionMapper.selectByPrimaryKey(pId);
+//        List<Function> functions =  functionMapper.getFunctionsByPidPer(pId);
+//        for(Function function1:functions){
+//            List<Function> functions1 = functionMapper.getFunctionsByPidPer(function1.getId());
+//            function1.setChildFunctions(functions1);
+//        }
+//        function.setChildFunctions(functions);
+        return list2;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
 import freemarker.template.TemplateException;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;

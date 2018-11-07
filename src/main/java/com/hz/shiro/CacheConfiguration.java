@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;

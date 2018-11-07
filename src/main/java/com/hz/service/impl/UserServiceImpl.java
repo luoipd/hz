@@ -39,11 +39,17 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserInfo(int id){
-        return userMapper.selectUserInfoById(id);
+        User user = userMapper.selectByPrimaryKey(id);
+        List<Role> roles = roleMapper.getRoleList(user.getId());
+        user.setRoles(roles);
+        return user;
     }
 
     public User findByUserName(String name){
-        return userMapper.selectByUserName(name);
+        User user = userMapper.selectByUserName(name);
+        List<Role> roles = roleMapper.getRoleList(user.getId());
+        user.setRoles(roles);
+        return user;
     }
 
     public User selectRoleByUserName(String name){

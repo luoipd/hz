@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

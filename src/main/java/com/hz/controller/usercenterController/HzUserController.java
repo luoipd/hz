@@ -6,17 +6,18 @@ package com.hz.controller.usercenterController;
  */
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.hz.domain.*;
 import com.hz.service.FunctionService;
 import com.hz.service.RoleService;
 import com.hz.service.UserService;
-import com.hz.shiro.shiroFunction.RedisCache;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +65,7 @@ public class HzUserController {
         token.setRememberMe(true);
         // 获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
         try {
             // 在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查
             // 每个Realm都能在必要时对提交的AuthenticationTokens作出反应
@@ -108,21 +111,13 @@ public class HzUserController {
             String url = ((re == null || re.getRequestUrl() == null) ? "/index"
                     : re.getRequestUrl());
 
-            User user1 = userService.selectRoleByUserName(username);
-            List<Function> function = functionService.selectFunctionsByRoleId(user1.getRoleId());
-            responseJson.setUser(user1);
-            responseJson.setModules(function);
-            responseJson.setStatus(1);
-            responseJson.setDesc("success");
+            User user1 = userService.findByUserName(username);
+            session.setAttribute("user",user1);
             /* 获取该角色的有效url*/
             /*返回用户信息，包含有权限的接口，用户信息*/
-
-            Map map = new HashMap();
-            map.put("user",user1);
-            map.put("modules",function);
             resJson.setDesc("success");
             resJson.setStatus(1);
-            resJson.setData(map);
+            resJson.setData(user1);
 //            RedisCache redisCache = new RedisCache();
 //            redisCache.put("user",user1);
             return JSONObject.toJSONString(resJson);
@@ -273,7 +268,7 @@ public class HzUserController {
     }
 
     /**
-     * 给角色新增模块
+     * 给角色新增模块(error)
      * @return
      */
     @RequestMapping(value = "functionManage",method = RequestMethod.POST)
@@ -353,12 +348,48 @@ public class HzUserController {
     public String getUserInfo(@RequestParam("uid") int uid){
         ResJson resJson = new ResJson();
         User user = userService.getUserInfo(uid);
+        List<Function> function = new ArrayList<Function>();
+        for(Role role:user.getRoles()){
+            function.addAll(functionService.selectFunctionsByRoleId(role.getId()));
+        }
+        Map map = new HashMap();
+        map.put("user",user);
+        map.put("modules",function);
         user.setPassword(null);
-        resJson.setData(user);
+        resJson.setData(map);
         return JSONObject.toJSONString(resJson);
+    }
+    @RequestMapping(value = "/test/getUserInfo",method = RequestMethod.GET)
+    @ResponseBody
+    public String getUserInfoTest(@RequestParam("uid") int uid){
 
+
+        ResJson resJson = new ResJson();
+        User user = userService.getUserInfo(uid);
+        List<Function> function = new ArrayList<Function>();
+        for(Role role:user.getRoles()){
+            function.addAll(functionService.selectFunctionsByRoleId(role.getId()));
+        }
+        Map map = new HashMap();
+        map.put("user",user);
+        map.put("modules",function);
+        user.setPassword(null);
+        resJson.setData(map);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
+    @RequestMapping(value = "/getModuleList",method = RequestMethod.GET)
+    @ResponseBody
+    public String getModuleList(@RequestParam("pModule") int pModule){
+        ResJson resJson = new ResJson();
+        List<FunctionTreeBean> function = functionService.selectFunctionByPid(pModule);
+        resJson.setData(function);
+        return JSONObject.toJSONString(function, SerializerFeature.WriteDateUseDateFormat,
+                SerializerFeature.WriteMapNullValue);
 
     }
+
 
 
 

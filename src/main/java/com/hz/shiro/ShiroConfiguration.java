@@ -1,6 +1,6 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
-import com.hz.shiro.shiroFunction.shiro.ShiroProperties;
+import com.hz.shiro.shiroDomain.ShiroProperties;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -115,10 +115,10 @@ public class ShiroConfiguration {
 	public DefaultSecurityManager securityManager(Realm realm, RememberMeManager rememberMeManager,
 												  CacheManager cacheManager, SessionManager sessionManager) {
 		DefaultSecurityManager sm = new DefaultWebSecurityManager();
-		sm.setRealm(realm);
 		sm.setCacheManager(cacheManager);
 		sm.setSessionManager(sessionManager);
 		sm.setRememberMeManager(rememberMeManager);
+		sm.setRealm(realm);
 		return sm;
 	}
 

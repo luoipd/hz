@@ -136,7 +136,12 @@
 
   <select id="getFunctionsByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select     <include refid="Base_Column_List" />
-    from s_function where FIND_IN_SET(id,getChildList(#{pid})) and level != null
+    from s_function where FIND_IN_SET(id,getChildList(#{pid})) and level != 0
+  </select>
+
+  <select id="getFunctionsByPidPer" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select     <include refid="Base_Column_List" />
+    from s_function where pid = #{pId,jdbcType=INTEGER}
   </select>
 
 </mapper>

@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction.shiro;
+package com.hz.shiro.shiroDomain;
 
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;

@@ -1,6 +1,6 @@
-package com.hz.shiro.shiroFunction;
+package com.hz.shiro;
 
-import com.hz.shiro.shiroFunction.shiro.ShiroProperties;
+import com.hz.shiro.shiroDomain.ShiroProperties;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;

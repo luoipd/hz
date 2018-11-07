@@ -37,10 +37,10 @@ mybatis:
 
 
 shiro:
-  realm-class: com.hz.shiro.shiroFunction.UserRealm
-  custom-authc-filter-class: com.hz.shiro.shiroFunction.AjaxAuthorizationFilter
+  realm-class: com.hz.shiro.UserRealm
+  custom-authc-filter-class: com.hz.shiro.AjaxAuthorizationFilter
   login-url: /login
-  success-url: /admin/sysFunctionManager/role_manager
+  success-url: /userList
   retry-max: 5
   retry-expire-time-redis: 5
   authorization-expire-time-redis: 10
@@ -53,4 +53,4 @@ shiro:
     validation-scheduler-enabled: true
   filter-chain-definitions:
     /static/**: anon
-    /admin/**: authc
+    /test/**: authc

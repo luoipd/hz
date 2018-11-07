@@ -1,8 +1,12 @@
 package com.hz.domain;
 
-import java.util.Date;
+import com.sun.xml.internal.ws.developer.Serialization;
 
-public class User {
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+public class User  implements Serializable {
     private Integer id;
 
     private Date createTime;
@@ -22,6 +26,8 @@ public class User {
     private String token;
 
     private Date updateTime;
+
+    private List<Role> roles;
 
     public Integer getId() {
         return id;
@@ -101,5 +107,13 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

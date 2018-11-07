@@ -1,8 +1,9 @@
 package com.hz.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserRole {
+public class UserRole implements Serializable {
     private Integer userId;
 
     private Integer roleId;

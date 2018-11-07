@@ -3,7 +3,6 @@ package com.hz.controller.usercenterController;
 import com.hz.service.FunctionService;
 import com.hz.service.RoleService;
 import com.hz.service.UserService;
-import com.hz.shiro.shiroFunction.UserRealm;
 import com.hz.domain.RequestParams;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
  * @date 2018/10/31
  */
 public class SystemController {
-
-    @Autowired
-    UserRealm myShiroRealm;
 
 
     @Autowired

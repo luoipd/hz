@@ -1,4 +1,4 @@
-package com.hz.shiro.shiroFunction.shiro;
+package com.hz.shiro.shiroDomain;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
