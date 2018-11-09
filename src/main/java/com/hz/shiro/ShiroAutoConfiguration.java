@@ -169,20 +169,20 @@ public class ShiroAutoConfiguration {
         return sessionDAO;
     }
 
-//    @Bean(name = "sessionValidationScheduler")
-//    @DependsOn(value = {"sessionManager"})
-//    @ConditionalOnClass(name = {"org.quartz.Scheduler"})
-//    @ConditionalOnMissingBean(SessionValidationScheduler.class)
-//    public SessionValidationScheduler quartzSessionValidationScheduler(DefaultWebSessionManager sessionManager) {
-//        QuartzSessionValidationScheduler quartzSessionValidationScheduler = new QuartzSessionValidationScheduler(sessionManager);
-//        quartzSessionValidationScheduler.setSessionValidationInterval(shiroSessionProperties.getValidationInterval());
-//        quartzSessionValidationScheduler.enableSessionValidation();
-//        sessionManager.setDeleteInvalidSessions(shiroSessionProperties.isDeleteInvalidSessions());
-//        sessionManager.setSessionValidationInterval(shiroSessionProperties.getValidationInterval());
-//        sessionManager.setSessionValidationSchedulerEnabled(shiroSessionProperties.isValidationSchedulerEnabled());
-//        sessionManager.setSessionValidationScheduler(quartzSessionValidationScheduler);
-//        return quartzSessionValidationScheduler;
-//    }
+    @Bean(name = "sessionValidationScheduler")
+    @DependsOn(value = {"sessionManager"})
+    @ConditionalOnClass(name = {"org.quartz.Scheduler"})
+    @ConditionalOnMissingBean(SessionValidationScheduler.class)
+    public SessionValidationScheduler quartzSessionValidationScheduler(DefaultWebSessionManager sessionManager) {
+        QuartzSessionValidationScheduler quartzSessionValidationScheduler = new QuartzSessionValidationScheduler(sessionManager);
+        quartzSessionValidationScheduler.setSessionValidationInterval(shiroSessionProperties.getValidationInterval());
+        quartzSessionValidationScheduler.enableSessionValidation();
+        sessionManager.setDeleteInvalidSessions(shiroSessionProperties.isDeleteInvalidSessions());
+        sessionManager.setSessionValidationInterval(shiroSessionProperties.getValidationInterval());
+        sessionManager.setSessionValidationSchedulerEnabled(shiroSessionProperties.isValidationSchedulerEnabled());
+        sessionManager.setSessionValidationScheduler(quartzSessionValidationScheduler);
+        return quartzSessionValidationScheduler;
+    }
 
     @Bean(name = "sessionValidationScheduler")
     @DependsOn(value = {"sessionManager"})

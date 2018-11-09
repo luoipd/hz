@@ -19,4 +19,6 @@ public interface RoleService {
     void insertManageRole(Role role);
 
     void addRoleFunction(List<RoleFunction> roleFunctions);
+
+    void insertRoles(List<UserRole> userRoles) throws Exception;
 }

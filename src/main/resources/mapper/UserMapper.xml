@@ -29,7 +29,7 @@
   </select>
   <select id="selectUserList" resultMap="BaseResultMap" parameterType="com.hz.domain.User">
     <if test="username!=null"><bind name="pattern" value="'%'+username+'%'"></bind></if>
-    select a.id,a.username,a.status,c.id as role_id,c.role_name as role_name  from s_user a left join s_user_role b on a.id  = b.user_id left  join s_role c on b.role_id = c.id
+    select a.id,a.username,a.status  from s_user a
     <where>
       <if test="username!=null">username like #{pattern}</if>
       <if test="roleId!=null">and c.role_id = #{roleId,jdbcType=INTEGER} </if>
@@ -39,7 +39,7 @@
   </select>
   <select id="countUserList" resultType="java.lang.Integer" parameterType="com.hz.domain.User">
     <if test="username!=null"><bind name="pattern" value="'%'+username+'%'"></bind></if>
-    select count(distinct a.id) from s_user a left join s_user_role b on a.id  = b.user_id left  join s_role c on b.role_id = c.id
+    select count(distinct id) from s_user
     <where>
       <if test="username!=null">username like #{pattern}</if>
       <if test="roleId!=null">and c.role_id = #{roleId,jdbcType=INTEGER} </if>
@@ -66,6 +66,13 @@ where a.id = #{id,jdbcType=INTEGER}
       status, username)
     values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertUser" parameterType="com.hz.domain.User">
+        insert into s_user ( password,
+      status, username)
+    values ( #{password,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR})
+
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.User" >
     insert into s_user

@@ -12,6 +12,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ public class UserRealm extends AuthorizingRealm {
 
     @Autowired
     UserService userService;
-
     private Logger logger=Logger.getLogger(UserRealm.class);
     /**
      * 提供用户信息，返回权限信息
@@ -87,6 +87,8 @@ public class UserRealm extends AuthorizingRealm {
 
         //查出是否有此用户
         User user= userService.findByUserName(token.getUsername());
+
+
 
         if(user==null){
             throw new UnknownAccountException();

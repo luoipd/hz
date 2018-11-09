@@ -34,12 +34,13 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.hz.domain  # 注意：对应实体类的路径
+  config-location: classpath:mybatis.xml
 
 
 shiro:
   realm-class: com.hz.shiro.UserRealm
   custom-authc-filter-class: com.hz.shiro.AjaxAuthorizationFilter
-  login-url: /login
+  login-url: /api/sys/login
   success-url: /userList
   retry-max: 5
   retry-expire-time-redis: 5
@@ -48,9 +49,14 @@ shiro:
   hash-algorithm-name: MD5
   stored-credentials-hex-encoded: false
   session:
-    global-session-timeout: 180000
-    validation-interval: 1000
+    global-session-timeout: 1800000
+    validation-interval: 100000
     validation-scheduler-enabled: true
   filter-chain-definitions:
     /static/**: anon
-    /test/**: authc
+    /api/**: authc
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

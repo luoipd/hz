@@ -24,21 +24,25 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		// super.onAccessDenied(request, response);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String token = httpRequest.getHeader("token");
+		String url = httpRequest.getRequestURI();
+		if("/api/sys/login".equals(url)){
+			return true;
+		}
 		Subject subject = getSubject(request, response);
-//		httpRequest.setAttribute();
-
 		Session session = subject.getSession();
 		System.out.println(session);
+		String token1 = (String) session.getAttribute("token");
 		// If the subject isn't identified, redirect to login URL
-		if (subject.getPrincipal() == null) {
+		if (subject.getPrincipal() == null||token==null||!token.equals(token1)) {
 			if (isAjaxRequest(httpRequest)) {
-				  
+
 			} else {
 				saveRequestAndRedirectToLogin(request, response);
 			}
 		} else {
-			return true;
+				return true;
 		}
+
 
 		return false;
 	}

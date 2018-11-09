@@ -12,10 +12,12 @@ import com.hz.service.FunctionService;
 import com.hz.service.RoleService;
 import com.hz.service.UserService;
 import com.hz.util.ResJson;
+import com.hz.util.UserException;
 import com.hz.util.page.PageRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -24,6 +26,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -51,7 +54,7 @@ public class HzUserController {
     private static final Logger logger = LoggerFactory.getLogger(HzUserController.class);
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sys/login", method = RequestMethod.GET)
     @ResponseBody
     public String login(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
                         HttpServletRequest request) {
@@ -101,7 +104,7 @@ public class HzUserController {
             redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
         }
         // 验证是否登录成功
-        if (currentUser.isAuthenticated()) {
+        if (currentUser.isAuthenticated()&&username!=null) {
             logger.info("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
 
             SavedRequest re = WebUtils.getAndClearSavedRequest(request);
@@ -113,6 +116,7 @@ public class HzUserController {
 
             User user1 = userService.findByUserName(username);
             session.setAttribute("user",user1);
+            session.setAttribute("token",user1.getToken());
             /* 获取该角色的有效url*/
             /*返回用户信息，包含有权限的接口，用户信息*/
             resJson.setDesc("success");
@@ -134,16 +138,31 @@ public class HzUserController {
         }
     }
 
-    @RequestMapping(value = "/userList", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sys/userList", method = RequestMethod.GET)
     @ResponseBody
     public String getUserList(@Valid PageRequest page,@Valid User user){
         ResJson resJson = new ResJson();
         List<User> users = userService.getUserList(user,page);
-        resJson.setData(users);
+        int count = userService.countUser(user);
+        Map map = new HashMap();
+        map.put("users",users);
+        map.put("total",count);
+        resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
 
-    @RequestMapping(value = "/editUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/getUserInfoById", method = RequestMethod.GET)
+    @ResponseBody
+    public String getUserInfoById(@RequestParam("uid") int uid){
+        ResJson resJson = new ResJson();
+        User user = userService.getUserInfo(uid);
+        user.setPassword("");
+        resJson.setData(user);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
+    @RequestMapping(value = "/api/sys/editUser",method = RequestMethod.POST)
     @ResponseBody
     public String updateUser(@Valid User user){
         ResJson resJson = new ResJson();
@@ -161,7 +180,7 @@ public class HzUserController {
         }
         return JSONObject.toJSONString(resJson);
     }
-    @RequestMapping(value = "/delUser",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/sys/delUser",method = RequestMethod.DELETE)
     @ResponseBody
     public String deleteUser(@Valid int id){
         ResJson resJson = new ResJson();
@@ -177,7 +196,7 @@ public class HzUserController {
 
     }
 
-    @RequestMapping(value = "/createUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/createUser",method = RequestMethod.POST)
     @ResponseBody
     public String createUser(@Valid User user){
         ResJson resJson = new ResJson();
@@ -200,22 +219,17 @@ public class HzUserController {
     /*
         给用户新增角色
      */
-    @RequestMapping(value = "/roleManage",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/roleManage",method = RequestMethod.POST)
     @ResponseBody
-    public String insertRole(@Valid UserRole userRole){
+    public String insertRole(@Valid String userRoles) throws Exception{
         ResJson resJson = new ResJson();
-        if(userRole.getRoleId()==null||userRole.getUserId()==null){
-            resJson.setDesc("用户id,角色id不能为空");
-            resJson.setStatus(0);
-            return JSONObject.toJSONString(resJson);
-        }
-        try{
-            roleService.insertRole(userRole);
-
-        }catch (Exception e){
+        List<UserRole> userRoles1 = JSONObject.parseArray(userRoles,UserRole.class);
+        try {
+            roleService.insertRoles(userRoles1);
+        } catch (UserException e) {
             e.printStackTrace();
-            resJson.setStatus(0);
-            resJson.setDesc("新增失败");
+            resJson.setStatus(1);
+            resJson.setDesc(e.getMessage());
         }
         return JSONObject.toJSONString(resJson);
     }
@@ -223,7 +237,7 @@ public class HzUserController {
     /*
     获取角色列表
      */
-    @RequestMapping(value = "/roleList",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sys/roleList",method = RequestMethod.GET)
     @ResponseBody
     public String getRoleList(@Valid Role role){
 
@@ -236,7 +250,7 @@ public class HzUserController {
     /*
     新增角色
      */
-    @RequestMapping(value = "/createRole",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/createRole",method = RequestMethod.POST)
     @ResponseBody
     public String insertRole(@Valid Role role){
 
@@ -258,7 +272,7 @@ public class HzUserController {
      * @param pId
      * @return
      */
-    @RequestMapping(value = "/getFunctionList",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sys/getFunctionList",method = RequestMethod.GET)
     @ResponseBody
     public String getFunctionList(@Valid int roleId,@Valid int pId){
         ResJson resJson = new ResJson();
@@ -290,7 +304,7 @@ public class HzUserController {
      * 新增模块
      * @return
      */
-    @RequestMapping(value = "/addFunction",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/addFunction",method = RequestMethod.POST)
     @ResponseBody
     public String addFunction(@Valid Function function){
         ResJson resJson = new ResJson();
@@ -309,7 +323,7 @@ public class HzUserController {
      * 修改模块
      * @return
      */
-    @RequestMapping(value = "/editFunction",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/editFunction",method = RequestMethod.POST)
     @ResponseBody
     public String editFunction(@Valid Function function){
         ResJson resJson = new ResJson();
@@ -328,7 +342,7 @@ public class HzUserController {
      * 角色添加权限
      * @return
      */
-    @RequestMapping(value = "/addRoleFunction",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sys/addRoleFunction",method = RequestMethod.POST)
     @ResponseBody
     public String addRoleFunction(@Valid List<RoleFunction> roleFunctions){
         ResJson resJson = new ResJson();
@@ -343,7 +357,7 @@ public class HzUserController {
         }
         return JSONObject.toJSONString(resJson);
     }
-    @RequestMapping(value = "/getUserInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sys/getUserInfo",method = RequestMethod.GET)
     @ResponseBody
     public String getUserInfo(@RequestParam("uid") int uid){
         ResJson resJson = new ResJson();
@@ -379,7 +393,7 @@ public class HzUserController {
     }
 
 
-    @RequestMapping(value = "/getModuleList",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sys/getModuleList",method = RequestMethod.GET)
     @ResponseBody
     public String getModuleList(@RequestParam("pModule") int pModule){
         ResJson resJson = new ResJson();

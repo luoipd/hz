@@ -7,9 +7,11 @@ import com.hz.domain.Role;
 import com.hz.domain.RoleFunction;
 import com.hz.domain.UserRole;
 import com.hz.service.RoleService;
+import com.hz.util.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +31,20 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void insertRole(UserRole userRole) {
-        userRoleMapper.insert(userRole);
+        List<UserRole> userRoles = userRoleMapper.userRoles(userRole.getUserId());
+        if(userRoles.size()==0){
+            userRoleMapper.insert(userRole);
+            return;
+        }
+        for(UserRole userRole1:userRoles){
+
+            if(userRole1.getRoleId()==userRole.getRoleId()){
+                userRoleMapper.update(userRole);
+            }else{
+                userRoleMapper.insert(userRole);
+            }
+        }
+
     }
 
     @Override
@@ -49,5 +64,16 @@ public class RoleServiceImpl implements RoleService {
             roleFunctionMapper.insert(roleFunction);
         }
 
+    }
+
+    @Override
+    public void insertRoles(List<UserRole> userRoles) throws Exception{
+        if(userRoles.size()!=0){
+
+            userRoleMapper.deleteUserRoles(userRoles.get(0).getUserId());
+
+            userRoleMapper.insertRoles(userRoles);
+
+        }
     }
 }

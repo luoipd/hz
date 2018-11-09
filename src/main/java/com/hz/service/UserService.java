@@ -2,6 +2,7 @@ package com.hz.service;
 
 import com.hz.domain.*;
 import com.hz.util.page.PageRequest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -28,5 +29,7 @@ public interface UserService {
 
     void deleteUserById(int id);
 
-    void createUser(User user);
+    void createUser(User user) throws Exception;
+
+    int countUser(User user);
 }
