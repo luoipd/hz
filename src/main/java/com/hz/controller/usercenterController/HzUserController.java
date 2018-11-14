@@ -308,6 +308,11 @@ public class HzUserController {
         ResJson resJson = new ResJson();
         if(function.getFunctionName()!=null&&function.getPid()!=null){
             if(function.getUrl()==null){
+                if(function.getLevel()==null){
+                    resJson.setStatus(0);
+                    resJson.setDesc("请传入数据level!");
+                    return JSONObject.toJSONString(resJson);
+                }
             }else{
                 function.setLevel(0);
             }
@@ -318,6 +323,17 @@ public class HzUserController {
         }
         return JSONObject.toJSONString(resJson);
     }
+
+    @RequestMapping(value = "/api/sys/delFunction",method = RequestMethod.POST)
+    @ResponseBody
+    public String delFunction(@Valid int id){
+        ResJson resJson = new ResJson();
+        functionService.delFunction(id);
+        resJson.setStatus(1);
+        resJson.setDesc("删除成功");
+        return JSONObject.toJSONString(resJson);
+    }
+
 
     /**
      * 修改模块
@@ -338,6 +354,9 @@ public class HzUserController {
         return JSONObject.toJSONString(resJson);
     }
 
+    /**
+     * 删除模块
+     */
     /**
      * 角色添加权限
      * @return
@@ -378,7 +397,7 @@ public class HzUserController {
 
     @RequestMapping(value = "/api/sys/getModuleList",method = RequestMethod.GET)
     @ResponseBody
-    public String getModuleList(@RequestParam("pModule") int pModule){
+    public String getModuleList(@RequestParam("pId") int pModule){
         ResJson resJson = new ResJson();
         List<FunctionTree> function = functionService.selectFunctionByPid(pModule);
         resJson.setData(function);
@@ -388,12 +407,14 @@ public class HzUserController {
 
     @RequestMapping(value="/api/sys/listModule",method = RequestMethod.GET)
     @ResponseBody
-    public String listModule(@RequestParam("pModule") int pid){
+    public String listModule(@RequestParam("pId") int pid){
         ResJson resJson = new ResJson();
         List<Function> function = functionService.getFunctionList(pid);
         resJson.setData(function);
         return JSONObject.toJSONString(resJson);
     }
+
+
 
 
 

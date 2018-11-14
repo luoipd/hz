@@ -29,4 +29,6 @@ public interface FunctionService {
 
     List<Function> getFunctionList(int pId);
 
+    void delFunction(int id);
+
 }

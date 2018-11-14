@@ -105,4 +105,9 @@ public class FunctionServiceImpl implements FunctionService {
         return functions;
     }
 
+    @Override
+    public void delFunction(int id) {
+        functionMapper.deleteByPrimaryKey(id);
+    }
+
 }
