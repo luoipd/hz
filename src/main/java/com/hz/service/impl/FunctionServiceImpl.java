@@ -6,6 +6,8 @@ import com.hz.domain.Function;
 import com.hz.domain.FunctionTreeBean;
 import com.hz.domain.RoleFunction;
 import com.hz.service.FunctionService;
+import com.hz.util.FunctionTree;
+import com.hz.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,13 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    public List<Function> selectFunctionByRolePid(int roleId, int pId) {
-        return functionMapper.getFunctionsByRolePid(roleId,pId);
+    public List<FunctionTree> selectFunctionByRolePid(int roleId, int pId) {
+
+
+        List<Function> functions = functionMapper.getFunctionsByRolePidPer(roleId,pId);
+        List<Function> functions1 = functionMapper.getFunctionsByRolePid(roleId,pId);
+        List<FunctionTree> functionTrees = functionTrees(functions,functions1);
+        return functionTrees;
     }
 
     @Override
@@ -56,32 +63,46 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    public void editFunction(Function function) {
+    public void editFunction(Function function) throws Exception {
+        if(function.getId()==0||function.getId()==null){
+            throw new Exception("没有修改id");
+        }
         functionMapper.updateByPrimaryKeySelective(function);
     }
 
     @Override
-    public List<FunctionTreeBean> selectFunctionByPid(int pId) {
+    public List<FunctionTree> selectFunctionByPid(int pId) {
+        List<Function> functions = functionMapper.getFunctionsByPidPer(pId);
+        List<Function> functions1 = functionMapper.getFunctionsByPid(pId);
+        List<FunctionTree> functionTrees = functionTrees(functions,functions1);
+        return functionTrees;
+    }
 
-        List<Function> functions = functionMapper.getFunctionsByPid(pId);
-        List<FunctionTreeBean> list2 =new ArrayList<FunctionTreeBean>();
-        for(Function function:functions)  {
-            FunctionTreeBean functionTreeBean = new FunctionTreeBean();
-            functionTreeBean.setId(function.getId());
-            functionTreeBean.setPId(function.getPid());
-            functionTreeBean.setName(function.getFunctionName());
-            list2.add(functionTreeBean);
+    public List<FunctionTree> functionTrees(List<Function> functions,List<Function> functions1){
+        List<FunctionTree> list = toFunctionTree(functions);
+        List<FunctionTree> list1 = toFunctionTree(functions1);
+        TreeUtil utils =  new TreeUtil(list,list1);
+        List<FunctionTree> functions2 = utils.getTree();
+        return functions2;
+    }
+
+    public List<FunctionTree> toFunctionTree(List<Function> functions){
+        List<FunctionTree> list = new ArrayList();
+        for(Function function:functions){
+            FunctionTree functionTree = new FunctionTree();
+            functionTree.setId(String.valueOf(function.getId()));
+            functionTree.setName(function.getFunctionName());
+            functionTree.setPid(String.valueOf(function.getPid()));
+            functionTree.setLevel(function.getLevel());
+            list.add(functionTree);
         }
+        return list;
+    }
 
-
-//        Function function = functionMapper.selectByPrimaryKey(pId);
-//        List<Function> functions =  functionMapper.getFunctionsByPidPer(pId);
-//        for(Function function1:functions){
-//            List<Function> functions1 = functionMapper.getFunctionsByPidPer(function1.getId());
-//            function1.setChildFunctions(functions1);
-//        }
-//        function.setChildFunctions(functions);
-        return list2;
+    @Override
+    public List<Function> getFunctionList(int pId){
+        List<Function> functions = functionMapper.getFunctionsByPidPer(pId);
+        return functions;
     }
 
 }

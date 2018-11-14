@@ -130,7 +130,19 @@
     <where>
       <if test="id!=null">a.role_id =
         #{id,jdbcType=INTEGER}</if>
+      <if test="pId!=null"> and b.pid = #{pId,jdbcType=INTEGER} and FIND_IN_SET(id,getChildList(#{pId,jdbcType=INTEGER})) </if>
+      and level != 0
+    </where>
+  </select>
+
+  <select id="getFunctionsByRolePidPer">
+    select a.role_id,b.id,b.function_name,b.create_time,b.permission_name
+    ,b.pid,b.url,b.level from s_role_function a join s_function b on a.function_id = b.id
+    <where>
+      <if test="id!=null">a.role_id =
+        #{id,jdbcType=INTEGER}</if>
       <if test="pId!=null"> and b.pid = #{pId,jdbcType=INTEGER} </if>
+      and level != 0
     </where>
   </select>
 
@@ -141,7 +153,8 @@
 
   <select id="getFunctionsByPidPer" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select     <include refid="Base_Column_List" />
-    from s_function where pid = #{pId,jdbcType=INTEGER}
+    from s_function where pid = #{pId,jdbcType=INTEGER} and level != 0
   </select>
+
 
 </mapper>

@@ -1,12 +1,7 @@
 package com.hz.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.hz.dao.FunctionMapper;
-import com.hz.dao.RoleMapper;
-import com.hz.dao.UserMapper;
-import com.hz.dao.UserRoleMapper;
+import com.hz.dao.*;
 import com.hz.domain.*;
 import com.hz.service.UserService;
 import com.hz.util.page.PageRequest;
@@ -35,12 +30,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     FunctionMapper functionMapper;
 
+    @Autowired
+    PictureVideoMapper pictureVideoMapper;
+
+
     public User getUser(long id){
         return userMapper.selectByPrimaryKey((int) id);
     }
 
     public User getUserInfo(int id){
         User user = userMapper.selectByPrimaryKey(id);
+        PictureVideo pictureVideo = pictureVideoMapper.selectByPrimaryKey(user.getPicId());
+        user.setPicUrl(pictureVideo.getUrl());
+        user.setPicId(null);
         List<Role> roles = roleMapper.getRoleList(user.getId());
         user.setRoles(roles);
         return user;
@@ -53,9 +55,12 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public User selectRoleByUserName(String name){
-        return userMapper.selectRoleByUserName(name);
+    @Override
+    public User findUserByToken(String token) {
+        return userMapper.selectUserInfoByToken(token);
     }
+
+
 
     public List<UserRole> findByUid(int uid){
         return userRoleMapper.userRoles(uid);

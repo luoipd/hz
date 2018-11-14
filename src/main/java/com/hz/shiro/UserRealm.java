@@ -3,6 +3,7 @@ package com.hz.shiro;
 import com.hz.domain.Function;
 import com.hz.domain.Role;
 import com.hz.domain.User;
+import com.hz.domain.responseBean.UserBean;
 import com.hz.service.UserService;
 import com.hz.util.Constants;
 import com.hz.util.interceptor.Token;
@@ -12,7 +13,6 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +94,11 @@ public class UserRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
 
-        if(user!=null&&user.getStatus().equals(Constants.userStatus_2)){
+        if(user!=null&&user.getStatus().equals(Constants.userStatus_5.toString())){
 
             throw new  LockedAccountException();
         }
-        if(user!=null&&user.getStatus().equals(Constants.userStatus_0)){
+        if(user!=null&&user.getStatus().equals(Constants.userStatus_6.toString())){
 
             throw new  DisabledAccountException();
         }
@@ -107,11 +107,11 @@ public class UserRealm extends AuthorizingRealm {
             // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
 
             SimpleAuthenticationInfo simpleAuthorizationInfo = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes("www"),getName());
+            //更新数据库中token
             Token token1 = TokenUtil.generateToken(user.getUsername(),user.getId());
             User user1 = new User();
             user1.setToken(token1.getSignature());
             user1.setId(user.getId());
-            user1.setUpdateTime(new Date());
             userService.updateUser(user1);
             return  simpleAuthorizationInfo;
         }

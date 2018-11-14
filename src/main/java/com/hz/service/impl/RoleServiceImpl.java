@@ -10,6 +10,7 @@ import com.hz.service.RoleService;
 import com.hz.util.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @date 2018/11/1
  */
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
@@ -63,17 +65,13 @@ public class RoleServiceImpl implements RoleService {
         for(RoleFunction roleFunction:roleFunctions){
             roleFunctionMapper.insert(roleFunction);
         }
-
     }
 
     @Override
     public void insertRoles(List<UserRole> userRoles) throws Exception{
         if(userRoles.size()!=0){
-
             userRoleMapper.deleteUserRoles(userRoles.get(0).getUserId());
-
             userRoleMapper.insertRoles(userRoles);
-
         }
     }
 }

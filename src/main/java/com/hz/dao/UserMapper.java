@@ -1,6 +1,5 @@
 package com.hz.dao;
 
-import com.hz.domain.RequestParams;
 import com.hz.domain.User;
 
 import java.util.List;
@@ -12,7 +11,7 @@ public interface UserMapper {
 
     int insertSelective(User record);
 
-        int insertUser(User record);
+    int insertUser(User record);
 
     User selectByPrimaryKey(Integer id);
 
@@ -22,11 +21,9 @@ public interface UserMapper {
 
     User selectByUserName(String name);
 
-    User selectRoleByUserName(String name);
-
-    User selectUserInfoById(int id);
-
     List<User> selectUserList(User user);
 
     int countUserList(User user);
+
+    User selectUserInfoByToken(String token);
 }

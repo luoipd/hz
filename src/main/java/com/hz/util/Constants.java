@@ -3,9 +3,14 @@ package com.hz.util;
 public class Constants {
 
 	 
-	public static String  userStatus_0="0";//注册用户未审核 
 	public static String userStatus_1="1";//注册用户已审核
-	public static String userStatus_2="2";//注册用户被锁定
+
+    public static Integer userStatus_3 = 3;
+    public static Integer userStatus_4 = 4;
+    public static Integer userStatus_5 = 5;//注册用户被锁定
+    public static Integer userStatus_6 = 6;//注册用户未审核
+    public static Integer userStatus_7 = 7;
+    public static Integer userStatus_8 = 8;
 	
 	 
 	

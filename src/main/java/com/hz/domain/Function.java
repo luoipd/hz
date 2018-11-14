@@ -23,7 +23,7 @@ public class Function implements Serializable {
 
     private Integer roleId;
 
-    private List<Function> childFunctions;
+    private List<Function> child;
 
     public Integer getId() {
         return id;
@@ -97,11 +97,11 @@ public class Function implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public List<Function> getChildFunctions() {
-        return childFunctions;
+    public List<Function> getChild() {
+        return child;
     }
 
-    public void setChildFunctions(List<Function> childFunctions) {
-        this.childFunctions = childFunctions;
+    public void setChild(List<Function> child) {
+        this.child = child;
     }
 }

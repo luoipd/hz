@@ -1,8 +1,11 @@
 package com.hz.service;
 
 import com.hz.domain.*;
+import com.hz.domain.responseBean.UserBean;
 import com.hz.util.page.PageRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,13 +18,13 @@ public interface UserService {
 
     User findByUserName(String name);
 
+    User findUserByToken(String token);
+
     List<UserRole> findByUid(int uid);
 
     List<Role> getRoleList(int uid);
 
     List<Function> getFunctionList(int uid);
-
-    User selectRoleByUserName(String name);
 
     void updateUser(User user);
 

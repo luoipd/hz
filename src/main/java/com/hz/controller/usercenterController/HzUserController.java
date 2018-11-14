@@ -8,16 +8,19 @@ package com.hz.controller.usercenterController;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.hz.domain.*;
+import com.hz.domain.responseBean.UserBean;
 import com.hz.service.FunctionService;
 import com.hz.service.RoleService;
+import com.hz.service.SessionManage;
 import com.hz.service.UserService;
+import com.hz.util.Constants;
+import com.hz.util.FunctionTree;
 import com.hz.util.ResJson;
 import com.hz.util.UserException;
 import com.hz.util.page.PageRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -26,7 +29,6 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -51,18 +53,20 @@ public class HzUserController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private SessionManage sessionManager;
+
     private static final Logger logger = LoggerFactory.getLogger(HzUserController.class);
 
 
     @RequestMapping(value = "/api/sys/login", method = RequestMethod.GET)
     @ResponseBody
-    public String login(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+    public String login(@Valid User user, BindingResult bindingResult,
                         HttpServletRequest request) {
         if(bindingResult.hasErrors()){
             return "login";
         }
         ResJson resJson = new ResJson();
-        ResponseLoginInfo responseJson = new ResponseLoginInfo();
         String username = user.getUsername();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         token.setRememberMe(true);
@@ -75,64 +79,58 @@ public class HzUserController {
             // 所以这一步在调用login(interceptor)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法
             logger.info("对用户[" + username + "]进行登录验证..验证开始");
             currentUser.login(token);
-
             logger.info("对用户[" + username + "]进行登录验证..验证通过");
-
             //begin 添加记录日志功能
             String logOperatorName = (String) currentUser.getPrincipal();
-            //end   添加记录日志功能
 
         } catch (UnknownAccountException uae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,未知账户");
-            redirectAttributes.addFlashAttribute("message", "账户不存在");
+            resJson.setStatus(Constants.userStatus_3);
+            resJson.setDesc("账户不存在");
+            return JSONObject.toJSONString(resJson);
         } catch (IncorrectCredentialsException ice) {
+            resJson.setStatus(Constants.userStatus_4);
+            resJson.setDesc("密码不正确");
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误的凭证");
-            redirectAttributes.addFlashAttribute("message", "密码不正确");
+            return JSONObject.toJSONString(resJson);
         } catch (LockedAccountException lae) {
+            resJson.setStatus(Constants.userStatus_5);
+            resJson.setDesc("账户已锁定");
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,账户已锁定");
-            redirectAttributes.addFlashAttribute("message", "账户已锁定");
+            return JSONObject.toJSONString(resJson);
         } catch (DisabledAccountException lae) {
+            resJson.setStatus(Constants.userStatus_6);
+            resJson.setDesc("账户未审核");
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,账户未审核");
-            redirectAttributes.addFlashAttribute("message", "账户未审核");
+            return JSONObject.toJSONString(resJson);
         } catch (ExcessiveAttemptsException eae) {
+            resJson.setStatus(Constants.userStatus_7);
+            resJson.setDesc("用户名或密码错误次数过多");
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误次数过多");
-            redirectAttributes.addFlashAttribute("message", "用户名或密码错误次数过多");
+            return JSONObject.toJSONString(resJson);
+
         } catch (AuthenticationException ae) {
-            // 通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
             ae.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
+            resJson.setStatus(Constants.userStatus_7);
+            resJson.setDesc("用户名或密码不正确");
+            return JSONObject.toJSONString(resJson);
         }
         // 验证是否登录成功
         if (currentUser.isAuthenticated()&&username!=null) {
             logger.info("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
-
-            SavedRequest re = WebUtils.getAndClearSavedRequest(request);
-
-            logger.info("redirect:" + ((re == null || re.getRequestUrl() == null) ? "/index"
-                    : re.getRequestUrl()));
-            String url = ((re == null || re.getRequestUrl() == null) ? "/index"
-                    : re.getRequestUrl());
-
             User user1 = userService.findByUserName(username);
-            session.setAttribute("user",user1);
-            session.setAttribute("token",user1.getToken());
+            sessionManager.setSession(user1,session);
             /* 获取该角色的有效url*/
             /*返回用户信息，包含有权限的接口，用户信息*/
             resJson.setDesc("success");
             resJson.setStatus(1);
             resJson.setData(user1);
-//            RedisCache redisCache = new RedisCache();
-//            redisCache.put("user",user1);
             return JSONObject.toJSONString(resJson);
         } else {
 			token.clear();
-            Map<String, String> map = (Map) redirectAttributes.getFlashAttributes();
-//            String reason = map.get("message");
-            responseJson.setStatus(0);
-            responseJson.setDesc("登录失败");
             resJson.setStatus(0);
-            resJson.setDesc("登录失败");
+            resJson.setDesc("权限认证无效，请重新登陆");
             return JSONObject.toJSONString(resJson);// "{\"success\":true,\"msg\":false,\"returnStr\":\""+reason+"\"}"
             // ;
         }
@@ -276,7 +274,7 @@ public class HzUserController {
     @ResponseBody
     public String getFunctionList(@Valid int roleId,@Valid int pId){
         ResJson resJson = new ResJson();
-        List<Function> functions =  functionService.selectFunctionByRolePid(roleId,pId);
+        List<FunctionTree> functions =  functionService.selectFunctionByRolePid(roleId,pId);
         resJson.setData(functions);
         return JSONObject.toJSONString(resJson);
     }
@@ -308,13 +306,15 @@ public class HzUserController {
     @ResponseBody
     public String addFunction(@Valid Function function){
         ResJson resJson = new ResJson();
-        try{
+        if(function.getFunctionName()!=null&&function.getPid()!=null){
+            if(function.getUrl()==null){
+            }else{
+                function.setLevel(0);
+            }
             functionService.addFunction(function);
-        }catch (Exception e){
-            e.printStackTrace();
+        }else{
             resJson.setStatus(0);
-            resJson.setDesc("功能新增失败");
-
+            resJson.setDesc("功能新增失败,缺少父id或者名称");
         }
         return JSONObject.toJSONString(resJson);
     }
@@ -362,6 +362,7 @@ public class HzUserController {
     public String getUserInfo(@RequestParam("uid") int uid){
         ResJson resJson = new ResJson();
         User user = userService.getUserInfo(uid);
+        user.setPassword(null);
         List<Function> function = new ArrayList<Function>();
         for(Role role:user.getRoles()){
             function.addAll(functionService.selectFunctionsByRoleId(role.getId()));
@@ -369,25 +370,7 @@ public class HzUserController {
         Map map = new HashMap();
         map.put("user",user);
         map.put("modules",function);
-        user.setPassword(null);
-        resJson.setData(map);
-        return JSONObject.toJSONString(resJson);
-    }
-    @RequestMapping(value = "/test/getUserInfo",method = RequestMethod.GET)
-    @ResponseBody
-    public String getUserInfoTest(@RequestParam("uid") int uid){
 
-
-        ResJson resJson = new ResJson();
-        User user = userService.getUserInfo(uid);
-        List<Function> function = new ArrayList<Function>();
-        for(Role role:user.getRoles()){
-            function.addAll(functionService.selectFunctionsByRoleId(role.getId()));
-        }
-        Map map = new HashMap();
-        map.put("user",user);
-        map.put("modules",function);
-        user.setPassword(null);
         resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
@@ -397,11 +380,19 @@ public class HzUserController {
     @ResponseBody
     public String getModuleList(@RequestParam("pModule") int pModule){
         ResJson resJson = new ResJson();
-        List<FunctionTreeBean> function = functionService.selectFunctionByPid(pModule);
+        List<FunctionTree> function = functionService.selectFunctionByPid(pModule);
         resJson.setData(function);
-        return JSONObject.toJSONString(function, SerializerFeature.WriteDateUseDateFormat,
-                SerializerFeature.WriteMapNullValue);
+        return JSONObject.toJSONString(resJson);
 
+    }
+
+    @RequestMapping(value="/api/sys/listModule",method = RequestMethod.GET)
+    @ResponseBody
+    public String listModule(@RequestParam("pModule") int pid){
+        ResJson resJson = new ResJson();
+        List<Function> function = functionService.getFunctionList(pid);
+        resJson.setData(function);
+        return JSONObject.toJSONString(resJson);
     }
 
 
