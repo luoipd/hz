@@ -41,7 +41,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hz.domain.PictureVideo" >
+  <insert id="insertSelective" parameterType="com.hz.domain.PictureVideo"  useGeneratedKeys="true"  keyProperty="id">
     insert into h_pic_video
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

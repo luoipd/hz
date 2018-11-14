@@ -31,4 +31,6 @@ public interface FunctionService {
 
     void delFunction(int id);
 
+    List<String> getCheckedFunction(int roleId);
+
 }

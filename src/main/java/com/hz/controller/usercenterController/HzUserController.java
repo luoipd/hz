@@ -6,9 +6,7 @@ package com.hz.controller.usercenterController;
  */
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.hz.domain.*;
-import com.hz.domain.responseBean.UserBean;
 import com.hz.service.FunctionService;
 import com.hz.service.RoleService;
 import com.hz.service.SessionManage;
@@ -18,20 +16,16 @@ import com.hz.util.FunctionTree;
 import com.hz.util.ResJson;
 import com.hz.util.UserException;
 import com.hz.util.page.PageRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.SavedRequest;
-import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -376,6 +370,23 @@ public class HzUserController {
         }
         return JSONObject.toJSONString(resJson);
     }
+    @RequestMapping(value = "/api/sys/insertRoleFunction",method = RequestMethod.POST)
+    @ResponseBody
+    public String insertRoleFunction(@RequestParam("functions") List<String> functions,@RequestParam("roleId") int roleId){
+        ResJson resJson = new ResJson();
+        try{
+
+            roleService.insertRoleFunction(functions,roleId);
+        }catch (Exception e){
+            e.printStackTrace();
+            resJson.setStatus(0);
+            resJson.setDesc("功能修改失败");
+
+        }
+        return JSONObject.toJSONString(resJson);
+    }
+
+
     @RequestMapping(value = "/api/sys/getUserInfo",method = RequestMethod.GET)
     @ResponseBody
     public String getUserInfo(@RequestParam("uid") int uid){
@@ -413,6 +424,25 @@ public class HzUserController {
         resJson.setData(function);
         return JSONObject.toJSONString(resJson);
     }
+
+    @RequestMapping(value="/api/sys/listCheckedModule",method = RequestMethod.GET)
+    @ResponseBody
+    public String getModule(@Valid int roleId){
+        ResJson resJson = new ResJson();
+        List<String> datas = functionService.getCheckedFunction(roleId);
+        resJson.setData(datas);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

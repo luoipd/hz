@@ -13,9 +13,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import java.util.ArrayList;
 import java.util.List;
-/**
- * Created by Msater Zg on 2017/4/3.
- */
 @Configuration
 public class CorsConfig extends WebMvcConfigurerAdapter {
     @Override

@@ -110,4 +110,11 @@ public class FunctionServiceImpl implements FunctionService {
         functionMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public List<String> getCheckedFunction(int roleId) {
+
+        List<String> roleFunctions = roleFunctionMapper.selectFunctionIdByRoleId(roleId);
+        return roleFunctions;
+    }
+
 }

@@ -21,4 +21,6 @@ public interface RoleService {
     void addRoleFunction(List<RoleFunction> roleFunctions);
 
     void insertRoles(List<UserRole> userRoles) throws Exception;
+
+    void insertRoleFunction(List<String> functions,int roleId);
 }

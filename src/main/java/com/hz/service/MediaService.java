@@ -1,0 +1,22 @@
+package com.hz.service;
+
+import com.hz.domain.Media;
+import com.hz.util.page.PageRequest;
+
+import java.util.List;
+
+/**
+ * @author lyp
+ * @date 2018/11/14
+ */
+public interface MediaService {
+
+
+    List<Media> getMediaList(Media media, PageRequest pageRequest);
+
+    int countMedia(Media media);
+
+    void insertMedia(Media media) throws Exception;
+
+
+}

@@ -74,4 +74,14 @@ public class RoleServiceImpl implements RoleService {
             userRoleMapper.insertRoles(userRoles);
         }
     }
+
+    @Override
+    public void insertRoleFunction(List<String> functions, int roleId) {
+        for(String fun:functions){
+            RoleFunction roleFunction = new RoleFunction();
+            roleFunction.setRoleId(roleId);
+            roleFunction.setFunctionId(Integer.parseInt(fun));
+            roleFunctionMapper.insert(roleFunction);
+        }
+    }
 }
