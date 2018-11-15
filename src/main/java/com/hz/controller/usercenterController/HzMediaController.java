@@ -168,7 +168,10 @@ public class HzMediaController {
         ResJson resJson = new ResJson();
         Media media = new Media();
         media.setId(id);
-        media.setStatus(1);
+        media.setStatus(0);
+        Session session = SecurityUtils.getSubject().getSession();
+        User user = (User)session.getAttribute("user");
+        media.setUpdaterId(user.getId());
         try {
             mediaService.editMedia(media);
         } catch (Exception e) {
