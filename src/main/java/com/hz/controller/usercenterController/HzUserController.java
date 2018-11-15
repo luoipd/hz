@@ -106,7 +106,7 @@ public class HzUserController {
         } catch (AuthenticationException ae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
             ae.printStackTrace();
-            resJson.setStatus(Constants.userStatus_7);
+            resJson.setStatus(Constants.userStatus_8);
             resJson.setDesc("用户名或密码不正确");
             return JSONObject.toJSONString(resJson);
         }

@@ -13,7 +13,7 @@ import org.springframework.cache.annotation.EnableCaching;
 // Spring Boot 应用的标识
 @SpringBootApplication
 // mapper 接口类扫描包配置
-@EnableCaching
+//@EnableCaching
 @MapperScan("com.hz.dao")
 public class Application {
 

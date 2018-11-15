@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-public class HzMediaController extends WebAppConfig {
+public class HzMediaController {
 
 
     @Autowired
@@ -37,6 +37,10 @@ public class HzMediaController extends WebAppConfig {
 
     @Autowired
     PictureVideoService pictureVideoService;
+    @Autowired
+    WebAppConfig webAppConfig;
+    @Autowired
+    ImageUtil imageUtil;
 
     @RequestMapping(value = "/api/hzMedia/mediaList", method = RequestMethod.GET)
     @ResponseBody
@@ -69,10 +73,10 @@ public class HzMediaController extends WebAppConfig {
         User user = (User)session.getAttribute("user");
         if(file!=null){
             //上传图片
-            String filePath = location + ImageUtil.MediaFolder;
-            String fileName = ImageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
+            String filePath = webAppConfig.location + ImageUtil.MediaFolder;
+            String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
             try {
-                fileName = ImageUtil.saveImg(file,filePath,fileName);
+                fileName = imageUtil.saveImg(file,filePath,fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error("图片上传失败");
@@ -83,7 +87,7 @@ public class HzMediaController extends WebAppConfig {
             PictureVideo pictureVideo = new PictureVideo();
             pictureVideo.setFileName(fileName);
             pictureVideo.setStoragePath(filePath);
-            pictureVideo.setUrl(ImageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
+            pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
             pictureVideo.setSource(ImageUtil.MediaFolder);
             pictureVideo.setType(file.getContentType());
 
@@ -121,10 +125,10 @@ public class HzMediaController extends WebAppConfig {
         User user = (User)session.getAttribute("user");
         if(file!=null){
             //上传图片
-            String filePath = location + ImageUtil.MediaFolder;
-            String fileName = ImageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
+            String filePath = webAppConfig.location + ImageUtil.MediaFolder;
+            String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
             try {
-                fileName = ImageUtil.saveImg(file,filePath,fileName);
+                fileName = imageUtil.saveImg(file,filePath,fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error("图片上传失败");
@@ -135,7 +139,7 @@ public class HzMediaController extends WebAppConfig {
             PictureVideo pictureVideo = new PictureVideo();
             pictureVideo.setFileName(fileName);
             pictureVideo.setStoragePath(filePath);
-            pictureVideo.setUrl(ImageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
+            pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
             pictureVideo.setSource(ImageUtil.MediaFolder);
             pictureVideo.setType(file.getContentType());
 
@@ -181,11 +185,11 @@ public class HzMediaController extends WebAppConfig {
     public String updload(@RequestParam("file")MultipartFile multipartFile){
         String contentType = multipartFile.getContentType();
         String root_fileName = multipartFile.getOriginalFilename();
-        String filePath = location + ImageUtil.MediaFolder;
-        String fileName = ImageUtil.getFileName(ImageUtil.MediaFolder,root_fileName);
+        String filePath = webAppConfig.location + ImageUtil.MediaFolder;
+        String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,root_fileName);
         String filename = "";
         try {
-            filename = ImageUtil.saveImg(multipartFile,filePath,fileName);
+            filename = imageUtil.saveImg(multipartFile,filePath,fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -11,6 +11,7 @@ public class Constants {
     public static Integer userStatus_6 = 6;//注册用户未审核
     public static Integer userStatus_7 = 7;
     public static Integer userStatus_8 = 8;
+	public static Integer userStatus_9 = 9;
 	
 	 
 	

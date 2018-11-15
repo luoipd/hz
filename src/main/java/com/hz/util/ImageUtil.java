@@ -15,7 +15,7 @@ import java.io.*;
 public class ImageUtil {
 
     @Value("${img.url}")
-    private static String url;
+    private String url;
 
     public static String UserFolder = "user";//用户图片存储路径
     public static String MediaFolder = "media";//媒体图片存储路径
@@ -27,7 +27,7 @@ public class ImageUtil {
      * @return 返回文件名
      * @throws IOException
      */
-    public static String saveImg(MultipartFile multipartFile, String path,String fileName) throws IOException {
+    public String saveImg(MultipartFile multipartFile, String path,String fileName) throws IOException {
         File file = new File(path);
         if (!file.exists()) {
             file.mkdirs();
@@ -44,7 +44,7 @@ public class ImageUtil {
         return fileName;
     }
 
-    public static String getFileName(String folder,String filename){
+    public String getFileName(String folder,String filename){
         long currentTime = System.currentTimeMillis();
         int num  = (int) (Math.random()*100);
         String ff = StringUtils.substringAfterLast(filename,".");
@@ -53,8 +53,8 @@ public class ImageUtil {
         return FileName;
     }
 
-    public static String getPicUrl(String folder,String filename){
-        String url1 = url+"/"+folder+"/"+filename;
+    public String getPicUrl(String folder,String filename){
+        String url1 = this.url+"/"+folder+"/"+filename;
         return url1;
     }
 
