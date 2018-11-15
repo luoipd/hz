@@ -18,6 +18,7 @@ public class PictureVideoServiceImpl implements PictureVideoService {
 
     @Override
     public int insert(PictureVideo pictureVideo) {
-        return pictureVideoMapper.insertSelective(pictureVideo);
+         pictureVideoMapper.insertSelective(pictureVideo);
+         return pictureVideo.getId();
     }
 }
