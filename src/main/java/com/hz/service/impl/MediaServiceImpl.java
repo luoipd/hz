@@ -47,5 +47,31 @@ public class MediaServiceImpl implements MediaService {
 
     }
 
+    @Override
+    public void editMedia(Media media) throws Exception{
+        try{
+            mediaMapper.updateByPrimaryKeySelective(media);
+        }catch (Exception e){
+            throw new Exception("插入失败");
+        }
+
+    }
+
+    @Override
+    public void delMediaById(int id) throws Exception{
+
+        try{
+            mediaMapper.deleteByPrimaryKey(id);
+        }catch (Exception e){
+            throw new Exception("插入失败");
+        }
+    }
+
+    @Override
+    public Media getMediaInfo(int id) {
+        Media media = mediaMapper.selectByPrimaryKey(id);
+        return media;
+    }
+
 
 }

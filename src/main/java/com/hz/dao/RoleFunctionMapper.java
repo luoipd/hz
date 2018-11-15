@@ -10,4 +10,6 @@ public interface RoleFunctionMapper {
     int insertSelective(RoleFunction record);
 
     List<String> selectFunctionIdByRoleId(int roleId);
+
+    void deleteRoleFunction(int roleId);
 }

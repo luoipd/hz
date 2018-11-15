@@ -76,12 +76,24 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void insertRoleFunction(List<String> functions, int roleId) {
+        roleFunctionMapper.deleteRoleFunction(roleId);
         for(String fun:functions){
             RoleFunction roleFunction = new RoleFunction();
             roleFunction.setRoleId(roleId);
             roleFunction.setFunctionId(Integer.parseInt(fun));
             roleFunctionMapper.insert(roleFunction);
         }
+    }
+
+    @Override
+    public void editRole(Role role) {
+        roleMapper.updateByPrimaryKeySelective(role);
+    }
+
+    @Override
+    public void delRole(int id){
+        roleMapper.deleteByPrimaryKey(id);
     }
 }

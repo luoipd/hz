@@ -18,5 +18,11 @@ public interface MediaService {
 
     void insertMedia(Media media) throws Exception;
 
+    void editMedia(Media media) throws Exception;
+
+    void delMediaById(int id) throws Exception;
+
+    Media getMediaInfo(int id);
+
 
 }

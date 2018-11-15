@@ -54,8 +54,7 @@ public class ImageUtil {
     }
 
     public static String getPicUrl(String folder,String filename){
-        String url1 = "";
-        url1 = url+folder+"/"+filename;
+        String url1 = url+"/"+folder+"/"+filename;
         return url1;
     }
 

@@ -17,6 +17,8 @@ public class Media {
 
     private String importLevel;
 
+    private Integer status;
+
     private Integer createrId;
 
     private Date createTime;
@@ -24,6 +26,8 @@ public class Media {
     private Integer updaterId;
 
     private Date updateTime;
+
+    private String url;
 
     public Integer getId() {
         return id;
@@ -111,5 +115,21 @@ public class Media {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

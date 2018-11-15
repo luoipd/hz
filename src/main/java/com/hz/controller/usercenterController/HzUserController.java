@@ -239,8 +239,10 @@ public class HzUserController {
         return JSONObject.toJSONString(resJson);
     }
 
-    /*
-    新增角色
+    /**
+     * 角色新增
+     * @param role
+     * @return
      */
     @RequestMapping(value = "/api/sys/createRole",method = RequestMethod.POST)
     @ResponseBody
@@ -255,6 +257,42 @@ public class HzUserController {
             resJson.setDesc("新增失败");
         }
 
+        return JSONObject.toJSONString(resJson);
+    }
+
+    /**
+     * 角色修改
+     */
+    @RequestMapping(value = "/api/sys/editRole",method = RequestMethod.POST)
+    @ResponseBody
+    public String editRole(@Valid Role role){
+        ResJson resJson = new ResJson();
+        if(role.getId()==null||role.getId()==0){
+            resJson.setStatus(0);
+            resJson.setDesc("缺少主键！！");
+            return JSONObject.toJSONString(resJson);
+
+        }
+        roleService.editRole(role);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    /**
+     * 角色删除
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/api/sys/delRole",method = RequestMethod.POST)
+    @ResponseBody
+    public String delRole(@Valid int id){
+        ResJson resJson = new ResJson();
+        if(id==0){
+            resJson.setStatus(0);
+            resJson.setDesc("缺少主键！！");
+            return JSONObject.toJSONString(resJson);
+
+        }
+        roleService.delRole(id);
         return JSONObject.toJSONString(resJson);
     }
 

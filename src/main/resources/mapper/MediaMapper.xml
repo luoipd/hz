@@ -9,10 +9,12 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
     <result column="import_level" property="importLevel" jdbcType="VARCHAR" />
+      <result column="status" property="status" jdbcType="INTEGER" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, media_name, summary, mobile,email, pic_id, import_level, creater_id, create_time, updater_id,
@@ -20,9 +22,9 @@
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from h_media
-    where id = #{id,jdbcType=INTEGER}
+    a.id,a.media_name,a.summary,a.mobile,a.email,a.import_level,b.url
+    from h_media a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_media
@@ -62,6 +64,9 @@
       <if test="importLevel != null" >
         import_level,
       </if>
+        <if test="status != null" >
+            status,
+        </if>
       <if test="createrId != null" >
         creater_id,
       </if>
@@ -97,6 +102,9 @@
       <if test="importLevel != null" >
         #{importLevel,jdbcType=VARCHAR},
       </if>
+        <if test="status != null" >
+            #{status,jdbcType=INTEGER},
+        </if>
       <if test="createrId != null" >
         #{createrId,jdbcType=INTEGER},
       </if>
@@ -123,12 +131,18 @@
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
+        <if test="email != null" >
+            email = #{email,jdbcType=VARCHAR},
+        </if>
       <if test="picId != null" >
         pic_id = #{picId,jdbcType=INTEGER},
       </if>
       <if test="importLevel != null" >
         import_level = #{importLevel,jdbcType=VARCHAR},
       </if>
+        <if test="status != null" >
+            status = #{status,jdbcType=INTEGER},
+        </if>
       <if test="createrId != null" >
         creater_id = #{createrId,jdbcType=INTEGER},
       </if>
@@ -160,13 +174,13 @@
 
   <select id="selectListMedia" parameterType="com.hz.domain.Media" resultMap="BaseResultMap">
     <if test="mediaName!=null"><bind name="pattern" value="'%'+mediaName+'%'"></bind></if>
-    select id,media_name,summary,mobile,email,pic_id,import_level
-    from h_media
+    select a.id,a.media_name,a.summary,a.mobile,a.email,a.pic_id,a.import_level,b.url
+    from h_media a left join h_pic_video b on a.pic_id = b.id
     <where>
-      <if test="mediaName!=null">media_name like #{pattern}</if>
-      <if test="mobile!=null">and mobile = #{mobile,jdbcType=VARCHAR}</if>
-      <if test="importLevel"> and importLevel = #{importLevel,jdbcType=VARCHAR}</if>
-    </where> order by id desc
+      <if test="mediaName!=null">a.media_name like #{pattern}</if>
+      <if test="mobile!=null">and a.mobile = #{mobile,jdbcType=VARCHAR}</if>
+      <if test="importLevel"> and a.importLevel = #{importLevel,jdbcType=VARCHAR}</if> and a.status = 1
+    </where> order by a.id desc
   </select>
 
   <select id="countMedia" parameterType="com.hz.domain.Media" resultType="java.lang.Integer">
@@ -176,7 +190,7 @@
     <where>
       <if test="mediaName!=null">media_name like #{pattern}</if>
       <if test="mobile!=null">and mobile = #{mobile,jdbcType=VARCHAR}</if>
-      <if test="importLevel"> and importLevel = #{importLevel,jdbcType=VARCHAR}</if>
+      <if test="importLevel"> and importLevel = #{importLevel,jdbcType=VARCHAR}</if> and status =1
     </where>
   </select>
 </mapper>
