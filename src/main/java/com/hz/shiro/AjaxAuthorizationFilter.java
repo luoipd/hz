@@ -1,5 +1,7 @@
 package com.hz.shiro;
 
+import com.alibaba.fastjson.JSONObject;
+import com.hz.util.ResJson;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
@@ -12,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Set;
 
 /**
@@ -41,16 +44,27 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		String token1 = (String) session.getAttribute("token");
 		Set<String> stringSet = (Set<String>) session.getAttribute("urls");
 		// If the subject isn't identified, redirect to login URL
-		if (subject.getPrincipal() == null||token==null||!token.equals(token1)||stringSet.isEmpty()||!getPermission(stringSet,url)) {
+		ResJson resJson = new ResJson();
+		if (subject.getPrincipal() == null) {
 			if (isAjaxRequest(httpRequest)) {
 
 			} else {
-				saveRequestAndRedirectToLogin(request, response);
+				resJson.setStatus(0);
+				resJson.setDesc("登录信息失效,请重新登录！！");
 			}
-		} else {
+		}else if(token==null||!token.equals(token1)){
+			resJson.setDesc("token无效");
+			resJson.setStatus(0);
+		}else if(stringSet.isEmpty()||!getPermission(stringSet,url)){
+			resJson.setDesc("没有配置权限，请联系系统管理员");
+			resJson.setStatus(0);
+		} else{
 			return true;
 
 		}
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter printWriter = response.getWriter();
+		printWriter.write(JSONObject.toJSONString(resJson));
 
 
 		return false;
