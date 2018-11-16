@@ -65,4 +65,4 @@ pagehelper:
 
 img:
   location: D:/upload/
-  url: 192.168.0.178:8000
+  url: http://192.168.0.178:8000

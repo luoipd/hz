@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = getRoleList(uid);
         List<Function> functions = new ArrayList<Function>();
         for(Role role: roles){
-            List<Function> functions1 = functionMapper.getFunctionsByRoleId(role.getId());
+            List<Function> functions1 = functionMapper.getFunctionsByRoleId1(role.getId());
             functions.addAll(functions1);
         }
 

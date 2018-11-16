@@ -6,16 +6,16 @@ package com.hz.controller.usercenterController;
  */
 
 import com.alibaba.fastjson.JSONObject;
+import com.hz.controller.BaseController;
 import com.hz.domain.*;
-import com.hz.service.FunctionService;
-import com.hz.service.RoleService;
-import com.hz.service.SessionManage;
-import com.hz.service.UserService;
+import com.hz.service.*;
+import com.hz.service.impl.ImageService;
 import com.hz.util.Constants;
 import com.hz.util.FunctionTree;
 import com.hz.util.ResJson;
 import com.hz.util.UserException;
 import com.hz.util.page.PageRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -33,9 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @RestController
-public class HzUserController {
+public class HzUserController extends BaseController {
 
 
     @Autowired
@@ -49,6 +50,12 @@ public class HzUserController {
 
     @Autowired
     private SessionManage sessionManager;
+
+    @Autowired
+    private PictureVideoService pictureVideoService;
+
+    @Autowired
+    private ImageService imageService;
 
     private static final Logger logger = LoggerFactory.getLogger(HzUserController.class);
 
@@ -148,7 +155,7 @@ public class HzUserController {
     public String getUserInfoById(@RequestParam("uid") int uid){
         ResJson resJson = new ResJson();
         User user = userService.getUserInfo(uid);
-        user.setPassword("");
+        user.setPassword(null);
         resJson.setData(user);
         return JSONObject.toJSONString(resJson);
     }
@@ -156,11 +163,21 @@ public class HzUserController {
 
     @RequestMapping(value = "/api/sys/editUser",method = RequestMethod.POST)
     @ResponseBody
-    public String updateUser(@Valid User user){
+    public String updateUser(@Valid User user, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(user.getPassword()!=null){
             String password = new Md5Hash(user.getPassword(), "www", 1024).toBase64();
             user.setPassword(password);
+        }
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        if(picId>0){
+            user.setPicId(picId);
+        }
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败!!");
+            return JSONObject.toJSONString(resJson);
         }
         try{
             userService.updateUser(user);
@@ -190,11 +207,28 @@ public class HzUserController {
 
     @RequestMapping(value = "/api/sys/createUser",method = RequestMethod.POST)
     @ResponseBody
-    public String createUser(@Valid User user){
+    public String createUser(@Valid User user,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(user.getPassword()!=null){
             String password = new Md5Hash(user.getPassword(), "www", 1024).toBase64();
             user.setPassword(password);
+        }else{
+            resJson.setStatus(0);
+            resJson.setDesc("请设置密码");
+            return JSONObject.toJSONString(resJson);
+        }
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        if(picId>0){
+            user.setPicId(picId);
+        }
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败!!!");
+            return JSONObject.toJSONString(resJson);
+        }
+        if(picId==-1){
+            user.setPicId(1);//设置默认图片
         }
         try{
             userService.createUser(user);

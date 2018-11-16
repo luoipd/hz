@@ -1,11 +1,13 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hz.controller.BaseController;
 import com.hz.domain.Media;
 import com.hz.domain.PictureVideo;
 import com.hz.domain.User;
 import com.hz.service.MediaService;
 import com.hz.service.PictureVideoService;
+import com.hz.service.impl.ImageService;
 import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.WebAppConfig;
@@ -29,7 +31,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-public class HzMediaController {
+public class HzMediaController extends BaseController {
 
 
     @Autowired
@@ -41,6 +43,8 @@ public class HzMediaController {
     WebAppConfig webAppConfig;
     @Autowired
     ImageUtil imageUtil;
+    @Autowired
+    ImageService imageService;
 
     @RequestMapping(value = "/api/hzMedia/mediaList", method = RequestMethod.GET)
     @ResponseBody
@@ -69,37 +73,17 @@ public class HzMediaController {
     @ResponseBody
     public String createMedia(@Valid Media media,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
-        Session session = SecurityUtils.getSubject().getSession();
-        User user = (User)session.getAttribute("user");
-        if(file!=null){
-            //上传图片
-            String filePath = webAppConfig.location + ImageUtil.MediaFolder;
-            String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
-            try {
-                fileName = imageUtil.saveImg(file,filePath,fileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-                log.error("图片上传失败");
-                resJson.setStatus(0);
-                resJson.setDesc("图片上传失败");
-                return JSONObject.toJSONString(resJson);
-            }
-            PictureVideo pictureVideo = new PictureVideo();
-            pictureVideo.setFileName(fileName);
-            pictureVideo.setStoragePath(filePath);
-            pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
-            pictureVideo.setSource(ImageUtil.MediaFolder);
-            pictureVideo.setType(file.getContentType());
-
-            pictureVideo.setCreaterId(user.getId());
-            pictureVideo.setStatus(1);
-            pictureVideo.setDesc(file.getOriginalFilename());
-            int id = pictureVideoService.insert(pictureVideo);
-            media.setPicId(id);
-        }else{
-            log.info("未上传图片！！！！");
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败");
+            return JSONObject.toJSONString(resJson);
         }
-        media.setCreaterId(user.getId());
+        if(picId>0){
+            media.setPicId(picId);
+        }
+        media.setCreaterId(sysUser.getId());
         media.setStatus(1);
         try {
             mediaService.insertMedia(media);
@@ -121,37 +105,17 @@ public class HzMediaController {
             return JSONObject.toJSONString(resJson);
         }
 
-        Session session = SecurityUtils.getSubject().getSession();
-        User user = (User)session.getAttribute("user");
-        if(file!=null){
-            //上传图片
-            String filePath = webAppConfig.location + ImageUtil.MediaFolder;
-            String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
-            try {
-                fileName = imageUtil.saveImg(file,filePath,fileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-                log.error("图片上传失败");
-                resJson.setStatus(0);
-                resJson.setDesc("图片上传失败");
-                return JSONObject.toJSONString(resJson);
-            }
-            PictureVideo pictureVideo = new PictureVideo();
-            pictureVideo.setFileName(fileName);
-            pictureVideo.setStoragePath(filePath);
-            pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
-            pictureVideo.setSource(ImageUtil.MediaFolder);
-            pictureVideo.setType(file.getContentType());
-
-            pictureVideo.setCreaterId(user.getId());
-            pictureVideo.setStatus(1);
-            pictureVideo.setDesc(file.getOriginalFilename());
-            int id = pictureVideoService.insert(pictureVideo);
-            media.setPicId(id);
-        }else{
-            log.info("未上传图片！！！！");
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败");
+            return JSONObject.toJSONString(resJson);
         }
-        media.setUpdaterId(user.getId());
+        if(picId>0){
+            media.setPicId(picId);
+        }
+        media.setUpdaterId(sysUser.getId());
         try {
             mediaService.editMedia(media);
         } catch (Exception e) {
