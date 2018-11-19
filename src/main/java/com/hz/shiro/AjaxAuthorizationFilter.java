@@ -60,10 +60,9 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 
 		}
 		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter printWriter = response.getWriter();
 		printWriter.write(JSONObject.toJSONString(resJson));
-
-
 		return false;
 	}
 

@@ -12,8 +12,6 @@ public class AdvertisingUnstandardDetail {
 
     private String xiwei;
 
-    private String desc;
-
     private String scheduling;
 
     private String detail;
@@ -58,14 +56,6 @@ public class AdvertisingUnstandardDetail {
 
     public void setXiwei(String xiwei) {
         this.xiwei = xiwei == null ? null : xiwei.trim();
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
     }
 
     public String getScheduling() {

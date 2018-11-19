@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="platform" property="platform" jdbcType="VARCHAR" />
     <result column="charge_mode" property="chargeMode" jdbcType="VARCHAR" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
@@ -14,7 +13,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, name, `desc`, platform, charge_mode,  creater_id,
+    id, parent_id, name, platform, charge_mode,  creater_id,
     create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -36,11 +35,11 @@
   </delete>
   <insert id="insert" parameterType="com.hz.domain.AdvertisingStandardDetail" >
     insert into h_advertising_proposal_standard (id, parent_id, name, 
-      `desc`, platform, charge_mode,
+       platform, charge_mode,
       creater_id, create_time, updater_id, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{desc,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{chargeMode,jdbcType=VARCHAR}, 
+       #{platform,jdbcType=VARCHAR}, #{chargeMode,jdbcType=VARCHAR},
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -55,9 +54,6 @@
       </if>
       <if test="name != null" >
         name,
-      </if>
-      <if test="desc != null" >
-        `desc`,
       </if>
       <if test="platform != null" >
         platform,
@@ -88,9 +84,6 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        #{desc,jdbcType=VARCHAR},
-      </if>
       <if test="platform != null" >
         #{platform,jdbcType=VARCHAR},
       </if>
@@ -120,9 +113,6 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        `desc` = #{desc,jdbcType=VARCHAR},
-      </if>
       <if test="platform != null" >
         platform = #{platform,jdbcType=VARCHAR},
       </if>
@@ -148,7 +138,6 @@
     update h_advertising_proposal_standard
     set parent_id = #{parentId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      `desc` = #{desc,jdbcType=VARCHAR},
       platform = #{platform,jdbcType=VARCHAR},
       charge_mode = #{chargeMode,jdbcType=VARCHAR},
       creater_id = #{createrId,jdbcType=INTEGER},

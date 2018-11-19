@@ -506,6 +506,14 @@ public class HzUserController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/sys/logout")
+    public String logout() {
+        // 使用权限管理工具进行用户的退出，跳出登录，给出提示信息
+        ResJson resJson = new ResJson();
+        SecurityUtils.getSubject().logout();
+        return JSONObject.toJSONString(resJson);
+    }
+
 
 
 

@@ -25,9 +25,9 @@
   </select>
   <select id="selectListByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
-    <include refid="Base_Column_List" />
-    from h_advertising_style
-    where parent_id = #{parentId,jdbcType=INTEGER}
+    a.id, a.parent_id, a.pic_id, a.price, a.size, a.requirement,b.url
+    from h_advertising_style a left join h_pic_video b on a.pic_id = b.id
+    where a.parent_id = #{parentId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_advertising_style

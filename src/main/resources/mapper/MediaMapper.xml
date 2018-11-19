@@ -179,7 +179,7 @@
     <where>
       <if test="mediaName!=null">a.media_name like #{pattern}</if>
       <if test="mobile!=null">and a.mobile = #{mobile,jdbcType=VARCHAR}</if>
-      <if test="importLevel"> and a.importLevel = #{importLevel,jdbcType=VARCHAR}</if> and a.status = 1
+      <if test="importLevel"> and a.import_level = #{importLevel,jdbcType=VARCHAR}</if> and a.status = 1
     </where> order by a.id desc
   </select>
 
@@ -190,7 +190,7 @@
     <where>
       <if test="mediaName!=null">media_name like #{pattern}</if>
       <if test="mobile!=null">and mobile = #{mobile,jdbcType=VARCHAR}</if>
-      <if test="importLevel"> and importLevel = #{importLevel,jdbcType=VARCHAR}</if> and status =1
+      <if test="importLevel"> and import_level = #{importLevel,jdbcType=VARCHAR}</if> and status =1
     </where>
   </select>
 </mapper>

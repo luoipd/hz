@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.dao.TagMethodMapper" >
+  <resultMap id="BaseResultMap" type="com.hz.domain.TagMethod" >
+    <result column="method_id" property="methodId" jdbcType="INTEGER" />
+    <result column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="creater_id" property="createrId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hz.domain.TagMethod" >
+    insert into h_tag_method (method_id, tag_id, creater_id, 
+      create_time, updater_id, update_time
+      )
+    values (#{methodId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <select id="selectTagIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select tag_id from h_tag_method where method_id = #{methodId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteMethodResource" parameterType="java.lang.Integer">
+    delete  from h_tag_method where method_id = #{methodId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.hz.domain.TagMethod" >
+    insert into h_tag_method
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="methodId != null" >
+        method_id,
+      </if>
+      <if test="tagId != null" >
+        tag_id,
+      </if>
+      <if test="createrId != null" >
+        creater_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updaterId != null" >
+        updater_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="methodId != null" >
+        #{methodId,jdbcType=INTEGER},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null" >
+        #{updaterId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

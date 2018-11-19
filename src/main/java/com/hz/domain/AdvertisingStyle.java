@@ -10,6 +10,8 @@ public class AdvertisingStyle {
 
     private Integer picId;
 
+    private String url;
+
     private BigDecimal price;
 
     private String size;
@@ -102,5 +104,14 @@ public class AdvertisingStyle {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

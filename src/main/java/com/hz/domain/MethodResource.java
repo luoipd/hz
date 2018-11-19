@@ -44,6 +44,8 @@ public class MethodResource {
 
     private Date updateTime;
 
+    private Integer[] tagIds;
+
     public Integer getId() {
         return id;
     }
@@ -202,5 +204,13 @@ public class MethodResource {
 
     public void setPv(String pv) {
         this.pv = pv;
+    }
+
+    public Integer[] getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(Integer[] tagIds) {
+        this.tagIds = tagIds;
     }
 }

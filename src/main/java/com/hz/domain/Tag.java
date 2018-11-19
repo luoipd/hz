@@ -1,19 +1,15 @@
 package com.hz.domain;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class AdvertisingStandardDetail {
+public class Tag {
     private Integer id;
 
-    private Integer parentId;
+    private String tagName;
 
-    private String name;
+    private Integer tagType;
 
-    private String platform;
-
-    private String chargeMode;
-
+    private Integer status;
 
     private Integer createrId;
 
@@ -31,36 +27,28 @@ public class AdvertisingStandardDetail {
         this.id = id;
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setTagName(String tagName) {
+        this.tagName = tagName == null ? null : tagName.trim();
     }
 
-    public String getName() {
-        return name;
+    public Integer getTagType() {
+        return tagType;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setTagType(Integer tagType) {
+        this.tagType = tagType;
     }
 
-    public String getPlatform() {
-        return platform;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setPlatform(String platform) {
-        this.platform = platform == null ? null : platform.trim();
-    }
-
-    public String getChargeMode() {
-        return chargeMode;
-    }
-
-    public void setChargeMode(String chargeMode) {
-        this.chargeMode = chargeMode == null ? null : chargeMode.trim();
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getCreaterId() {

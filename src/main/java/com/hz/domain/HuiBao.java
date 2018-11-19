@@ -10,6 +10,8 @@ public class HuiBao {
 
     private Integer picId;
 
+    private String url;
+
     private String groupName;
 
     private String huibaoType;
@@ -143,5 +145,14 @@ public class HuiBao {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

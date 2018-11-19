@@ -22,7 +22,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, module_id, method_type, media_id, industry_id, price,light_exposure,pv, import_level, `desc`,
-    characteristic, status, creater_id, create_time, updater_id, update_time
+    characteristic, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -214,13 +214,20 @@
 
   <select id="selectResourceList" parameterType="com.hz.domain.MethodResource" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from h_method
+    a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.light_exposure,a.pv, a.import_level, a.desc,
+    a.characteristic, a.status
+    from h_method a
+    <if test="tagIds!=null"> join h_tag_method b on a.id = b.method_id</if>
       <where>
-        <if test="mediaId != null">media_id = #{mediaId,jdbcType=INTEGER}</if>
-        <if test="industryId != null">and industry_id = #{industryId,jdbcType=INTEGER}</if>
-        <if test="importLevel != null"> and import_level = #{importLevel,jdbcType=VARCHAR}</if>
-        and status = 1
-      </where> order by id desc
+        <if test="mediaId != null">a.media_id = #{mediaId,jdbcType=INTEGER}</if>
+        <if test="industryId != null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+        <if test="importLevel != null"> and a.import_level = #{importLevel,jdbcType=VARCHAR}</if>
+        <if test="tagIds !=null"> and b.tag_id in
+          <foreach collection="tagIds" item="tagId" index="index" open="(" close=")" separator=",">
+          #{tagId}
+          </foreach>
+        </if>
+        and a.status = 1
+      </where> order by a.id desc
   </select>
 </mapper>
