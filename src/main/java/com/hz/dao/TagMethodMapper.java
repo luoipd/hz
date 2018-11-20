@@ -12,4 +12,6 @@ public interface TagMethodMapper {
     List selectTagIds(int methodId);
 
     int deleteMethodResource(int methodId);
+
+    int deleteTagMethod(TagMethod tagMethod);
 }

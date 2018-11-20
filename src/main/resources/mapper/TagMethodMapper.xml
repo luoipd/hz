@@ -26,6 +26,10 @@
     delete  from h_tag_method where method_id = #{methodId,jdbcType=INTEGER}
   </delete>
 
+  <delete id="deleteTagMethod" parameterType="com.hz.domain.TagMethod">
+    delete  from h_tag_method where method_id = #{methodId,jdbcType=INTEGER} and tag_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+
   <insert id="insertSelective" parameterType="com.hz.domain.TagMethod" >
     insert into h_tag_method
     <trim prefix="(" suffix=")" suffixOverrides="," >

@@ -10,6 +10,8 @@ public class AdvertisingStyle {
 
     private Integer picId;
 
+    private String styleName;
+
     private String url;
 
     private BigDecimal price;
@@ -113,5 +115,13 @@ public class AdvertisingStyle {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getStyleName() {
+        return styleName;
+    }
+
+    public void setStyleName(String styleName) {
+        this.styleName = styleName;
     }
 }

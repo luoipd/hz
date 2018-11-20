@@ -37,7 +37,7 @@
   <insert id="insert" parameterType="com.hz.domain.MethodResource" >
     insert into h_method (id, name, module_id, 
       method_type, media_id, industry_id, 
-      price, import_level, desc, 
+      price, import_level, `desc`,
       characteristic, status, creater_id, 
       create_time, updater_id, update_time
       )
@@ -170,7 +170,7 @@
         import_level = #{importLevel,jdbcType=VARCHAR},
       </if>
       <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="characteristic != null" >
         characteristic = #{characteristic,jdbcType=VARCHAR},
@@ -202,7 +202,7 @@
       industry_id = #{industryId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       import_level = #{importLevel,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       characteristic = #{characteristic,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       creater_id = #{createrId,jdbcType=INTEGER},

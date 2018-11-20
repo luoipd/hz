@@ -10,6 +10,8 @@ public class HuiBao {
 
     private Integer picId;
 
+    private String huibaoName;
+
     private String url;
 
     private String groupName;
@@ -154,5 +156,13 @@ public class HuiBao {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getHuibaoName() {
+        return huibaoName;
+    }
+
+    public void setHuibaoName(String huibaoName) {
+        this.huibaoName = huibaoName;
     }
 }

@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
+    <result column="huibao_name" property="huibaoName" jdbcType="VARCHAR" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="huibao_type" property="huibaoType" jdbcType="VARCHAR" />
     <result column="huibao_site" property="huibaoSite" jdbcType="VARCHAR" />
@@ -18,17 +19,17 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, pic_id, group_name, huibao_type, huibao_site, huibao_detail,  per, `number`, price, creater_id, create_time, updater_id, update_time
+    id, parent_id, pic_id,huibao_name, group_name, huibao_type, huibao_site, huibao_detail,  per, `number`, price, creater_id, create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from h_huibao
-    where id = #{id,jdbcType=INTEGER}
+    a.id, a.parent_id, a.pic_id,a.huibao_name, a.group_name, a.huibao_type, a.huibao_site, a.huibao_detail,  a.per, a.number, a.price,b.url
+    from h_huibao a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectListByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
-    a.id, a.parent_id, a.pic_id, a.group_name, a.huibao_type, a.huibao_site, a.huibao_detail,  a.per, a.number, a.price,b.url
+    a.id, a.parent_id, a.pic_id,a.huibao_name, a.group_name, a.huibao_type, a.huibao_site, a.huibao_detail,  a.per, a.number, a.price,b.url
     from h_huibao a left join h_pic_video b on a.pic_id = b.id
     where a.parent_id = #{parentId,jdbcType=INTEGER}
   </select>
@@ -37,13 +38,13 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.HuiBao" >
-    insert into h_huibao (id, parent_id, pic_id, 
+    insert into h_huibao (id, parent_id, pic_id,huibao_name
       group_name, huibao_type, huibao_site, 
       huibao_detail,
       per, `number`, price,
       creater_id, create_time, updater_id, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{picId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{picId,jdbcType=INTEGER},#{huibaoName,jdbcType=VARCHAR},
       #{groupName,jdbcType=VARCHAR}, #{huibaoType,jdbcType=VARCHAR}, #{huibaoSite,jdbcType=VARCHAR},
       #{huibaoDetail,jdbcType=VARCHAR},
       #{per,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
@@ -61,6 +62,9 @@
       </if>
       <if test="picId != null" >
         pic_id,
+      </if>
+      <if test="huibaoName != null" >
+        huibao_name,
       </if>
       <if test="groupName != null" >
         group_name,
@@ -106,6 +110,9 @@
       <if test="picId != null" >
         #{picId,jdbcType=INTEGER},
       </if>
+      <if test="huibaoName != null" >
+        #{huibaoName,jdbcType=VARCHAR},
+      </if>
       <if test="groupName != null" >
         #{groupName,jdbcType=VARCHAR},
       </if>
@@ -150,6 +157,9 @@
       <if test="picId != null" >
         pic_id = #{picId,jdbcType=INTEGER},
       </if>
+      <if test="huibaoName != null" >
+        huibao_name = #{groupName,jdbcType=VARCHAR},
+      </if>
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},
       </if>
@@ -190,6 +200,7 @@
     update h_huibao
     set parent_id = #{parentId,jdbcType=INTEGER},
       pic_id = #{picId,jdbcType=INTEGER},
+      huibao_name = #{huibaoName,jdbcType=VARCHAR},
       group_name = #{groupName,jdbcType=VARCHAR},
       huibao_type = #{huibaoType,jdbcType=VARCHAR},
       huibao_site = #{huibaoSite,jdbcType=VARCHAR},

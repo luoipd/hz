@@ -88,7 +88,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             methodResource.setCreaterId(id);
             methodResourceMapper.updateByPrimaryKeySelective(methodResource);
             if(methodResource.getTagIds()!=null&&methodResource.getTagIds().length>0){
-                tagMethodMapper.deleteMethodResource(methodResource.getId());
+//                tagMethodMapper.deleteMethodResource(methodResource.getId());
                 for(int tagId:methodResource.getTagIds()){
                     TagMethod tagMethod = new TagMethod();
                     tagMethod.setMethodId(methodResource.getId());
@@ -99,12 +99,24 @@ public class MethodResourceServiceImpl implements MethodResourceService {
                 }
             }
             if(methodResource.getMethodType()==1){
-                advertisingStandardDetail.setUpdaterId(id);
-                advertisingStandardDetailMapper.updateByPrimaryKeySelective(advertisingStandardDetail);
+                //id为空是新增
+                if(advertisingStandardDetail.getId()==null||advertisingStandardDetail.getId()==0){
+                    advertisingStandardDetail.setCreaterId(id);
+                    advertisingStandardDetailMapper.insertSelective(advertisingStandardDetail);
+                }else{
+                    advertisingStandardDetail.setUpdaterId(id);
+                    advertisingStandardDetailMapper.updateByPrimaryKeySelective(advertisingStandardDetail);
+                }
+
             }
             if(methodResource.getMethodType()==2){
-                advertisingUnstandardDetail.setUpdaterId(id);
-                advertisingUnstandardDetailMapper.updateByPrimaryKeySelective(advertisingUnstandardDetail);
+                if(advertisingUnstandardDetail.getId()==null||advertisingUnstandardDetail.getId()==0){
+                    advertisingUnstandardDetail.setCreaterId(id);
+                    advertisingUnstandardDetailMapper.insertSelective(advertisingUnstandardDetail);
+                }else{
+                    advertisingUnstandardDetail.setUpdaterId(id);
+                    advertisingUnstandardDetailMapper.updateByPrimaryKeySelective(advertisingUnstandardDetail);
+                }
             }
 
 
@@ -116,6 +128,8 @@ public class MethodResourceServiceImpl implements MethodResourceService {
         if(methodResource.getMethodType()!=null&&methodResource.getName()!=null){
             methodResource.setCreaterId(id);
             methodResource.setStatus(1);
+            methodResource.setModuleId(1);
+            methodResource.setIndustryId(1);
             methodResourceMapper.insertSelective(methodResource);
         }else {
             throw new Exception("缺少资源名称和类型");
@@ -129,6 +143,57 @@ public class MethodResourceServiceImpl implements MethodResourceService {
         methodResource.setStatus(0);
         methodResource.setUpdaterId(updaterId);
         methodResourceMapper.updateByPrimaryKeySelective(methodResource);
+    }
+
+    @Override
+    public void insertHuibao(HuiBao huiBao) {
+        huiBaoMapper.insert(huiBao);
+    }
+
+    @Override
+    public void updateHuibao(HuiBao huiBao) {
+        huiBaoMapper.updateByPrimaryKeySelective(huiBao);
+    }
+
+    @Override
+    public HuiBao selectHuibaoById(int id) {
+        HuiBao huiBao = huiBaoMapper.selectByPrimaryKey(id);
+        return huiBao;
+    }
+
+    @Override
+    public void deleteHuibaobyId(int id) {
+        huiBaoMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void insertAdvertisingStyle(AdvertisingStyle advertisingStyle) {
+        advertisingStyleMapper.insertSelective(advertisingStyle);
+    }
+
+    @Override
+    public void updateAdvertisingStyle(AdvertisingStyle advertisingStyle) {
+        advertisingStyleMapper.updateByPrimaryKeySelective(advertisingStyle);
+    }
+
+    @Override
+    public AdvertisingStyle selectAdvertisingStyleById(int id) {
+        return advertisingStyleMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void deleteAdvertisingStylebyId(int id) {
+        advertisingStyleMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void deleteTagMethod(TagMethod tagMethod) {
+        tagMethodMapper.deleteTagMethod(tagMethod);
+    }
+
+    @Override
+    public void createTagMethod(TagMethod tagMethod) {
+        tagMethodMapper.insertSelective(tagMethod);
     }
 
 

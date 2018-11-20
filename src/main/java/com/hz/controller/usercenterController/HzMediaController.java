@@ -83,8 +83,10 @@ public class HzMediaController extends BaseController {
         if(picId>0){
             media.setPicId(picId);
         }
-        media.setCreaterId(sysUser.getId());
-        media.setStatus(1);
+        if(media.getMediaName()!=null&&media.getMediaName().length()>0){
+            media.setCreaterId(sysUser.getId());
+            media.setStatus(1);
+        }
         try {
             mediaService.insertMedia(media);
         } catch (Exception e) {

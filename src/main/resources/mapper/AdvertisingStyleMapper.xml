@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.hz.domain.AdvertisingStyle" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="style_name" property="styleName" jdbcType="VARCHAR" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="size" property="size" jdbcType="VARCHAR" />
@@ -14,18 +15,18 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, pic_id, price, size, requirement, creater_id, create_time, updater_id, 
+    id, parent_id,style_name, pic_id, price, size, requirement, creater_id, create_time, updater_id,
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from h_advertising_style
-    where id = #{id,jdbcType=INTEGER}
+    a.id, a.parent_id,a.style_name, a.pic_id, a.price, a.size, a.requirement,b.url
+    from h_advertising_style a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectListByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
-    a.id, a.parent_id, a.pic_id, a.price, a.size, a.requirement,b.url
+    a.id, a.parent_id,a.style_name, a.pic_id, a.price, a.size, a.requirement,b.url
     from h_advertising_style a left join h_pic_video b on a.pic_id = b.id
     where a.parent_id = #{parentId,jdbcType=INTEGER}
   </select>
@@ -34,11 +35,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.AdvertisingStyle" >
-    insert into h_advertising_style (id, parent_id, pic_id, 
+    insert into h_advertising_style (id, parent_id,style_name, pic_id,
       price, size, requirement, 
       creater_id, create_time, updater_id, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{picId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER},#{styleName,jdbcType=VARCHAR}, #{picId,jdbcType=INTEGER},
       #{price,jdbcType=DECIMAL}, #{size,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
@@ -51,6 +52,9 @@
       </if>
       <if test="parentId != null" >
         parent_id,
+      </if>
+      <if test="styleName != null" >
+        style_name,
       </if>
       <if test="picId != null" >
         pic_id,
@@ -84,6 +88,9 @@
       <if test="parentId != null" >
         #{parentId,jdbcType=INTEGER},
       </if>
+      <if test="styleName != null" >
+        #{styleName,jdbcType=VARCHAR},
+      </if>
       <if test="picId != null" >
         #{picId,jdbcType=INTEGER},
       </if>
@@ -116,6 +123,9 @@
       <if test="parentId != null" >
         parent_id = #{parentId,jdbcType=INTEGER},
       </if>
+      <if test="styleName != null" >
+        style_name = #{styleName,jdbcType=VARCHAR},
+      </if>
       <if test="picId != null" >
         pic_id = #{picId,jdbcType=INTEGER},
       </if>
@@ -146,6 +156,7 @@
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.AdvertisingStyle" >
     update h_advertising_style
     set parent_id = #{parentId,jdbcType=INTEGER},
+      style_name = #{styleName,jdbcType=VARCHAR},
       pic_id = #{picId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       size = #{size,jdbcType=VARCHAR},
