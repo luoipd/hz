@@ -43,8 +43,11 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     @Autowired
     TagMethodMapper tagMethodMapper;
 
+    @Autowired
+    TagMapper tagMapper;
+
     @Override
-    public List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest,Integer[] tagIds) {
+    public List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<MethodResource> resourceList =  methodResourceMapper.selectResourceList(methodResource);
         for(MethodResource methodResource1:resourceList){
@@ -56,6 +59,12 @@ public class MethodResourceServiceImpl implements MethodResourceService {
         }
         return resourceList;
     }
+
+    @Override
+    public int countMethodResource(MethodResource methodResource){
+        return methodResourceMapper.countResources(methodResource);
+    }
+
 
     @Override
     public ResourceBean getResourceBeanById(int id) {
@@ -85,10 +94,18 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     @Override
     @Transactional
     public void updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail,int id) {
-            methodResource.setCreaterId(id);
-            methodResourceMapper.updateByPrimaryKeySelective(methodResource);
+
+            if(methodResource.getId()==null||methodResource.getId()==0){
+                methodResource.setCreaterId(id);
+                methodResource.setStatus(1);
+                methodResourceMapper.insertSelective(methodResource);
+            }else{
+                methodResource.setUpdaterId(id);
+                methodResourceMapper.updateByPrimaryKeySelective(methodResource);
+            }
+            //绑定标签信息
             if(methodResource.getTagIds()!=null&&methodResource.getTagIds().length>0){
-//                tagMethodMapper.deleteMethodResource(methodResource.getId());
+                tagMethodMapper.deleteMethodResource(methodResource.getId());
                 for(int tagId:methodResource.getTagIds()){
                     TagMethod tagMethod = new TagMethod();
                     tagMethod.setMethodId(methodResource.getId());
@@ -100,7 +117,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             }
             if(methodResource.getMethodType()==1){
                 //id为空是新增
-                if(advertisingStandardDetail.getId()==null||advertisingStandardDetail.getId()==0){
+                if(advertisingStandardDetail.getParentId()==null||advertisingStandardDetail.getParentId()==0){
                     advertisingStandardDetail.setCreaterId(id);
                     advertisingStandardDetailMapper.insertSelective(advertisingStandardDetail);
                 }else{
@@ -110,7 +127,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
 
             }
             if(methodResource.getMethodType()==2){
-                if(advertisingUnstandardDetail.getId()==null||advertisingUnstandardDetail.getId()==0){
+                if(advertisingUnstandardDetail.getParentId()==null||advertisingUnstandardDetail.getParentId()==0){
                     advertisingUnstandardDetail.setCreaterId(id);
                     advertisingUnstandardDetailMapper.insertSelective(advertisingUnstandardDetail);
                 }else{
@@ -118,9 +135,6 @@ public class MethodResourceServiceImpl implements MethodResourceService {
                     advertisingUnstandardDetailMapper.updateByPrimaryKeySelective(advertisingUnstandardDetail);
                 }
             }
-
-
-
     }
 
     @Override
@@ -192,8 +206,16 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     }
 
     @Override
-    public void createTagMethod(TagMethod tagMethod) {
-        tagMethodMapper.insertSelective(tagMethod);
+    public void createTagMethod(List<TagMethod> tagMethods,int methodId) {
+        //清空绑定重新绑定
+        tagMethodMapper.deleteMethodResource(methodId);
+        tagMethodMapper.insertTagMethods(tagMethods);
+    }
+
+    @Override
+    public List<Tag> selectTagList(int methodId) {
+        List<Tag> tagList = tagMapper.selectTagListByMethodId(methodId);
+        return tagList;
     }
 
 

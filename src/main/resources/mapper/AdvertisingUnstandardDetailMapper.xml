@@ -160,7 +160,7 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where parent_id = #{parentId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.AdvertisingUnstandardDetail" >
     update h_advertising_proposal_unstandard

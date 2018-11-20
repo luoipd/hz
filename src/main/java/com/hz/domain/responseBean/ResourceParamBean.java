@@ -47,5 +47,7 @@ public class ResourceParamBean {
 
     private String isSplit;
 
+    private Integer[] tagIds;
+
 
 }

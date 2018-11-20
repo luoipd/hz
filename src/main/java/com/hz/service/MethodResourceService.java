@@ -13,7 +13,9 @@ import java.util.List;
 public interface MethodResourceService {
 
 
-        List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest,Integer[] tagIds);
+        List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest);
+
+        int countMethodResource(MethodResource methodResource);
 
         ResourceBean getResourceBeanById(int id);
 
@@ -41,7 +43,9 @@ public interface MethodResourceService {
 
         void deleteTagMethod(TagMethod tagMethod);
 
-        void createTagMethod(TagMethod tagMethod);
+        void createTagMethod(List<TagMethod> tagMethods,int methodId);
+
+        List<Tag> selectTagList(int methodId);
 
 
 }

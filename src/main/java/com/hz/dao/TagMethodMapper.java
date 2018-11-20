@@ -14,4 +14,6 @@ public interface TagMethodMapper {
     int deleteMethodResource(int methodId);
 
     int deleteTagMethod(TagMethod tagMethod);
+
+    int insertTagMethods(List<TagMethod> tagMethods);
 }

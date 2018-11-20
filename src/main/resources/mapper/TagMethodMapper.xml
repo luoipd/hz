@@ -30,6 +30,19 @@
     delete  from h_tag_method where method_id = #{methodId,jdbcType=INTEGER} and tag_id = #{tagId,jdbcType=INTEGER}
   </delete>
 
+  <insert id="insertTagMethods" parameterType="java.util.List">
+    <selectKey resultType ="java.lang.Integer" keyProperty= "id"
+               order= "AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey >
+    insert into h_tag_method (method_id, tag_id, creater_id,
+       updater_id
+      )
+    values
+    <foreach collection="list" item="tagmethod" index="index" separator=",">
+      (#{tagmethod.methodId},#{tagmethod.tagId},#{tagmethod.createrId},#{tagmethod.updaterId})
+    </foreach>
+  </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.TagMethod" >
     insert into h_tag_method
     <trim prefix="(" suffix=")" suffixOverrides="," >

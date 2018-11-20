@@ -50,10 +50,10 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 				resJson.setDesc("登录信息失效,请重新登录！！");
 			}
 		}else if(token==null||!token.equals(token1)){
-			resJson.setDesc("token无效");
+			resJson.setDesc("该账号在另一个地方登录，请重新登录！！！");
 			resJson.setStatus(0);
 		}else if(stringSet.isEmpty()||!getPermission(stringSet,url)){
-			resJson.setDesc("没有配置权限，请联系系统管理员");
+			resJson.setDesc("没有配置权限，请联系系统管理员。@—|—@！");
 			resJson.setStatus(0);
 		} else{
 			return true;

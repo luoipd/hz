@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lyp
@@ -45,10 +48,14 @@ public class HzResourceController extends BaseController {
      */
     @RequestMapping(value = "/api/hzResource/methodResourceList",method = RequestMethod.GET)
     @ResponseBody
-        public String getMethodSourceList(@Valid MethodResource methodResource, @Valid PageRequest pageRequest,@Valid Integer[] tagIds){
+        public String getMethodSourceList(@Valid MethodResource methodResource, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<MethodResource> methodResources = methodResourceService.getMethodResourceList(methodResource,pageRequest,tagIds);
-        resJson.setData(methodResources);
+        List<MethodResource> methodResources = methodResourceService.getMethodResourceList(methodResource,pageRequest);
+        int cout = methodResourceService.countMethodResource(methodResource);
+        Map map = new HashMap();
+        map.put("methodResources",methodResources);
+        map.put("total",cout);
+        resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -62,9 +69,33 @@ public class HzResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    /**
+     * 创建资源
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/api/hzResource/createMethodResource",method = RequestMethod.POST)
+    @ResponseBody
+    public String createMethodResource(@Valid MethodResource methodResource){
+        ResJson resJson = new ResJson();
+        try {
+            methodResourceService.insertMethodResource(methodResource,sysUser.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            resJson.setStatus(0);
+            resJson.setDesc("缺少资源名称和资源类型");
+        }
+        return JSONObject.toJSONString(resJson);
+    }
+
+    /**
+     * 新增与修改资源
+     * @param resourceParamBean
+     * @return
+     */
     @RequestMapping(value = "/api/hzResource/updateMethodResourceInfo",method = RequestMethod.POST)
     @ResponseBody
-    public String updateMethodResourceInfo(@Valid ResourceParamBean resourceParamBean, @Valid Integer[] tagIds){
+    public String updateMethodResourceInfo(@Valid ResourceParamBean resourceParamBean){
         MethodResource methodResource1 = new MethodResource();
         AdvertisingUnstandardDetail advertisingUnstandardDetail1 = new AdvertisingUnstandardDetail();
         AdvertisingStandardDetail advertisingStandardDetail1 = new AdvertisingStandardDetail();
@@ -77,29 +108,25 @@ public class HzResourceController extends BaseController {
         methodResource1.setPv(resourceParamBean.getPv());
         methodResource1.setImportLevel(resourceParamBean.getImportLevel());
         methodResource1.setDesc(resourceParamBean.getDesc());
+        methodResource1.setTagIds(resourceParamBean.getTagIds());
         methodResource1.setCharacteristic(resourceParamBean.getCharacteristic());
-        advertisingStandardDetail1.setId(resourceParamBean.getStandardId());
         advertisingStandardDetail1.setParentId(resourceParamBean.getMethodSourceId());
         advertisingStandardDetail1.setName(resourceParamBean.getName());
         advertisingStandardDetail1.setPlatform(resourceParamBean.getPlatform());
         advertisingStandardDetail1.setChargeMode(resourceParamBean.getChargeMode());
         advertisingUnstandardDetail1.setParentId(resourceParamBean.getMethodSourceId());
         advertisingUnstandardDetail1.setName(resourceParamBean.getName());
-        advertisingUnstandardDetail1.setId(resourceParamBean.getUnstandardId());
         advertisingUnstandardDetail1.setXiwei(resourceParamBean.getXiwei());
         advertisingUnstandardDetail1.setScheduling(resourceParamBean.getScheduling());
         advertisingUnstandardDetail1.setDetail(resourceParamBean.getDetail());
         advertisingUnstandardDetail1.setIsSplit(resourceParamBean.getIsSplit());
         ResJson resJson = new ResJson();
-        if(tagIds!=null&&tagIds.length>0){
-            methodResource1.setTagIds(tagIds);
-        }
         methodResourceService.updateAll(methodResource1,advertisingStandardDetail1,advertisingUnstandardDetail1,sysUser.getId());
         return JSONObject.toJSONString(resJson);
     }
 
     /**
-     * 资源删除标签
+         * 资源删除标签
      * @param tagMethod
      * @return
      */
@@ -118,39 +145,46 @@ public class HzResourceController extends BaseController {
 
     /**
      * 资源绑定标签
-     * @param tagMethod
+     * @param
      * @return
      */
     @RequestMapping(value = "/api/hzResource/createTagMethod",method = RequestMethod.POST)
     @ResponseBody
-    public String createTagMethod(@Valid TagMethod tagMethod){
+    public String createTagMethod(@Valid int methodId,@Valid Integer[] tagIds){
         ResJson resJson = new ResJson();
-        if(tagMethod.getTagId()==null||tagMethod.getMethodId()==null){
+        if(methodId==0||tagIds.length==0){
             resJson.setStatus(0);
             resJson.setDesc("缺少资源id和标签id");
             return JSONObject.toJSONString(resJson);
         }
-        tagMethod.setUpdaterId(sysUser.getId());
-        tagMethod.setCreaterId(sysUser.getId());
-        methodResourceService.createTagMethod(tagMethod);
-        return JSONObject.toJSONString(resJson);
-    }
-
-
-
-    @RequestMapping(value = "/api/hzResource/createMethodResource",method = RequestMethod.POST)
-    @ResponseBody
-    public String createMethodResource(MethodResource methodResource){
-        ResJson resJson = new ResJson();
-        try {
-            methodResourceService.insertMethodResource(methodResource,sysUser.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            resJson.setStatus(0);
-            resJson.setDesc("缺少资源名称和资源类型");
+        List<TagMethod> tagMethods = new ArrayList<>();
+        for(int tagId:tagIds){
+            TagMethod tagMethod = new TagMethod();
+            tagMethod.setTagId(tagId);
+            tagMethod.setMethodId(methodId);
+            tagMethod.setUpdaterId(sysUser.getId());
+            tagMethod.setCreaterId(sysUser.getId());
+            tagMethods.add(tagMethod);
         }
+        methodResourceService.createTagMethod(tagMethods,methodId);
         return JSONObject.toJSONString(resJson);
     }
+
+    /**
+     * 获取所有绑定标签
+     * @param methodId
+     * @return
+     */
+    @RequestMapping(value = "/api/hzResource/getTags",method = RequestMethod.GET)
+    @ResponseBody
+    public String getTagList(@Valid int methodId){
+        ResJson resJson = new ResJson();
+        List<Tag> tagList = methodResourceService.selectTagList(methodId);
+        resJson.setData(tagList);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
 
     /**
      * 物理删除

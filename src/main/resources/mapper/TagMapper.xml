@@ -29,6 +29,11 @@
     select id,tag_name
     from h_tag where tag_type = #{tagType,jdbcType=INTEGER} and status =1
   </select>
+
+  <select id="selectTagListByMethodId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select b.id,b.tag_name from h_tag_method a join h_tag b on a.tag_id = b.id where a.method_id = #{methodId,jdbcType=INTEGER} and b.status = 1
+  </select>
+
   <insert id="insert" parameterType="com.hz.domain.Tag" >
     insert into h_tag (id, tag_name, tag_type, 
       status, creater_id, create_time, 

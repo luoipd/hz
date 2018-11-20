@@ -48,7 +48,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hz.domain.MethodResource" >
+  <insert id="insertSelective" parameterType="com.hz.domain.MethodResource" useGeneratedKeys="true" keyColumn="id" keyProperty="id" >
     insert into h_method
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -144,6 +144,9 @@
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.MethodResource" >
     update h_method
@@ -229,5 +232,21 @@
         </if>
         and a.status = 1
       </where> order by a.id desc
+  </select>
+  <select id="countResources" parameterType="com.hz.domain.MethodResource" resultType="java.lang.Integer">
+    select count(a.id) from
+    h_method a
+    <if test="tagIds!=null"> join h_tag_method b on a.id = b.method_id</if>
+    <where>
+      <if test="mediaId != null">a.media_id = #{mediaId,jdbcType=INTEGER}</if>
+      <if test="industryId != null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+      <if test="importLevel != null"> and a.import_level = #{importLevel,jdbcType=VARCHAR}</if>
+      <if test="tagIds !=null"> and b.tag_id in
+        <foreach collection="tagIds" item="tagId" index="index" open="(" close=")" separator=",">
+          #{tagId}
+        </foreach>
+      </if>
+      and a.status = 1
+    </where>
   </select>
 </mapper>

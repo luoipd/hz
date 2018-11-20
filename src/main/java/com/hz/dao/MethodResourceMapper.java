@@ -18,4 +18,6 @@ public interface MethodResourceMapper {
     int updateByPrimaryKey(MethodResource record);
 
     List<MethodResource> selectResourceList(MethodResource methodResource);
+
+    int countResources(MethodResource methodResource);
 }
