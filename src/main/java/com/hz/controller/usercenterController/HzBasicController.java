@@ -7,6 +7,7 @@ import com.hz.service.BasicService;
 import com.hz.util.ResJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class HzBasicController extends BaseController {
     @Autowired
     BasicService basicService;
 
-    @RequestMapping(value = "/api/hzBasic/getTagList")
+    @RequestMapping(value = "/api/hzBasic/getTagList",method = RequestMethod.GET)
     @ResponseBody
     public String getTagList(@Valid int tagType){
         ResJson resJson = new ResJson();
@@ -33,7 +34,7 @@ public class HzBasicController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
-    @RequestMapping(value = "/api/hzBasic/insertTag")
+    @RequestMapping(value = "/api/hzBasic/insertTag",method = RequestMethod.POST)
     @ResponseBody
     public String createTag(@Valid Tag tag){
         ResJson resJson = new ResJson();
@@ -45,7 +46,15 @@ public class HzBasicController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
-    @RequestMapping(value = "/api/hzBasic/delTag")
+    @RequestMapping(value = "/api/hzBasic/updateTag",method = RequestMethod.POST)
+    @ResponseBody
+    public String updateTag(@Valid Tag tag){
+        ResJson resJson = new ResJson();
+        basicService.updateTag(tag);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/hzBasic/delTag",method = RequestMethod.POST)
     @ResponseBody
     public String delTag(@Valid int id){
         ResJson resJson = new ResJson();

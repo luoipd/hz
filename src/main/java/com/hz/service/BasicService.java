@@ -15,4 +15,6 @@ public interface BasicService {
     void insertTag(Tag tag);
 
     void deleteTag(int id);
+
+    void updateTag(Tag tag);
 }

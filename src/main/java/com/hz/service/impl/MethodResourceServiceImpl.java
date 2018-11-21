@@ -79,15 +79,15 @@ public class MethodResourceServiceImpl implements MethodResourceService {
         if(methodResource.getMethodType()==1){
             AdvertisingStandardDetail advertisingStandardDetail = advertisingStandardDetailMapper.selectByPid(id);
             resourceBean.setAdvertisingStandardDetail(advertisingStandardDetail);
-            List<AdvertisingStyle> advertisingStyles = advertisingStyleMapper.selectListByPid(id);
-            resourceBean.setAdvertisingStyles(advertisingStyles);
+//            List<AdvertisingStyle> advertisingStyles = advertisingStyleMapper.selectListByPid(id);
+//            resourceBean.setAdvertisingStyles(advertisingStyles);
         }
         //非标资源
         if(methodResource.getMethodType()==2){
             AdvertisingUnstandardDetail advertisingUnstandardDetail = advertisingUnstandardDetailMapper.selectByPid(id);
             resourceBean.setAdvertisingUnstandardDetail(advertisingUnstandardDetail);
-            List<HuiBao> huiBaos = huiBaoMapper.selectListByPid(id);
-            resourceBean.setHuiBaos(huiBaos);
+//            List<HuiBao> huiBaos = huiBaoMapper.selectListByPid(id);
+//            resourceBean.setHuiBaos(huiBaos);
         }
         return resourceBean;
     }
