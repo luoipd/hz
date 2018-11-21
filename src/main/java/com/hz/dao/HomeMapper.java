@@ -2,6 +2,8 @@ package com.hz.dao;
 
 import com.hz.domain.Home;
 
+import java.util.List;
+
 public interface HomeMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface HomeMapper {
     int updateByPrimaryKeySelective(Home record);
 
     int updateByPrimaryKey(Home record);
+
+    List<Home> selectHomeList(Home home);
 }

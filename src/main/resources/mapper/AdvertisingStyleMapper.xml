@@ -28,7 +28,7 @@
     select
     a.id, a.parent_id,a.style_name, a.pic_id, a.price, a.size, a.requirement,b.url
     from h_advertising_style a left join h_pic_video b on a.pic_id = b.id
-    where a.parent_id = #{parentId,jdbcType=INTEGER}
+    where a.parent_id = #{parentId,jdbcType=INTEGER} order by a.id desc
   </select>
 
   <select id="countListByPid" parameterType="java.lang.Integer" resultType="java.lang.Integer">

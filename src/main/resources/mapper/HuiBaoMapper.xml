@@ -31,7 +31,7 @@
     select
     a.id, a.parent_id, a.pic_id,a.huibao_name, a.group_name, a.huibao_type, a.huibao_site, a.huibao_detail,  a.per, a.number, a.price,b.url
     from h_huibao a left join h_pic_video b on a.pic_id = b.id
-    where a.parent_id = #{parentId,jdbcType=INTEGER}
+    where a.parent_id = #{parentId,jdbcType=INTEGER} order by a.id desc
   </select>
 
   <select id="countListByPid"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -44,7 +44,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.HuiBao" >
-    insert into h_huibao (id, parent_id, pic_id,huibao_name
+    insert into h_huibao (id, parent_id, pic_id,huibao_name,
       group_name, huibao_type, huibao_site, 
       huibao_detail,
       per, `number`, price,

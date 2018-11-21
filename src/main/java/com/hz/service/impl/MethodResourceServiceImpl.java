@@ -52,6 +52,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
         List<MethodResource> resourceList =  methodResourceMapper.selectResourceList(methodResource);
         for(MethodResource methodResource1:resourceList){
             methodResource1.setMediaName(mediaMapper.selectByPrimaryKey(methodResource1.getMediaId()).getMediaName());
+            //资源不区分行业，行业字段废弃
 //            methodResource1.setIndustryName(industryMapper.selectByPrimaryKey(methodResource1.getIndustryId()).getIndustryName());
             List<Integer> tagIds1 = tagMethodMapper.selectTagIds(methodResource1.getId());
             Integer[] ta = new Integer[tagIds1.size()];
@@ -165,7 +166,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
 
     @Override
     public void insertHuibao(HuiBao huiBao) {
-        huiBaoMapper.insert(huiBao);
+        huiBaoMapper.insertSelective(huiBao);
     }
 
     @Override

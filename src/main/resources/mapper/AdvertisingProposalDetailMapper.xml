@@ -1,70 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hz.dao.HomeMapper" >
-  <resultMap id="BaseResultMap" type="com.hz.domain.Home" >
+<mapper namespace="com.hz.dao.AdvertisingProposalDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hz.domain.AdvertisingProposalDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="proposal_id" property="proposalId" jdbcType="INTEGER" />
+    <result column="data_id" property="dataId" jdbcType="INTEGER" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, content, module_id, status, proposal_id, creater_id, create_time, updater_id, 
-    update_time
+    id, parent_id, module_id, data_id, desc, creater_id, create_time, updater_id, update_time
   </sql>
-  <select id="selectHomeList" parameterType="com.hz.domain.Home" resultMap="BaseResultMap">
-    <if test="title!=null"><bind name="pattern" value="'%'+title+'%'"></bind></if>
-    select a.id,a.title,a.content,a.module_id,a.status,a.proposal_id
-    from h_home a
-    <where>
-      <if test="title!=null"> a.title like #{pattern}</if>
-    </where>
-  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from h_home
+    from h_advertising_proposal_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from h_home
+    delete from h_advertising_proposal_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hz.domain.Home" >
-    insert into h_home (id, title, content, 
-      module_id, status, proposal_id, 
-      creater_id, create_time, updater_id, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{moduleId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{proposalId,jdbcType=INTEGER}, 
-      #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.hz.domain.AdvertisingProposalDetail" >
+    insert into h_advertising_proposal_detail (id, parent_id, module_id, 
+      data_id, desc, creater_id, 
+      create_time, updater_id, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{moduleId,jdbcType=INTEGER}, 
+      #{dataId,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{createrId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.hz.domain.Home" >
-    insert into h_home
+  <insert id="insertSelective" parameterType="com.hz.domain.AdvertisingProposalDetail" >
+    insert into h_advertising_proposal_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="title != null" >
-        title,
-      </if>
-      <if test="content != null" >
-        content,
+      <if test="parentId != null" >
+        parent_id,
       </if>
       <if test="moduleId != null" >
         module_id,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="dataId != null" >
+        data_id,
       </if>
-      <if test="proposalId != null" >
-        proposal_id,
+      <if test="desc != null" >
+        desc,
       </if>
       <if test="createrId != null" >
         creater_id,
@@ -83,20 +70,17 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="title != null" >
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
       </if>
       <if test="moduleId != null" >
         #{moduleId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+      <if test="dataId != null" >
+        #{dataId,jdbcType=INTEGER},
       </if>
-      <if test="proposalId != null" >
-        #{proposalId,jdbcType=INTEGER},
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
       </if>
       <if test="createrId != null" >
         #{createrId,jdbcType=INTEGER},
@@ -112,23 +96,20 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.Home" >
-    update h_home
+  <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.AdvertisingProposalDetail" >
+    update h_advertising_proposal_detail
     <set >
-      <if test="title != null" >
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
       </if>
       <if test="moduleId != null" >
         module_id = #{moduleId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="dataId != null" >
+        data_id = #{dataId,jdbcType=INTEGER},
       </if>
-      <if test="proposalId != null" >
-        proposal_id = #{proposalId,jdbcType=INTEGER},
+      <if test="desc != null" >
+        desc = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="createrId != null" >
         creater_id = #{createrId,jdbcType=INTEGER},
@@ -145,13 +126,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hz.domain.Home" >
-    update h_home
-    set title = #{title,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.hz.domain.AdvertisingProposalDetail" >
+    update h_advertising_proposal_detail
+    set parent_id = #{parentId,jdbcType=INTEGER},
       module_id = #{moduleId,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      proposal_id = #{proposalId,jdbcType=INTEGER},
+      data_id = #{dataId,jdbcType=INTEGER},
+      desc = #{desc,jdbcType=VARCHAR},
       creater_id = #{createrId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       updater_id = #{updaterId,jdbcType=INTEGER},
