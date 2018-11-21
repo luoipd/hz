@@ -99,6 +99,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             if(methodResource.getId()==null||methodResource.getId()==0){
                 methodResource.setCreaterId(id);
                 methodResource.setStatus(1);
+                methodResource.setModuleId(1);
                 methodResourceMapper.insertSelective(methodResource);
             }else{
                 methodResource.setUpdaterId(id);
@@ -120,6 +121,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
                 //id为空是新增
                 if(advertisingStandardDetail.getParentId()==null||advertisingStandardDetail.getParentId()==0){
                     advertisingStandardDetail.setCreaterId(id);
+                    advertisingStandardDetail.setParentId(methodResource.getId());
                     advertisingStandardDetailMapper.insertSelective(advertisingStandardDetail);
                 }else{
                     advertisingStandardDetail.setUpdaterId(id);
@@ -130,6 +132,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             if(methodResource.getMethodType()==2){
                 if(advertisingUnstandardDetail.getParentId()==null||advertisingUnstandardDetail.getParentId()==0){
                     advertisingUnstandardDetail.setCreaterId(id);
+                    advertisingUnstandardDetail.setParentId(methodResource.getId());
                     advertisingUnstandardDetailMapper.insertSelective(advertisingUnstandardDetail);
                 }else{
                     advertisingUnstandardDetail.setUpdaterId(id);

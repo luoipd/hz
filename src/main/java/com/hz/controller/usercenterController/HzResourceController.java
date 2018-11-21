@@ -359,7 +359,4 @@ public class HzResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
-
-
-
 }

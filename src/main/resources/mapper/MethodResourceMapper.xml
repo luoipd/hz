@@ -74,6 +74,12 @@
       <if test="price != null" >
         price,
       </if>
+      <if test="lightExposure != null" >
+        light_exposure,
+      </if>
+      <if test="pv != null" >
+        pv,
+      </if>
       <if test="importLevel != null" >
         import_level,
       </if>
@@ -120,6 +126,12 @@
       </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="lightExposure != null" >
+        #{lightExposure,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null" >
+        #{pv,jdbcType=VARCHAR},
       </if>
       <if test="importLevel != null" >
         #{importLevel,jdbcType=VARCHAR},
@@ -170,6 +182,12 @@
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="lightExposure != null" >
+        light_exposure = #{lightExposure,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null" >
+        pv = #{pv,jdbcType=VARCHAR},
       </if>
       <if test="importLevel != null" >
         import_level = #{importLevel,jdbcType=VARCHAR},

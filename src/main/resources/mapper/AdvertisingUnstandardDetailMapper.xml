@@ -42,8 +42,7 @@
       )
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
        #{xiwei,jdbcType=VARCHAR},
-      #{scheduling,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{lightExposure,jdbcType=VARCHAR}, 
-      #{pv,jdbcType=VARCHAR}, #{isSplit,jdbcType=VARCHAR}, #{createrId,jdbcType=INTEGER}, 
+      #{scheduling,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{isSplit,jdbcType=VARCHAR}, #{createrId,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -102,12 +101,6 @@
       </if>
       <if test="detail != null" >
         #{detail,jdbcType=VARCHAR},
-      </if>
-      <if test="lightExposure != null" >
-        #{lightExposure,jdbcType=VARCHAR},
-      </if>
-      <if test="pv != null" >
-        #{pv,jdbcType=VARCHAR},
       </if>
       <if test="isSplit != null" >
         #{isSplit,jdbcType=VARCHAR},
