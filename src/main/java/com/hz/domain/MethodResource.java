@@ -2,6 +2,7 @@ package com.hz.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class MethodResource {
     private Integer id;
@@ -45,6 +46,16 @@ public class MethodResource {
     private Date updateTime;
 
     private Integer[] tagIds;
+
+    private List<Tag> tags;
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     public Integer getId() {
         return id;

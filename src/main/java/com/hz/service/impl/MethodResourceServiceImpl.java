@@ -70,9 +70,10 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     public ResourceBean getResourceBeanById(int id) {
         ResourceBean resourceBean = new ResourceBean();
         MethodResource methodResource = methodResourceMapper.selectByPrimaryKey(id);
-        List<Integer> tagIds1 = tagMethodMapper.selectTagIds(methodResource.getId());
-        Integer[] ta = new Integer[tagIds1.size()];
-        methodResource.setTagIds(tagIds1.toArray(ta));
+        List<Tag> tagIds1 = tagMapper.selectTagListByMethodId(methodResource.getId());
+//        Integer[] ta = new Integer[tagIds1.size()];
+//        methodResource.setTagIds(tagIds1.toArray(ta));
+        methodResource.setTags(tagIds1);
         resourceBean.setMethodResource(methodResource);
         //标准资源
         if(methodResource.getMethodType()==1){
