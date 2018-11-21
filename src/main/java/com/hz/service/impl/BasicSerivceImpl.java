@@ -31,7 +31,10 @@ public class BasicSerivceImpl implements BasicService {
 
     @Override
     public void deleteTag(int id) {
-        tagMapper.deleteByPrimaryKey(id);
+        Tag tag = new Tag();
+        tag.setId(id);
+        tag.setStatus(0);
+        tagMapper.updateByPrimaryKeySelective(tag);
     }
 
     @Override

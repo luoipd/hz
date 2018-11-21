@@ -18,4 +18,6 @@ public interface AdvertisingStyleMapper {
     int updateByPrimaryKey(AdvertisingStyle record);
 
     List<AdvertisingStyle> selectListByPid(Integer id);
+
+    int countListByPid(Integer id);
 }

@@ -47,5 +47,13 @@ public interface MethodResourceService {
 
         List<Tag> selectTagList(int methodId);
 
+        List<HuiBao> getHuiBaoList(int id,PageRequest pageRequest);
+
+        int countHuiBaoList(int id);
+
+        List<AdvertisingStyle> getAdvertisingStyleList(int id,PageRequest pageRequest);
+
+        int countAdvertisingStyleList(int id);
+
 
 }

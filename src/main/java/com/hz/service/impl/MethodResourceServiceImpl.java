@@ -52,7 +52,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
         List<MethodResource> resourceList =  methodResourceMapper.selectResourceList(methodResource);
         for(MethodResource methodResource1:resourceList){
             methodResource1.setMediaName(mediaMapper.selectByPrimaryKey(methodResource1.getMediaId()).getMediaName());
-            methodResource1.setIndustryName(industryMapper.selectByPrimaryKey(methodResource1.getIndustryId()).getIndustryName());
+//            methodResource1.setIndustryName(industryMapper.selectByPrimaryKey(methodResource1.getIndustryId()).getIndustryName());
             List<Integer> tagIds1 = tagMethodMapper.selectTagIds(methodResource1.getId());
             Integer[] ta = new Integer[tagIds1.size()];
             methodResource1.setTagIds(tagIds1.toArray(ta));
@@ -220,6 +220,29 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     public List<Tag> selectTagList(int methodId) {
         List<Tag> tagList = tagMapper.selectTagListByMethodId(methodId);
         return tagList;
+    }
+
+    @Override
+    public List<HuiBao> getHuiBaoList(int pid,PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+        List<HuiBao> huiBaos = huiBaoMapper.selectListByPid(pid);
+        return huiBaos;
+    }
+
+    @Override
+    public int countHuiBaoList(int id) {
+        return huiBaoMapper.countListByPid(id);
+    }
+
+    @Override
+    public List<AdvertisingStyle> getAdvertisingStyleList(int id, PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+        List<AdvertisingStyle> advertisingStyles = advertisingStyleMapper.selectListByPid(id);
+        return advertisingStyles;
+    }
+    @Override
+    public int countAdvertisingStyleList(int id) {
+        return advertisingStyleMapper.countListByPid(id);
     }
 
 

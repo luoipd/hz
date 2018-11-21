@@ -199,6 +199,19 @@ public class HzResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/hzResource/huiBaoList",method = RequestMethod.GET)
+    @ResponseBody
+    public String huiBaoList(@Valid int id,@Valid PageRequest pageRequest){
+        ResJson resJson = new ResJson();
+        List<HuiBao> huiBaos = methodResourceService.getHuiBaoList(id,pageRequest);
+        int count = methodResourceService.countHuiBaoList(id);
+        Map map = new HashMap();
+        map.put("huiBaos",huiBaos);
+        map.put("total",count);
+        resJson.setData(map);
+        return JSONObject.toJSONString(resJson);
+    }
+
     /**
      *新增回报组合
      */
@@ -283,6 +296,18 @@ public class HzResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/hzResource/advertisingStyleList",method = RequestMethod.GET)
+    @ResponseBody
+    public String advertisingStyleList(@Valid int id,@Valid PageRequest pageRequest){
+        ResJson resJson = new ResJson();
+        List<AdvertisingStyle> advertisingStyles = methodResourceService.getAdvertisingStyleList(id,pageRequest);
+        int count = methodResourceService.countAdvertisingStyleList(id);
+        Map map  = new HashMap();
+        map.put("advertisingStyles",advertisingStyles);
+        map.put("total",count);
+        resJson.setData(map);
+        return JSONObject.toJSONString(resJson);
+    }
     @RequestMapping(value = "/api/hzResource/createAdvertisingStyle",method = RequestMethod.POST)
     @ResponseBody
     public String createAdvertisingStyle(@Valid AdvertisingStyle advertisingStyle,@Valid MultipartFile file ){

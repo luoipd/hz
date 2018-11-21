@@ -18,4 +18,6 @@ public interface HuiBaoMapper {
     int updateByPrimaryKey(HuiBao record);
 
     List<HuiBao> selectListByPid(Integer id);
+
+    int countListByPid(Integer id);
 }

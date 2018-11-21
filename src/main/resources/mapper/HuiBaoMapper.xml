@@ -33,6 +33,12 @@
     from h_huibao a left join h_pic_video b on a.pic_id = b.id
     where a.parent_id = #{parentId,jdbcType=INTEGER}
   </select>
+
+  <select id="countListByPid"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(a.id) from h_huibao a left join h_pic_video b on a.pic_id = b.id
+    where a.parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_huibao
     where id = #{id,jdbcType=INTEGER}
