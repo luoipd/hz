@@ -72,4 +72,6 @@
     delete  from h_data_pic where data_id = #{dataId,jdbcType=INTEGER} and pic_id =  #{picId,jdbcType=INTEGER}
     and module_id = #{moduleId,jdbcType=INTEGER}
   </delete>
+
+
 </mapper>

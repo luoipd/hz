@@ -2,6 +2,8 @@ package com.hz.dao;
 
 import com.hz.domain.AdvertisingProposalDetail;
 
+import java.util.List;
+
 public interface AdvertisingProposalDetailMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface AdvertisingProposalDetailMapper {
     int updateByPrimaryKeySelective(AdvertisingProposalDetail record);
 
     int updateByPrimaryKey(AdvertisingProposalDetail record);
+
+    List<AdvertisingProposalDetail> selectDataPicByProposalId(int proposalId);
 }
