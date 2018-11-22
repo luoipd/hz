@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lyp
@@ -65,6 +67,48 @@ public class ImageService {
             log.info("未上传图片！！！！");
         }
         return id;
+
+    }
+
+    /**
+     * 批量插入图片
+     * @param files
+     * @param pictureVideoService
+     * @param user
+     * @return
+     */
+    public List<Integer> insertPictureFiles(MultipartFile[] files, PictureVideoService pictureVideoService, User user){
+        List list = new ArrayList();
+        if(files.length!=0){
+            //上传图片
+            for(MultipartFile file:files){
+                int id;
+                String filePath = webAppConfig.location + ImageUtil.MediaFolder;
+                String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
+                try {
+                    fileName = imageUtil.saveImg(file,filePath,fileName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    log.error("图片上传失败");
+                }
+                PictureVideo pictureVideo = new PictureVideo();
+                pictureVideo.setFileName(fileName);
+                pictureVideo.setStoragePath(filePath);
+                pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
+                pictureVideo.setSource(ImageUtil.MediaFolder);
+                pictureVideo.setType(file.getContentType());
+
+                pictureVideo.setCreaterId(user.getId());
+                pictureVideo.setStatus(1);
+                pictureVideo.setDesc(file.getOriginalFilename());
+                id = pictureVideoService.insert(pictureVideo);
+                list.add(id);
+            }
+
+        }else{
+            log.info("未上传图片！！！！");
+        }
+        return list;
 
     }
 }

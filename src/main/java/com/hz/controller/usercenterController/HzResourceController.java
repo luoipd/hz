@@ -121,7 +121,8 @@ public class HzResourceController extends BaseController {
         advertisingUnstandardDetail1.setDetail(resourceParamBean.getDetail());
         advertisingUnstandardDetail1.setIsSplit(resourceParamBean.getIsSplit());
         ResJson resJson = new ResJson();
-        methodResourceService.updateAll(methodResource1,advertisingStandardDetail1,advertisingUnstandardDetail1,sysUser.getId());
+        int id = methodResourceService.updateAll(methodResource1,advertisingStandardDetail1,advertisingUnstandardDetail1,sysUser.getId());
+        resJson.setData(id);
         return JSONObject.toJSONString(resJson);
     }
 

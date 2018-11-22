@@ -1,6 +1,7 @@
 package com.hz.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class Home {
     private Integer id;
@@ -22,6 +23,8 @@ public class Home {
     private Integer updaterId;
 
     private Date updateTime;
+
+    private List<PictureVideo> pictureVideos;
 
     public Integer getId() {
         return id;
@@ -101,5 +104,13 @@ public class Home {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<PictureVideo> getPictureVideos() {
+        return pictureVideos;
+    }
+
+    public void setPictureVideos(List<PictureVideo> pictureVideos) {
+        this.pictureVideos = pictureVideos;
     }
 }

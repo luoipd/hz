@@ -14,6 +14,8 @@ public interface MediaService {
 
     List<Media> getMediaList(Media media, PageRequest pageRequest);
 
+    List<Media> getMediaList();
+
     int countMedia(Media media);
 
     void insertMedia(Media media) throws Exception;

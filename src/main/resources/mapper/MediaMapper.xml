@@ -183,6 +183,12 @@
     </where> order by a.id desc
   </select>
 
+  <select id="selectListMedia1" resultMap="BaseResultMap">
+    select id,media_name,import_level
+    from h_media  where status =1
+ order by id desc
+  </select>
+
   <select id="countMedia" parameterType="com.hz.domain.Media" resultType="java.lang.Integer">
     <if test="mediaName!=null"><bind name="pattern" value="'%'+mediaName+'%'"></bind></if>
     select count(id)

@@ -58,6 +58,17 @@ public class HzMediaController extends BaseController {
         resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
+    @RequestMapping(value = "/api/hzMedia/mediaListForCheck", method = RequestMethod.GET)
+    @ResponseBody
+    public String getMediaListForCheck(){
+        ResJson resJson = new ResJson();
+        List<Media> medias = mediaService.getMediaList();
+        resJson.setData(medias);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
+
 
     @RequestMapping(value = "/api/hzMedia/getMediaInfo",method = RequestMethod.GET)
     @ResponseBody
@@ -164,5 +175,8 @@ public class HzMediaController extends BaseController {
         }
         return filename;
     }
+
+
+
 
 }

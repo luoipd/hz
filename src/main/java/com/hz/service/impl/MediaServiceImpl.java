@@ -28,6 +28,14 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public List<Media> getMediaList() {
+        List<Media> media1 = mediaMapper.selectListMedia1();
+
+        return media1;
+    }
+
+
+    @Override
     public int countMedia(Media media) {
 
         int i = mediaMapper.countMedia(media);

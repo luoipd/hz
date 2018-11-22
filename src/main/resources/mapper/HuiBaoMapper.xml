@@ -164,7 +164,7 @@
         pic_id = #{picId,jdbcType=INTEGER},
       </if>
       <if test="huibaoName != null" >
-        huibao_name = #{groupName,jdbcType=VARCHAR},
+        huibao_name = #{huibaoName,jdbcType=VARCHAR},
       </if>
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},

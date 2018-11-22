@@ -18,4 +18,6 @@ public interface HomeMapper {
     int updateByPrimaryKey(Home record);
 
     List<Home> selectHomeList(Home home);
+
+    int countHomeList(Home home);
 }

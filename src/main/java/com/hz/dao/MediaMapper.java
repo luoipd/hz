@@ -19,5 +19,7 @@ public interface MediaMapper {
 
     List<Media> selectListMedia(Media media);
 
+    List<Media> selectListMedia1();
+
     int countMedia(Media media);
 }

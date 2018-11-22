@@ -23,6 +23,18 @@
     from h_home a
     <where>
       <if test="title!=null"> a.title like #{pattern}</if>
+      <if test="status!=null"> and a.status =  #{status,jdbcType=INTEGER}</if>
+      <if test="proposalId!=null">and a.proposal_id =  #{proposalId,jdbcType=INTEGER}</if>
+    </where> order by a.id desc
+  </select>
+  <select id="countHomeList" parameterType="com.hz.domain.Home" resultType="java.lang.Integer">
+    <if test="title!=null"><bind name="pattern" value="'%'+title+'%'"></bind></if>
+    select count(a.id)
+    from h_home a
+    <where>
+      <if test="title!=null"> a.title like #{pattern}</if>
+      <if test="status!=null"> and a.status =  #{status,jdbcType=INTEGER}</if>
+      <if test="proposalId!=null">and a.proposal_id =  #{proposalId,jdbcType=INTEGER}</if>
     </where>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

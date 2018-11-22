@@ -19,7 +19,7 @@ public interface MethodResourceService {
 
         ResourceBean getResourceBeanById(int id);
 
-        void updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail,int id);
+        int updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail,int id);
 
         void insertMethodResource(MethodResource methodResource,int id) throws Exception;
 

@@ -54,9 +54,8 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             methodResource1.setMediaName(mediaMapper.selectByPrimaryKey(methodResource1.getMediaId()).getMediaName());
             //资源不区分行业，行业字段废弃
 //            methodResource1.setIndustryName(industryMapper.selectByPrimaryKey(methodResource1.getIndustryId()).getIndustryName());
-            List<Integer> tagIds1 = tagMethodMapper.selectTagIds(methodResource1.getId());
-            Integer[] ta = new Integer[tagIds1.size()];
-            methodResource1.setTagIds(tagIds1.toArray(ta));
+            List<Tag> tagList = tagMapper.selectTagListByMethodId(methodResource1.getId());
+            methodResource1.setTags(tagList);
         }
         return resourceList;
     }
@@ -95,7 +94,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
 
     @Override
     @Transactional
-    public void updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail,int id) {
+    public int updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail,int id) {
 
             if(methodResource.getId()==null||methodResource.getId()==0){
                 methodResource.setCreaterId(id);
@@ -140,6 +139,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
                     advertisingUnstandardDetailMapper.updateByPrimaryKeySelective(advertisingUnstandardDetail);
                 }
             }
+            return methodResource.getId();
     }
 
     @Override
