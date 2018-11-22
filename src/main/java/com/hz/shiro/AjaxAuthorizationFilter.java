@@ -1,6 +1,7 @@
 package com.hz.shiro;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hz.domain.User;
 import com.hz.util.ResJson;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -39,6 +40,10 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		Session session = subject.getSession();
 		System.out.println(session);
 		String token1 = (String) session.getAttribute("token");
+		User user = (User) session.getAttribute("user");
+		if(user.getId()==1){
+			return true;
+		}
 		Set<String> stringSet = (Set<String>) session.getAttribute("urls");
 		// If the subject isn't identified, redirect to login URL
 		ResJson resJson = new ResJson();

@@ -11,7 +11,7 @@
     <result column="huibao_site" property="huibaoSite" jdbcType="VARCHAR" />
     <result column="huibao_detail" property="huibaoDetail" jdbcType="VARCHAR" />
     <result column="per" property="per" jdbcType="VARCHAR" />
-    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -53,7 +53,7 @@
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{picId,jdbcType=INTEGER},#{huibaoName,jdbcType=VARCHAR},
       #{groupName,jdbcType=VARCHAR}, #{huibaoType,jdbcType=VARCHAR}, #{huibaoSite,jdbcType=VARCHAR},
       #{huibaoDetail,jdbcType=VARCHAR},
-      #{per,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{per,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -135,7 +135,7 @@
         #{per,jdbcType=VARCHAR},
       </if>
       <if test="number != null" >
-        #{number,jdbcType=INTEGER},
+        #{number,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
@@ -182,7 +182,7 @@
         per = #{per,jdbcType=VARCHAR},
       </if>
       <if test="number != null" >
-        `number` = #{number,jdbcType=INTEGER},
+        `number` = #{number,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
@@ -212,7 +212,7 @@
       huibao_site = #{huibaoSite,jdbcType=VARCHAR},
       huibao_detail = #{huibaoDetail,jdbcType=VARCHAR},
       per = #{per,jdbcType=VARCHAR},
-      `number` = #{number,jdbcType=INTEGER},
+      `number` = #{number,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       creater_id = #{createrId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

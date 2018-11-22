@@ -24,7 +24,7 @@ public class HuiBao {
 
     private String per;
 
-    private Integer number;
+    private String number;
 
     private BigDecimal price;
 
@@ -101,11 +101,11 @@ public class HuiBao {
         this.per = per == null ? null : per.trim();
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
