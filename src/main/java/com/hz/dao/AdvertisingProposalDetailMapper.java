@@ -17,5 +17,7 @@ public interface AdvertisingProposalDetailMapper {
 
     int updateByPrimaryKey(AdvertisingProposalDetail record);
 
+
     List<AdvertisingProposalDetail> selectListByParentId(int parentId);
+
 }

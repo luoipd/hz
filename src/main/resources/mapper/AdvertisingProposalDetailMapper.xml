@@ -30,7 +30,7 @@
     select id, parent_id, module_id, data_id, `desc` from h_advertising_proposal_detail where parent_id = #{parentId,jdbcType=INTEGER}
   </select>
   <insert id="insert" parameterType="com.hz.domain.AdvertisingProposalDetail" >
-    insert into h_advertising_proposal_detail (id, parent_id, module_id, 
+    insert into h_advertising_proposal_detail (id, parent_id, module_id,
       data_id, `desc`,module_type, creater_id,
       create_time, updater_id, update_time
       )
@@ -145,7 +145,15 @@
       module_id = #{moduleId,jdbcType=INTEGER},
       data_id = #{dataId,jdbcType=INTEGER},
       `desc` = #{desc,jdbcType=VARCHAR},
-      updater_id = #{updaterId,jdbcType=INTEGER}
+      module_type = #{moduleType,jdbcType=INTEGER}
+      creater_id = #{createrId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      updater_id = #{updaterId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectDataPicByProposalId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select module_id,data_id,`desc`,parent_id from h_advertising_proposal_detail where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
 </mapper>

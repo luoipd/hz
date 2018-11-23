@@ -2,9 +2,9 @@ package com.hz.service.impl;
 
 import com.hz.dao.AdvertisingProposalDetailMapper;
 import com.hz.dao.AdvertisingProposalMapper;
-import com.hz.dao.AdvertisingStandardDetailMapper;
 import com.hz.domain.AdvertisingProposal;
 import com.hz.domain.AdvertisingProposalDetail;
+import com.hz.dao.DataPicMapper;
 import com.hz.service.ProposalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,12 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Autowired
     AdvertisingProposalMapper advertisingProposalMapper;
+    @Autowired
+    AdvertisingProposalDetailMapper advertisingProposalDetailMapper;
+
+    @Autowired
+    DataPicMapper dataPicMapper;
+
     @Autowired
     AdvertisingProposalDetailMapper advertisingProposalDetailMapper;
 
@@ -53,7 +59,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List getModuleInfoList(int proposalId) {
+    public List getModuleInfoListByProposalId(int proposalId) {
         List<AdvertisingProposalDetail> advertisingProposalDetails = advertisingProposalDetailMapper.selectListByParentId(proposalId);
         for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
             switch (advertisingProposalDetail.getModuleId()){
@@ -63,8 +69,7 @@ public class ProposalServiceImpl implements ProposalService {
 
             }
         }
-        return null;
+        return advertisingProposalDetails;
     }
-
 
 }

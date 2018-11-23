@@ -3,6 +3,7 @@ package com.hz.controller.usercenterController;
 import com.alibaba.fastjson.JSONObject;
 import com.hz.controller.BaseController;
 import com.hz.domain.AdvertisingProposal;
+import com.hz.domain.DataPic;
 import com.hz.service.ProposalService;
 import com.hz.util.ResJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +76,11 @@ public class HzProposalController extends BaseController {
     }
 
     @RequestMapping(value = "/api/hzProposal/getModuleInfoList" ,method = RequestMethod.GET)
-    public String getModuleInfoList(@Valid int proposalId){
+
+    public String getModuleInfoList(int proposalId){
         ResJson resJson = new ResJson();
-        proposalService.getModuleInfoList(proposalId);
+        List<DataPic> list = proposalService.getModuleInfoListByProposalId(proposalId);
+
         return JSONObject.toJSONString(resJson);
     }
 
