@@ -166,10 +166,7 @@
       price = #{price,jdbcType=DECIMAL},
       size = #{size,jdbcType=VARCHAR},
       requirement = #{requirement,jdbcType=VARCHAR},
-      creater_id = #{createrId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      updater_id = #{updaterId,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

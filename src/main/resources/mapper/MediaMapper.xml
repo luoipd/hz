@@ -165,10 +165,7 @@
       mobile = #{mobile,jdbcType=VARCHAR},
       pic_id = #{picId,jdbcType=INTEGER},
       import_level = #{importLevel,jdbcType=VARCHAR},
-      creater_id = #{createrId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      updater_id = #{updaterId,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

@@ -1,7 +1,10 @@
 package com.hz.service.impl;
 
+import com.hz.dao.AdvertisingProposalDetailMapper;
 import com.hz.dao.AdvertisingProposalMapper;
+import com.hz.dao.AdvertisingStandardDetailMapper;
 import com.hz.domain.AdvertisingProposal;
+import com.hz.domain.AdvertisingProposalDetail;
 import com.hz.service.ProposalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Autowired
     AdvertisingProposalMapper advertisingProposalMapper;
+    @Autowired
+    AdvertisingProposalDetailMapper advertisingProposalDetailMapper;
 
     @Override
     public int createProposal(AdvertisingProposal advertisingProposal) {
@@ -46,5 +51,20 @@ public class ProposalServiceImpl implements ProposalService {
     public void deleteProposalById(int proposalId) {
         advertisingProposalMapper.deleteByPrimaryKey(proposalId);
     }
+
+    @Override
+    public List getModuleInfoList(int proposalId) {
+        List<AdvertisingProposalDetail> advertisingProposalDetails = advertisingProposalDetailMapper.selectListByParentId(proposalId);
+        for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
+            switch (advertisingProposalDetail.getModuleId()){
+                case 1:break;
+                case 2:break;
+                case 3:break;
+
+            }
+        }
+        return null;
+    }
+
 
 }

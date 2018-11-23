@@ -58,7 +58,7 @@ public class HzBasicController extends BaseController {
     @ResponseBody
     public String delTag(@Valid int id){
         ResJson resJson = new ResJson();
-        basicService.deleteTag(id);
+        basicService.deleteTag(id,sysUser);
         return JSONObject.toJSONString(resJson);
     }
 

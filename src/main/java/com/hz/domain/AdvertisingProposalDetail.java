@@ -13,6 +13,8 @@ public class AdvertisingProposalDetail {
 
     private String desc;
 
+    private Integer moduleType;
+
     private Integer createrId;
 
     private Date createTime;
@@ -91,5 +93,13 @@ public class AdvertisingProposalDetail {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getModuleType() {
+        return moduleType;
+    }
+
+    public void setModuleType(Integer moduleType) {
+        this.moduleType = moduleType;
     }
 }

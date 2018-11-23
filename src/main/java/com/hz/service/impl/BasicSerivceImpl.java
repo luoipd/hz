@@ -2,6 +2,7 @@ package com.hz.service.impl;
 
 import com.hz.dao.TagMapper;
 import com.hz.domain.Tag;
+import com.hz.domain.User;
 import com.hz.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,15 +31,16 @@ public class BasicSerivceImpl implements BasicService {
     }
 
     @Override
-    public void deleteTag(int id) {
+    public void deleteTag(int id, User user) {
         Tag tag = new Tag();
         tag.setId(id);
         tag.setStatus(0);
+        tag.setUpdaterId(user.getId());
         tagMapper.updateByPrimaryKeySelective(tag);
     }
 
     @Override
     public void updateTag(Tag tag) {
-        tagMapper.updateByPrimaryKeySelective(tag);
+        tagMapper.updateByPrimaryKey(tag);
     }
 }

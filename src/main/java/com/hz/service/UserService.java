@@ -28,6 +28,8 @@ public interface UserService {
 
     void updateUser(User user);
 
+    void updateUserAll(User user);
+
     List<User> getUserList(User user, PageRequest pageRequest);
 
     void deleteUserById(int id);

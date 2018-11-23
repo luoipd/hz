@@ -59,6 +59,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
 
     @Override
     public void updateHome(Home home, List<Integer> picIds, User user) {
+        home.setUpdaterId(user.getId());
         homeMapper.updateByPrimaryKeySelective(home);
         insertDataPic(picIds,home,user);
 

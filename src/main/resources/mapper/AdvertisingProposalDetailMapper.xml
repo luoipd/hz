@@ -7,13 +7,14 @@
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
     <result column="data_id" property="dataId" jdbcType="INTEGER" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="module_type" property="moduleType" jdbcType="INTEGER" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, module_id, data_id, desc, creater_id, create_time, updater_id, update_time
+    id, parent_id, module_id, data_id, `desc`,module_type, creater_id, create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,13 +26,16 @@
     delete from h_advertising_proposal_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <select id="selectListByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, parent_id, module_id, data_id, `desc` from h_advertising_proposal_detail where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
   <insert id="insert" parameterType="com.hz.domain.AdvertisingProposalDetail" >
     insert into h_advertising_proposal_detail (id, parent_id, module_id, 
-      data_id, desc, creater_id, 
+      data_id, `desc`,module_type, creater_id,
       create_time, updater_id, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{moduleId,jdbcType=INTEGER}, 
-      #{dataId,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{createrId,jdbcType=INTEGER}, 
+      #{dataId,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR},#{moduleType,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -51,7 +55,10 @@
         data_id,
       </if>
       <if test="desc != null" >
-        desc,
+        `desc`,
+      </if>
+      <if test="moduleType != null" >
+        module_type,
       </if>
       <if test="createrId != null" >
         creater_id,
@@ -82,6 +89,9 @@
       <if test="desc != null" >
         #{desc,jdbcType=VARCHAR},
       </if>
+      <if test="moduleType != null" >
+        #{moduleType,jdbcType=INTEGER},
+      </if>
       <if test="createrId != null" >
         #{createrId,jdbcType=INTEGER},
       </if>
@@ -109,7 +119,10 @@
         data_id = #{dataId,jdbcType=INTEGER},
       </if>
       <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleType != null" >
+        module_type = #{moduleType,jdbcType=INTEGER},
       </if>
       <if test="createrId != null" >
         creater_id = #{createrId,jdbcType=INTEGER},
@@ -131,11 +144,8 @@
     set parent_id = #{parentId,jdbcType=INTEGER},
       module_id = #{moduleId,jdbcType=INTEGER},
       data_id = #{dataId,jdbcType=INTEGER},
-      desc = #{desc,jdbcType=VARCHAR},
-      creater_id = #{createrId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      updater_id = #{updaterId,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      `desc` = #{desc,jdbcType=VARCHAR},
+      updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

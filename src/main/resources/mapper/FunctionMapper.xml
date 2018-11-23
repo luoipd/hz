@@ -112,8 +112,7 @@
       permission_name = #{permissionName,jdbcType=VARCHAR},
       pid = #{pid,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      level = #{level,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

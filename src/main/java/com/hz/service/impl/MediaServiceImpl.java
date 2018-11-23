@@ -60,7 +60,7 @@ public class MediaServiceImpl implements MediaService {
         try{
             mediaMapper.updateByPrimaryKeySelective(media);
         }catch (Exception e){
-            throw new Exception("插入失败");
+            throw new Exception("更新失败");
         }
 
     }

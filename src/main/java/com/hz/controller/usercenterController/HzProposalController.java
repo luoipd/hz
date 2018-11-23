@@ -5,7 +5,6 @@ import com.hz.controller.BaseController;
 import com.hz.domain.AdvertisingProposal;
 import com.hz.service.ProposalService;
 import com.hz.util.ResJson;
-import javafx.scene.chart.ValueAxis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,8 +75,9 @@ public class HzProposalController extends BaseController {
     }
 
     @RequestMapping(value = "/api/hzProposal/getModuleInfoList" ,method = RequestMethod.GET)
-    public String getModuleInfoList(){
+    public String getModuleInfoList(@Valid int proposalId){
         ResJson resJson = new ResJson();
+        proposalService.getModuleInfoList(proposalId);
         return JSONObject.toJSONString(resJson);
     }
 

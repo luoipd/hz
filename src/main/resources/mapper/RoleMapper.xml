@@ -76,7 +76,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.Role" >
     update s_role
-    set create_time = #{createTime,jdbcType=TIMESTAMP},
+    set
       role_name = #{roleName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

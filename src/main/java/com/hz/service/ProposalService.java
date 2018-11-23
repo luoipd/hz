@@ -20,5 +20,7 @@ public interface ProposalService {
 
     void deleteProposalById(int proposalId);
 
+    List getModuleInfoList(int proposalId);
+
 
 }

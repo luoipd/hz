@@ -41,7 +41,7 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		System.out.println(session);
 		String token1 = (String) session.getAttribute("token");
 		User user = (User) session.getAttribute("user");
-		if(user.getId()==1){
+		if(user!=null&&user.getId()==1){
 			return true;
 		}
 		Set<String> stringSet = (Set<String>) session.getAttribute("urls");

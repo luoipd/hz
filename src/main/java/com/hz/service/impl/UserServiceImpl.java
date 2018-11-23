@@ -40,8 +40,12 @@ public class UserServiceImpl implements UserService {
 
     public User getUserInfo(int id){
         User user = userMapper.selectByPrimaryKey(id);
-        PictureVideo pictureVideo = pictureVideoMapper.selectByPrimaryKey(user.getPicId());
-        user.setPicUrl(pictureVideo.getUrl());
+        if(user.getPicId()!=null&&user.getPicId()!=0){
+            PictureVideo pictureVideo = pictureVideoMapper.selectByPrimaryKey(user.getPicId());
+            if(pictureVideo!=null){
+                user.setPicUrl(pictureVideo.getUrl());
+            }
+        }
         user.setPicId(null);
         List<Role> roles = roleMapper.getRoleList(user.getId());
         user.setRoles(roles);
@@ -87,6 +91,11 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByPrimaryKeySelective(user);
 
     }
+
+    public void updateUserAll(User user){
+        userMapper.updateByPrimaryKey(user);
+    }
+
 
     public List<User> getUserList(User user, PageRequest pageRequest){
 

@@ -1,6 +1,7 @@
 package com.hz.service;
 
 import com.hz.domain.Tag;
+import com.hz.domain.User;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface BasicService {
 
     void insertTag(Tag tag);
 
-    void deleteTag(int id);
+    void deleteTag(int id, User user);
 
     void updateTag(Tag tag);
 }

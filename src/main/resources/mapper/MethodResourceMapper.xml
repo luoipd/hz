@@ -228,10 +228,7 @@
       `desc` = #{desc,jdbcType=VARCHAR},
       characteristic = #{characteristic,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      creater_id = #{createrId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      updater_id = #{updaterId,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
