@@ -75,23 +75,29 @@ public class ProposalServiceImpl implements ProposalService {
     public List<ProposalModuleBean> getModuleInfoListByProposalId(int proposalId) {
         List<ProposalModuleBean> proposalModuleBeans = new ArrayList<>();
         List<AdvertisingProposalDetail> advertisingProposalDetails = advertisingProposalDetailMapper.selectListByParentId(proposalId);
+//        for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
+//            ProposalModuleBean proposalModuleBean = new ProposalModuleBean();
+//            proposalModuleBean.setModuleType(advertisingProposalDetail.getModuleType());
+//            proposalModuleBean.setModuleId(advertisingProposalDetail.getModuleId());
+//            proposalModuleBeans.add(proposalModuleBean);
+//        }
+//        proposalModuleBeans = removeDuplicateProposalModuleBean(proposalModuleBeans);
+//        for(ProposalModuleBean proposalModuleBean:proposalModuleBeans){
+//            List<Integer> dataIds = new ArrayList<>();
+//            for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
+//                if(advertisingProposalDetail.getModuleId()==proposalModuleBean.getModuleId()){
+//                    dataIds.add(advertisingProposalDetail.getDataId());
+//                }
+//            }
+//            Integer[] dataIds1 = new Integer[dataIds.size()];
+//            dataIds.toArray(dataIds1);
+//            proposalModuleBean.setDataIds(dataIds1);
+//        }
         for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
             ProposalModuleBean proposalModuleBean = new ProposalModuleBean();
             proposalModuleBean.setModuleType(advertisingProposalDetail.getModuleType());
-            proposalModuleBean.setModuleId(advertisingProposalDetail.getModuleId());
+            proposalModuleBean.setPModuleId(advertisingProposalDetail.getpModuleId());
             proposalModuleBeans.add(proposalModuleBean);
-        }
-        proposalModuleBeans = removeDuplicateProposalModuleBean(proposalModuleBeans);
-        for(ProposalModuleBean proposalModuleBean:proposalModuleBeans){
-            List<Integer> dataIds = new ArrayList<>();
-            for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
-                if(advertisingProposalDetail.getModuleId()==proposalModuleBean.getModuleId()){
-                    dataIds.add(advertisingProposalDetail.getDataId());
-                }
-            }
-            Integer[] dataIds1 = new Integer[dataIds.size()];
-            dataIds.toArray(dataIds1);
-            proposalModuleBean.setDataIds(dataIds1);
         }
         return proposalModuleBeans;
     }

@@ -32,6 +32,8 @@ public class AdvertisingProposal {
 
     private Date updateTime;
 
+    private Integer themeId;
+
     private List<ProposalModuleBean> proposalModuleBeans;
 
     public Integer getId() {
@@ -144,5 +146,13 @@ public class AdvertisingProposal {
 
     public void setProposalModuleBeans(List<ProposalModuleBean> proposalModuleBeans) {
         this.proposalModuleBeans = proposalModuleBeans;
+    }
+
+    public Integer getThemeId() {
+        return themeId;
+    }
+
+    public void setThemeId(Integer themeId) {
+        this.themeId = themeId;
     }
 }

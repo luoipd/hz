@@ -2,6 +2,7 @@ package com.hz.dao;
 
 import com.hz.domain.AdvertisingProposalDetail;
 import com.hz.domain.Home;
+import com.hz.domain.responseBean.ProposalModuleBean;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface HomeMapper {
 
     int countHomeList(Home home);
 
-    List<Home> selectHomeAllModuleList(AdvertisingProposalDetail advertisingProposalDetail);
+    List<Home> selectHomeAllModuleList(ProposalModuleBean proposalModuleBean);
 
     List<Home> selectHomeListByIds(int[] ids);
 }

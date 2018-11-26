@@ -11,5 +11,7 @@ public class ProposalModuleBean {
 
     private Integer moduleId;
     private Integer moduleType;
-    private Integer[] dataIds;
+    private Integer proposalId;
+    private Integer pModuleId;
+//    private Integer[] dataIds;
 }

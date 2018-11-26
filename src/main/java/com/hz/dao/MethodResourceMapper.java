@@ -1,6 +1,7 @@
 package com.hz.dao;
 
 import com.hz.domain.MethodResource;
+import com.hz.domain.responseBean.ProposalModuleBean;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface MethodResourceMapper {
     List<MethodResource> selectResourceList(MethodResource methodResource);
 
     int countResources(MethodResource methodResource);
+
+    List<MethodResource> selectMethodAllModuleList(ProposalModuleBean proposalModuleBean);
 }

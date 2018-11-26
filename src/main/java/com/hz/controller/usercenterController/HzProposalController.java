@@ -46,11 +46,12 @@ public class HzProposalController extends BaseController {
     @RequestMapping(value = "/api/hzProposal/createProposal",method = RequestMethod.POST)
     public String createProposal(@Valid AdvertisingProposal advertisingProposal){
         ResJson resJson = new ResJson();
-        if(advertisingProposal.getCustomerId()==null){
-            resJson.setDesc("未选择客户!!!");
+        if(advertisingProposal.getCustomerId()==null||advertisingProposal.getIndustryId()==null||advertisingProposal.getThemeId()==null){
+            resJson.setDesc("请选择客户、主题和行业！！！");
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
+
         advertisingProposal.setCreaterId(sysUser.getId());
         int id = proposalService.createProposal(advertisingProposal);
         resJson.setData(id);
@@ -108,7 +109,7 @@ public class HzProposalController extends BaseController {
     }
 
     /**
-     * 根据传入的moduleType ,moduleId,dataId 获取对应的信息
+     * 根据传入的moduleType ,pModuleId,dataId 获取对应的信息
      * @param
      * @return
      */
@@ -119,15 +120,17 @@ public class HzProposalController extends BaseController {
          * 公司介绍
          */
         if(proposalModuleBean.getModuleType()==1){
-            Home home = companyResourceService.getHomeInfo(1);
+            List<Home> homes = companyResourceService.getHomeInfo(proposalModuleBean);
+            resJson.setData(homes);
             //联系我们
-            if(proposalModuleBean.getModuleId()==2){
-
-            }
-            //客户案例
-            if(proposalModuleBean.getModuleId()==3){
-
-            }
+        }
+        if(proposalModuleBean.getModuleType()==2){
+            List<Market> markets = companyResourceService.getMarketInfo(proposalModuleBean);
+            resJson.setData(markets);
+        }
+        if(proposalModuleBean.getModuleType()==3){
+            List<MethodResource> methodResources = companyResourceService.getMethodInfo(proposalModuleBean);
+            resJson.setData(methodResources);
         }
         return JSONObject.toJSONString(resJson);
     }

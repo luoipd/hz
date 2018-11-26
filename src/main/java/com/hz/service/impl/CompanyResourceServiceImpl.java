@@ -3,6 +3,7 @@ package com.hz.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.hz.dao.*;
 import com.hz.domain.*;
+import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.service.CompanyResourceService;
 import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     CustomerCaseMapper customerCaseMapper;
     @Autowired
     ContactUsMapper contactUsMapper;
+    @Autowired
+    MarketMapper marketMapper;
+    @Autowired
+    MethodResourceMapper methodResourceMapper;
 
     @Override
     public List<Home> selectHomeList(Home home, PageRequest pageRequest) {
@@ -70,19 +75,38 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     }
 
     @Override
-    public Home getHomeInfo(int id) {
-        Home home = homeMapper.selectByPrimaryKey(id);
-        List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home.getModuleId(),home.getId());
-        home.setPictureVideos(pictureVideos);
-        if(home.getModuleId()==5){
-            CustomerCase customerCase = customerCaseMapper.selectByParentId(home.getId());
-            home.setCustomerCase(customerCase);
+    public List<Home> getHomeInfo(ProposalModuleBean proposalModuleBean) {
+        List<Home> homes = homeMapper.selectHomeAllModuleList(proposalModuleBean);
+        for(Home home:homes){
+            List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home.getModuleId(),home.getId());
+            home.setPictureVideos(pictureVideos);
+            if(home.getModuleId()==5){
+                CustomerCase customerCase = customerCaseMapper.selectByParentId(home.getId());
+                home.setCustomerCase(customerCase);
+            }
+            if(home.getModuleId()==6){
+                ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
+                home.setContactUs(contactUs);
+            }
         }
-        if(home.getModuleId()==6){
-            ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
-            home.setContactUs(contactUs);
+
+        return homes;
+    }
+
+    @Override
+    public List<Market> getMarketInfo(ProposalModuleBean proposalModuleBean) {
+        List<Market> markets = marketMapper.selectMarketAllModuleList(proposalModuleBean);
+        for(Market market:markets){
+            List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(market.getModuleId(),market.getId());
+            market.setPictureVideos(pictureVideos);
         }
-        return home;
+        return markets;
+    }
+
+    @Override
+    public List<MethodResource> getMethodInfo(ProposalModuleBean proposalModuleBean) {
+        List<MethodResource> methodResources = methodResourceMapper.selectMethodAllModuleList(proposalModuleBean);
+        return methodResources;
     }
 
     public void insertDataPic(List<Integer> picIds,Home home,User user){

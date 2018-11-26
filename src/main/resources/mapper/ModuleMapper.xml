@@ -24,7 +24,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <select id="selectAllModule" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id,module_name,status from h_module where status = #{status,jdbcType=INTEGER}
+    select id,module_name,status from h_module where status = #{status,jdbcType=INTEGER} and pid =0
   </select>
   <insert id="insert" parameterType="com.hz.domain.Module" >
     insert into h_module (id, module_name, status, 

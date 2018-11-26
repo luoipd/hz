@@ -1,8 +1,7 @@
 package com.hz.service;
 
-import com.hz.domain.DataPic;
-import com.hz.domain.Home;
-import com.hz.domain.User;
+import com.hz.domain.*;
+import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.util.page.PageRequest;
 
 import java.util.List;
@@ -23,5 +22,9 @@ public interface CompanyResourceService {
 
     void deleteDataPic(DataPic dataPic);
 
-    Home getHomeInfo(int id);
+    List<Home> getHomeInfo(ProposalModuleBean proposalModuleBean);
+
+    List<Market> getMarketInfo(ProposalModuleBean proposalModuleBean);
+
+    List<MethodResource> getMethodInfo(ProposalModuleBean proposalModuleBean);
 }

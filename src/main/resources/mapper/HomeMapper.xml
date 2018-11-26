@@ -37,9 +37,10 @@
       <if test="proposalId!=null">and a.proposal_id =  #{proposalId,jdbcType=INTEGER}</if>
     </where>
   </select>
-  <select id="selectHomeAllModuleList" parameterType="com.hz.domain.AdvertisingProposalDetail" resultMap="BaseResultMap">
-    select a.id, a.title, a.content from h_home a join h_advertising_proposal_detail b on a.id = b.data_id and a.module_id = b.module_id
-
+  <select id="selectHomeAllModuleList" parameterType="com.hz.domain.responseBean.ProposalModuleBean" resultMap="BaseResultMap">
+  select a.data_id as id,a.module_id,b.title,b.content from
+  h_advertising_proposal_detail a join h_home b on a.module_id = b.module_id and a.data_id = b.id
+  where a.p_module_id = #{pModuleId,jdbcType=INTEGER} and a.parent_id = #{proposalId,jdbcType=INTEGER} and b.status = 1
 </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
