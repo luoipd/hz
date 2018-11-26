@@ -80,8 +80,8 @@ public class HzCompanyResourceController extends BaseController {
     @RequestMapping(value = "/api/companyResource/homeInfo",method = RequestMethod.GET)
     public String homeInfo(@Valid int id){
         ResJson resJson = new ResJson();
-        Home home = companyResourceService.getHomeInfo(id);
-        resJson.setData(home);
+//        Home home = companyResourceService.getHomeInfo(id);
+//        resJson.setData(home);
         return JSONObject.toJSONString(resJson);
     }
 

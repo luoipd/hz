@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         if(user.getUsername().isEmpty()){
             throw new Exception();
         }
-        userMapper.insertUser(user);
+        userMapper.insertSelective(user);
     }
 
 

@@ -43,6 +43,19 @@
       <if test="industryId!=null">and industry_id = #{industryId,jdbcType=INTEGER}</if>
     </where>
   </select>
+  <select id="countProposalList" parameterType="com.hz.domain.AdvertisingProposal" resultType="java.lang.Integer">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    <if test="proposalName!=null"><bind name="pattern1" value="'%'+proposalName+'%'"></bind></if>
+    <if test="version!=null"><bind name="pattern2" value="'%'+version+'%'"></bind></if>
+    select     count(id)
+    from h_advertising_proposal
+    <where>
+      <if test="customerName!=null">customer_name like #{pattern}</if>
+      <if test="proposalName!=null">and proposal_name like #{pattern1}</if>
+      <if test="version!=null">and version like #{pattern2} </if>
+      <if test="industryId!=null">and industry_id = #{industryId,jdbcType=INTEGER}</if>
+    </where>
+  </select>
   <insert id="insert" parameterType="com.hz.domain.AdvertisingProposal" >
     insert into h_advertising_proposal (id, industry_id, proposal_name, 
       customer_id, customer_name, `desc`,

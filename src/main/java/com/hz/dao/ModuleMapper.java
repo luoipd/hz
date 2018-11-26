@@ -2,6 +2,8 @@ package com.hz.dao;
 
 import com.hz.domain.Module;
 
+import java.util.List;
+
 public interface ModuleMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface ModuleMapper {
     int updateByPrimaryKeySelective(Module record);
 
     int updateByPrimaryKey(Module record);
+
+    List<Module> selectAllModule(Integer status);
 }

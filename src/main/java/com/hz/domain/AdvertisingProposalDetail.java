@@ -9,11 +9,17 @@ public class AdvertisingProposalDetail {
 
     private Integer moduleId;
 
+    private String ModuleName;
+
+    private String methodName;//资源名称(仅moduleType =3 的时候需要查出来)
+
     private Integer dataId;
 
     private String desc;
 
     private Integer moduleType;
+
+    private Integer pModuleId;
 
     private Integer createrId;
 
@@ -101,5 +107,29 @@ public class AdvertisingProposalDetail {
 
     public void setModuleType(Integer moduleType) {
         this.moduleType = moduleType;
+    }
+
+    public String getModuleName() {
+        return ModuleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        ModuleName = moduleName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public Integer getpModuleId() {
+        return pModuleId;
+    }
+
+    public void setpModuleId(Integer pModuleId) {
+        this.pModuleId = pModuleId;
     }
 }

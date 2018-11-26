@@ -231,6 +231,7 @@ public class HzUserController extends BaseController {
             user.setPicId(1);//设置默认图片
         }
         try{
+            user.setCreaterId(sysUser.getId());
             userService.createUser(user);
 
         }catch (Exception e){

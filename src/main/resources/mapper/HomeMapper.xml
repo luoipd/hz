@@ -37,6 +37,10 @@
       <if test="proposalId!=null">and a.proposal_id =  #{proposalId,jdbcType=INTEGER}</if>
     </where>
   </select>
+  <select id="selectHomeAllModuleList" parameterType="com.hz.domain.AdvertisingProposalDetail" resultMap="BaseResultMap">
+    select a.id, a.title, a.content from h_home a join h_advertising_proposal_detail b on a.id = b.data_id and a.module_id = b.module_id
+
+</select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

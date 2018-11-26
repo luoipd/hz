@@ -2,17 +2,21 @@ package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hz.controller.BaseController;
-import com.hz.domain.AdvertisingProposal;
-import com.hz.domain.DataPic;
+import com.hz.domain.*;
+import com.hz.domain.responseBean.ProposalModuleBean;
+import com.hz.service.CompanyResourceService;
 import com.hz.service.ProposalService;
 import com.hz.util.ResJson;
+import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 方案管理模块
@@ -24,12 +28,18 @@ public class HzProposalController extends BaseController {
 
     @Autowired
     ProposalService proposalService;
+    @Autowired
+    CompanyResourceService companyResourceService;
 
     @RequestMapping(value = "/api/hzProposal/proposalList" ,method = RequestMethod.GET)
-    public String proposalList(@Valid AdvertisingProposal advertisingProposal){
+    public String proposalList(@Valid AdvertisingProposal advertisingProposal, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal);
-        resJson.setData(advertisingProposals);
+        List<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal,pageRequest);
+        int count = proposalService.countProposalList(advertisingProposal);
+        Map map = new HashMap();
+        map.put("advertisingProposals",advertisingProposals);
+        map.put("total",count);
+        resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -51,6 +61,8 @@ public class HzProposalController extends BaseController {
     public String proposalInfo(@Valid int proposalId){
         ResJson resJson = new ResJson();
         AdvertisingProposal advertisingProposal = proposalService.selectProposal(proposalId);
+        List<ProposalModuleBean> list = proposalService.getModuleInfoListByProposalId(proposalId);
+        advertisingProposal.setProposalModuleBeans(list);
         resJson.setData(advertisingProposal);
         return JSONObject.toJSONString(resJson);
     }
@@ -75,14 +87,51 @@ public class HzProposalController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
-    @RequestMapping(value = "/api/hzProposal/getModuleInfoList" ,method = RequestMethod.GET)
-
-    public String getModuleInfoList(int proposalId){
+    /**
+     * 获取已编辑的模块
+     * @param proposalId
+     * @return
+     */
+    @RequestMapping(value = "/api/hzProposal/getModuleCheckedList" ,method = RequestMethod.GET)
+    public String getModuleInfoList(@Valid int proposalId){
         ResJson resJson = new ResJson();
-        List<DataPic> list = proposalService.getModuleInfoListByProposalId(proposalId);
 
         return JSONObject.toJSONString(resJson);
     }
+
+    @RequestMapping(value = "/api/hzProposal/getAllModuleList")
+    public String getAllModuleList(){
+        ResJson resJson = new ResJson();
+        List<Module> modules = proposalService.getAllModuleList(1);
+        resJson.setData(modules);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    /**
+     * 根据传入的moduleType ,moduleId,dataId 获取对应的信息
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/api/hzProposal/getModuleInfo")
+    public String getModuleInfo(ProposalModuleBean proposalModuleBean){
+        ResJson resJson = new ResJson();
+        /**
+         * 公司介绍
+         */
+        if(proposalModuleBean.getModuleType()==1){
+            Home home = companyResourceService.getHomeInfo(1);
+            //联系我们
+            if(proposalModuleBean.getModuleId()==2){
+
+            }
+            //客户案例
+            if(proposalModuleBean.getModuleId()==3){
+
+            }
+        }
+        return JSONObject.toJSONString(resJson);
+    }
+
 
 
     @RequestMapping(value = "/api/hzProposal/insertModule" ,method = RequestMethod.POST)

@@ -1,6 +1,9 @@
 package com.hz.domain;
 
+import com.hz.domain.responseBean.ProposalModuleBean;
+
 import java.util.Date;
+import java.util.List;
 
 public class AdvertisingProposal {
     private Integer id;
@@ -28,6 +31,8 @@ public class AdvertisingProposal {
     private Integer updaterId;
 
     private Date updateTime;
+
+    private List<ProposalModuleBean> proposalModuleBeans;
 
     public Integer getId() {
         return id;
@@ -131,5 +136,13 @@ public class AdvertisingProposal {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<ProposalModuleBean> getProposalModuleBeans() {
+        return proposalModuleBeans;
+    }
+
+    public void setProposalModuleBeans(List<ProposalModuleBean> proposalModuleBeans) {
+        this.proposalModuleBeans = proposalModuleBeans;
     }
 }

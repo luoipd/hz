@@ -18,4 +18,6 @@ public interface AdvertisingProposalMapper {
     int updateByPrimaryKey(AdvertisingProposal record);
 
     List<AdvertisingProposal> selectProposalList(AdvertisingProposal advertisingProposal);
+
+    int countProposalList(AdvertisingProposal advertisingProposal);
 }

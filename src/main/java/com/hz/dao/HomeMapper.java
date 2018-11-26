@@ -1,5 +1,6 @@
 package com.hz.dao;
 
+import com.hz.domain.AdvertisingProposalDetail;
 import com.hz.domain.Home;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface HomeMapper {
     List<Home> selectHomeList(Home home);
 
     int countHomeList(Home home);
+
+    List<Home> selectHomeAllModuleList(AdvertisingProposalDetail advertisingProposalDetail);
+
+    List<Home> selectHomeListByIds(int[] ids);
 }

@@ -1,13 +1,8 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.hz.dao.DataPicMapper;
-import com.hz.dao.HomeMapper;
-import com.hz.dao.PictureVideoMapper;
-import com.hz.domain.DataPic;
-import com.hz.domain.Home;
-import com.hz.domain.PictureVideo;
-import com.hz.domain.User;
+import com.hz.dao.*;
+import com.hz.domain.*;
 import com.hz.service.CompanyResourceService;
 import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +23,10 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     DataPicMapper dataPicMapper;
     @Autowired
     PictureVideoMapper pictureVideoMapper;
+    @Autowired
+    CustomerCaseMapper customerCaseMapper;
+    @Autowired
+    ContactUsMapper contactUsMapper;
 
     @Override
     public List<Home> selectHomeList(Home home, PageRequest pageRequest) {
@@ -75,6 +74,14 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
         Home home = homeMapper.selectByPrimaryKey(id);
         List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home.getModuleId(),home.getId());
         home.setPictureVideos(pictureVideos);
+        if(home.getModuleId()==5){
+            CustomerCase customerCase = customerCaseMapper.selectByParentId(home.getId());
+            home.setCustomerCase(customerCase);
+        }
+        if(home.getModuleId()==6){
+            ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
+            home.setContactUs(contactUs);
+        }
         return home;
     }
 

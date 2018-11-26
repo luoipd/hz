@@ -5,6 +5,9 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
+    <result column="p_module_id" property="pModuleId" jdbcType="INTEGER" />
+      <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="method_name" property="methodName" jdbcType="VARCHAR" />
     <result column="data_id" property="dataId" jdbcType="INTEGER" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="module_type" property="moduleType" jdbcType="INTEGER" />
@@ -14,7 +17,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, module_id, data_id, `desc`,module_type, creater_id, create_time, updater_id, update_time
+    id, parent_id, module_id,p_module_id, data_id, `desc`,module_type, creater_id, create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,11 +30,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <select id="selectListByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, parent_id, module_id, data_id, `desc` from h_advertising_proposal_detail where parent_id = #{parentId,jdbcType=INTEGER}
+    select  a.parent_id, a.module_id,a.p_module_id, a.data_id,a.module_type from h_advertising_proposal_detail a
+     where a.parent_id = #{parentId,jdbcType=INTEGER}
   </select>
   <insert id="insert" parameterType="com.hz.domain.AdvertisingProposalDetail" >
     insert into h_advertising_proposal_detail (id, parent_id, module_id,
-      data_id, `desc`,module_type, creater_id,
+      data_id, `desc`,module_type, creater_id,p_module_id,
       create_time, updater_id, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{moduleId,jdbcType=INTEGER}, 

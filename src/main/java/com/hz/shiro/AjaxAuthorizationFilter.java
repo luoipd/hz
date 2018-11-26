@@ -51,7 +51,7 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 			if (isAjaxRequest(httpRequest)) {
 
 			} else {
-				resJson.setStatus(0);
+				resJson.setStatus(110);
 				resJson.setDesc("登录信息失效,请重新登录！！");
 			}
 		}else if(token==null||!token.equals(token1)){

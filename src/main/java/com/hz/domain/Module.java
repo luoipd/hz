@@ -7,6 +7,8 @@ public class Module {
 
     private String moduleName;
 
+    private Integer status;
+
     private Integer createrId;
 
     private Date createTime;
@@ -29,6 +31,14 @@ public class Module {
 
     public void setModuleName(String moduleName) {
         this.moduleName = moduleName == null ? null : moduleName.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getCreaterId() {

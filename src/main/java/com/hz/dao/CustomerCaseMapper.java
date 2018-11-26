@@ -14,4 +14,6 @@ public interface CustomerCaseMapper {
     int updateByPrimaryKeySelective(CustomerCase record);
 
     int updateByPrimaryKey(CustomerCase record);
+
+    CustomerCase selectByParentId(int parentId);
 }
