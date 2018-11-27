@@ -69,9 +69,14 @@
   </insert>
 
   <delete id="deleteDataPic" parameterType="com.hz.domain.DataPic">
-    delete  from h_data_pic where data_id = #{dataId,jdbcType=INTEGER} and pic_id =  #{picId,jdbcType=INTEGER}
-    and module_id = #{moduleId,jdbcType=INTEGER}
+    delete  from h_data_pic
+    <where>
+      <if test="dataId != null">data_id= #{dataId,jdbcType=INTEGER}</if>
+      <if test="picId != null">and pic_id = #{picId,jdbcType=INTEGER}</if>
+      <if test="moduleId != null">and module_id = #{moduleId,jdbcType=INTEGER}</if>
+    </where>
   </delete>
+
 
 
 </mapper>

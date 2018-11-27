@@ -138,4 +138,12 @@ public class ProposalServiceImpl implements ProposalService {
         return advertisingProposalMapper.countProposalList(advertisingProposal);
     }
 
+    @Override
+    public void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail) {
+        if(advertisingProposalDetail.getpModuleId()!=1&&advertisingProposalDetail.getpModuleId()!=2){
+            advertisingProposalDetailMapper.deleteOldAdvertisingProposal(advertisingProposalDetail);
+        }
+        advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
+    }
+
 }

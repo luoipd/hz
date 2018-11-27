@@ -8,6 +8,7 @@ import com.hz.service.CompanyResourceService;
 import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @date 2018/11/21
  */
 @Service
+@Transactional
 public class CompanyResourceServiceImpl implements CompanyResourceService {
 
     @Autowired
@@ -57,7 +59,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     public int createHome(Home home, List<Integer> picIds, User user) {
         home.setStatus(1);
         homeMapper.insertSelective(home);
-        insertDataPic(picIds,home,user);
+        insertDataPicHome(picIds,home,user);
         return home.getId();
     }
 
@@ -65,8 +67,23 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     public void updateHome(Home home, List<Integer> picIds, User user) {
         home.setUpdaterId(user.getId());
         homeMapper.updateByPrimaryKeySelective(home);
-        insertDataPic(picIds,home,user);
+        insertDataPicHome(picIds,home,user);
 
+    }
+
+    @Override
+    public int createMarket(Market market, List<Integer> picIds, User user) {
+        market.setStatus(1);
+        marketMapper.insertSelective(market);
+        insertDataPicMarket(picIds,market,user);
+        return market.getId();
+    }
+
+    @Override
+    public void updateMarket(Market market, List<Integer> picIds, User user) {
+        market.setUpdaterId(user.getId());
+        marketMapper.updateByPrimaryKeySelective(market);
+        insertDataPicMarket(picIds,market,user);
     }
 
     @Override
@@ -109,12 +126,49 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
         return methodResources;
     }
 
-    public void insertDataPic(List<Integer> picIds,Home home,User user){
+    @Override
+    public void insertCustomerCase(CustomerCase customerCase) {
+        customerCaseMapper.insertSelective(customerCase);
+    }
+
+    @Override
+    public void insertContactUs(ContactUs contactUs) {
+        contactUsMapper.insertSelective(contactUs);
+    }
+
+
+    /**
+     * 清除绑定图片再重新绑定
+     * @param picIds
+     * @param home
+     * @param user
+     */
+    public void insertDataPicHome(List<Integer> picIds,Home home,User user){
+        DataPic dataPic1 = new DataPic();
+        dataPic1.setDataId(home.getId());
+        dataPic1.setModuleId(home.getModuleId());
+        dataPicMapper.deleteDataPic(dataPic1);
         for(int i :picIds){
             DataPic dataPic = new DataPic();
             dataPic.setDataId(home.getId());
             dataPic.setPicId(i);
             dataPic.setModuleId(home.getModuleId());
+            dataPic.setUpdaterId(user.getId());
+            dataPic.setCreaterId(user.getId());
+            dataPicMapper.insertSelective(dataPic);
+        }
+    }
+
+    public void insertDataPicMarket(List<Integer> picIds,Market market,User user){
+        DataPic dataPic1 = new DataPic();
+        dataPic1.setDataId(market.getId());
+        dataPic1.setModuleId(market.getModuleId());
+        dataPicMapper.deleteDataPic(dataPic1);
+        for(int i :picIds){
+            DataPic dataPic = new DataPic();
+            dataPic.setDataId(market.getId());
+            dataPic.setPicId(i);
+            dataPic.setModuleId(market.getModuleId());
             dataPic.setUpdaterId(user.getId());
             dataPic.setCreaterId(user.getId());
             dataPicMapper.insertSelective(dataPic);

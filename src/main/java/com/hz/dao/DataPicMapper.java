@@ -12,4 +12,5 @@ public interface DataPicMapper {
     void deleteDataPic(DataPic dataPic);
 
 
+
 }

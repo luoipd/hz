@@ -30,8 +30,8 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <select id="selectPicVideoByModuleAndDataId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select b.id ,b.url  from h_data_pic a join h_pic_video b on a.pic_id = b.id where a.module_id = #{0} and a.data_id = #{1}
+  <select id="selectPicVideoByModuleAndDataId" resultMap="BaseResultMap">
+    select b.id ,b.url  from h_data_pic a join h_pic_video b on a.pic_id = b.id where a.module_id = #{arg0} and a.data_id = #{arg1}
   </select>
 
   <insert id="insert" parameterType="com.hz.domain.PictureVideo" >

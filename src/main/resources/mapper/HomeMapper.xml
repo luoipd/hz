@@ -62,7 +62,7 @@
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hz.domain.Home" >
+  <insert id="insertSelective" parameterType="com.hz.domain.Home" useGeneratedKeys="true" keyColumn="id" keyProperty="id" >
     insert into h_home
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -128,6 +128,9 @@
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.Home" >
     update h_home

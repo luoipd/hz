@@ -20,6 +20,10 @@ public interface CompanyResourceService {
 
     void updateHome(Home home,List<Integer> picIds,User user);
 
+    int createMarket(Market market, List<Integer> picIds, User user);
+
+    void updateMarket(Market market,List<Integer> picIds,User user);
+
     void deleteDataPic(DataPic dataPic);
 
     List<Home> getHomeInfo(ProposalModuleBean proposalModuleBean);
@@ -27,4 +31,10 @@ public interface CompanyResourceService {
     List<Market> getMarketInfo(ProposalModuleBean proposalModuleBean);
 
     List<MethodResource> getMethodInfo(ProposalModuleBean proposalModuleBean);
+
+    void insertCustomerCase(CustomerCase customerCase);
+
+    void insertContactUs(ContactUs contactUs);
+
+
 }

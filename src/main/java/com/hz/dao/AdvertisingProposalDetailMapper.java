@@ -20,4 +20,6 @@ public interface AdvertisingProposalDetailMapper {
 
     List<AdvertisingProposalDetail> selectListByParentId(int parentId);
 
+    void deleteOldAdvertisingProposal(AdvertisingProposalDetail advertisingProposalDetail);
+
 }
