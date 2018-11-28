@@ -32,7 +32,28 @@
      select a.data_id as id,a.module_id,b.title,b.content,b.industry_id from
   h_advertising_proposal_detail a join h_market b on a.module_id = b.module_id and a.data_id = b.id
   where a.p_module_id = #{pModuleId,jdbcType=INTEGER} and a.parent_id = #{proposalId,jdbcType=INTEGER} and b.status = 1
-
+  </select>
+  <select id="selectMarketList" parameterType="com.hz.domain.Market" resultMap="BaseResultMap">
+    <if test="title!=null"><bind name="pattern" value="'%'+title+'%'"></bind></if>
+    select a.id,a.title,a.content,a.module_id,a.status,a.proposal_id,b.module_name,a.industry_id
+    from h_market a join h_module b on a.module_id = b.id
+    <where>
+      <if test="title!=null"> a.title like #{pattern}</if>
+      <if test="status!=null"> and a.status =  #{status,jdbcType=INTEGER}</if>
+      <if test="proposalId!=null">and a.proposal_id =  #{proposalId,jdbcType=INTEGER}</if>
+      <if test="moduleId!=null">and a.module_id =  #{moduleId,jdbcType=INTEGER}</if>
+    </where> order by a.id desc
+  </select>
+  <select id="countMarketList" parameterType="com.hz.domain.Home" resultType="java.lang.Integer">
+    <if test="title!=null"><bind name="pattern" value="'%'+title+'%'"></bind></if>
+    select count(a.id)
+    from h_market a
+    <where>
+      <if test="title!=null"> a.title like #{pattern}</if>
+      <if test="status!=null"> and a.status =  #{status,jdbcType=INTEGER}</if>
+      <if test="proposalId!=null">and a.proposal_id =  #{proposalId,jdbcType=INTEGER}</if>
+      <if test="moduleId!=null">and a.module_id =  #{moduleId,jdbcType=INTEGER}</if>
+    </where>
   </select>
   <insert id="insert" parameterType="com.hz.domain.Market" >
     insert into h_market (id, module_id, title, 
@@ -44,7 +65,7 @@
       #{proposalId,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hz.domain.Market" >
+  <insert id="insertSelective" parameterType="com.hz.domain.Market" useGeneratedKeys="true" keyColumn="id" keyProperty="id"  >
     insert into h_market
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -116,6 +137,9 @@
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.Market" >
     update h_market

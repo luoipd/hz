@@ -1,6 +1,7 @@
 package com.hz.dao;
 
 import com.hz.domain.AdvertisingProposalDetail;
+import com.hz.domain.responseBean.ProposalModuleBean;
 
 import java.util.List;
 
@@ -21,5 +22,6 @@ public interface AdvertisingProposalDetailMapper {
     List<AdvertisingProposalDetail> selectListByParentId(int parentId);
 
     void deleteOldAdvertisingProposal(AdvertisingProposalDetail advertisingProposalDetail);
+
 
 }

@@ -45,8 +45,11 @@
   </insert>
   <delete id="deleteOldAdvertisingProposal" parameterType="com.hz.domain.AdvertisingProposalDetail">
     delete from h_advertising_proposal_detail
-    where parent_id = #{parentId,jdbcType=INTEGER} and module_id = #{moduleId,jdbcType=INTEGER}
-    and p_module_id =  #{pModuleId,jdbcType=INTEGER} and module_type = #{moduleType,jdbcType=INTEGER}
+    <where>
+      parent_id = #{parentId,jdbcType=INTEGER} and module_id = #{moduleId,jdbcType=INTEGER}
+      and p_module_id =  #{pModuleId,jdbcType=INTEGER} and module_type = #{moduleType,jdbcType=INTEGER}
+      <if test="dataId != null">and data_id = #{dataId,jdbcType=INTEGER}</if>
+    </where>
   </delete>
   <insert id="insertSelective" parameterType="com.hz.domain.AdvertisingProposalDetail" >
     insert into h_advertising_proposal_detail

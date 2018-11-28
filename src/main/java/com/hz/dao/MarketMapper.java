@@ -19,4 +19,8 @@ public interface MarketMapper {
     int updateByPrimaryKey(Market record);
 
     List<Market> selectMarketAllModuleList(ProposalModuleBean proposalModuleBean);
+
+    List<Market> selectMarketList(Market market);
+
+    int countMarketList(Market market);
 }

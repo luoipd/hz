@@ -72,6 +72,11 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    public void deleteProposalModule(AdvertisingProposalDetail advertisingProposalDetail) {
+        advertisingProposalDetailMapper.deleteOldAdvertisingProposal(advertisingProposalDetail);
+    }
+
+    @Override
     public List<ProposalModuleBean> getModuleInfoListByProposalId(int proposalId) {
         List<ProposalModuleBean> proposalModuleBeans = new ArrayList<>();
         List<AdvertisingProposalDetail> advertisingProposalDetails = advertisingProposalDetailMapper.selectListByParentId(proposalId);

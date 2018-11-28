@@ -49,10 +49,54 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     }
 
     @Override
+    public List<Home> selectHomeStenciList(Home home) {
+        home.setStatus(1);
+        home.setProposalId(0);
+        List<Home> homes = homeMapper.selectHomeList(home);
+        for(Home home1:homes){
+            List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home1.getModuleId(),home1.getId());
+            home1.setPictureVideos(pictureVideos);
+        }
+        return homes;
+    }
+
+    @Override
+    public List<Market> selectMarketList(Market market, PageRequest pageRequest) {
+        market.setStatus(1);
+        market.setProposalId(0);
+        PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+        List<Market> markets = marketMapper.selectMarketList(market);
+        for(Market market1:markets){
+            List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(market1.getModuleId(),market1.getId());
+            market1.setPictureVideos(pictureVideos);
+        }
+        return markets;
+    }
+
+    @Override
+    public List<Market> selectMarketStenciList(Market market) {
+        market.setStatus(1);
+        market.setProposalId(0);
+        List<Market> markets = marketMapper.selectMarketList(market);
+        for(Market market1:markets){
+            List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(market1.getModuleId(),market1.getId());
+            market1.setPictureVideos(pictureVideos);
+        }
+        return markets;
+    }
+
+    @Override
     public int countHomeList(Home home) {
         home.setStatus(1);
         home.setProposalId(0);
         return homeMapper.countHomeList(home);
+    }
+
+    @Override
+    public int countMarketList(Market market) {
+        market.setStatus(1);
+        market.setProposalId(0);
+        return marketMapper.countMarketList(market);
     }
 
     @Override
@@ -108,6 +152,30 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
         }
 
         return homes;
+    }
+
+    @Override
+    public Home getHomeInfoById(int id) {
+        Home home = homeMapper.selectByPrimaryKey(id);
+        List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home.getModuleId(),home.getId());
+        home.setPictureVideos(pictureVideos);
+        if(home.getModuleId()==5){
+            CustomerCase customerCase = customerCaseMapper.selectByParentId(home.getId());
+            home.setCustomerCase(customerCase);
+        }
+        if(home.getModuleId()==6){
+            ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
+            home.setContactUs(contactUs);
+        }
+        return home;
+    }
+
+    @Override
+    public Market getMarketInfoById(int id) {
+        Market market = marketMapper.selectByPrimaryKey(id);
+        List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(market.getModuleId(),market.getId());
+        market.setPictureVideos(pictureVideos);
+        return market;
     }
 
     @Override

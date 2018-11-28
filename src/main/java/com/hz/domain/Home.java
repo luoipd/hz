@@ -12,6 +12,8 @@ public class Home {
 
     private Integer moduleId;
 
+    private String moduleName;
+
     private Integer status;
 
     private Integer proposalId;
@@ -132,5 +134,13 @@ public class Home {
 
     public void setCustomerCase(CustomerCase customerCase) {
         this.customerCase = customerCase;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 }

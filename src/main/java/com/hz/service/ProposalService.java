@@ -24,6 +24,8 @@ public interface ProposalService {
 
     void deleteProposalById(int proposalId);
 
+    void deleteProposalModule(AdvertisingProposalDetail advertisingProposalDetail);
+
 
     List<ProposalModuleBean> getModuleInfoListByProposalId(int proposalId);
 

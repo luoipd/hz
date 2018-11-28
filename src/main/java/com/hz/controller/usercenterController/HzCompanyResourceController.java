@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hz.controller.BaseController;
 import com.hz.domain.DataPic;
 import com.hz.domain.Home;
+import com.hz.domain.Market;
 import com.hz.service.CompanyResourceService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
@@ -46,12 +47,27 @@ public class HzCompanyResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    /**
+     * 获取板块一的模板
+     * 根据moduleId
+     * @param moduleId
+     * @return
+     */
+    @RequestMapping(value = "/api/companyResource/homeStencilList",method = RequestMethod.GET)
+    public String homeStencilList(@Valid int moduleId){
+        ResJson resJson = new ResJson();
+        Home home = new Home();
+        home.setModuleId(moduleId);
+        List<Home> homes = companyResourceService.selectHomeStenciList(home);
+        resJson.setData(homes);
+        return JSONObject.toJSONString(resJson);
+    }
+
     @RequestMapping(value = "/api/companyResource/createHome",method = RequestMethod.POST)
     public String createHome(@Valid Home home, @RequestParam("files") MultipartFile[] files){
         ResJson resJson = new ResJson();
         //插入图片
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
-
         int id = companyResourceService.createHome(home,list,sysUser);
         resJson.setData(id);
         return JSONObject.toJSONString(resJson);
@@ -80,11 +96,55 @@ public class HzCompanyResourceController extends BaseController {
     @RequestMapping(value = "/api/companyResource/homeInfo",method = RequestMethod.GET)
     public String homeInfo(@Valid int id){
         ResJson resJson = new ResJson();
-//        Home home = companyResourceService.getHomeInfo(id);
-//        resJson.setData(home);
+        Home home = companyResourceService.getHomeInfoById(id);
+        resJson.setData(home);
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/companyResource/marketInfo",method = RequestMethod.GET)
+    public String marketInfo(@Valid int id){
+        ResJson resJson = new ResJson();
+        Market market = companyResourceService.getMarketInfoById(id);
+        resJson.setData(market);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
+
+    @RequestMapping(value = "/api/companyResource/marketList",method = RequestMethod.GET)
+    public String homeList(@Valid Market market, @Valid PageRequest pageRequest){
+        ResJson resJson = new ResJson();
+        List<Market> markets = companyResourceService.selectMarketList(market,pageRequest);
+        int count = companyResourceService.countMarketList(market);
+        Map map = new HashMap();
+        map.put("marketList",markets);
+        map.put("total",count);
+        resJson.setData(map);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    /**
+     * 获取板块二的模板
+     * 根据moduleId
+     * @param moduleId
+     * @return
+     */
+    @RequestMapping(value = "/api/companyResource/marketStencilList",method = RequestMethod.GET)
+    public String marketStencilList(@Valid int moduleId){
+        ResJson resJson = new ResJson();
+        Market market = new Market();
+        market.setModuleId(moduleId);
+        List<Market> markets = companyResourceService.selectMarketStenciList(market);
+        resJson.setData(markets);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/companyResource/industryList",method = RequestMethod.GET)
+    public String industryList(){
+        ResJson resJson = new ResJson();
+
+        return JSONObject.toJSONString(resJson);
+    }
 
 
 }

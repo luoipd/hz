@@ -9,7 +9,7 @@ public class AdvertisingProposalDetail {
 
     private Integer moduleId;
 
-    private String ModuleName;
+    private String moduleName;
 
     private String methodName;//资源名称(仅moduleType =3 的时候需要查出来)
 
@@ -110,11 +110,11 @@ public class AdvertisingProposalDetail {
     }
 
     public String getModuleName() {
-        return ModuleName;
+        return moduleName;
     }
 
     public void setModuleName(String moduleName) {
-        ModuleName = moduleName;
+        this.moduleName = moduleName;
     }
 
     public String getMethodName() {
