@@ -48,5 +48,7 @@ public interface CompanyResourceService {
 
     void insertContactUs(ContactUs contactUs);
 
+    List<Industry> getIndustryInfo();
+
 
 }

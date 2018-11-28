@@ -2,6 +2,8 @@ package com.hz.dao;
 
 import com.hz.domain.Industry;
 
+import java.util.List;
+
 public interface IndustryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface IndustryMapper {
     int updateByPrimaryKeySelective(Industry record);
 
     int updateByPrimaryKey(Industry record);
+
+    List<Industry> selectIndustryInfoList();
 }

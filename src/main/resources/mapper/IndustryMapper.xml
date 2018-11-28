@@ -18,6 +18,11 @@
     from h_industry
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectIndustryInfoList">
+    select
+    id, industry_name
+    from h_industry
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_industry
     where id = #{id,jdbcType=INTEGER}

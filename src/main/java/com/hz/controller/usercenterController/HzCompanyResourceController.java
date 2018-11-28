@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hz.controller.BaseController;
 import com.hz.domain.DataPic;
 import com.hz.domain.Home;
+import com.hz.domain.Industry;
 import com.hz.domain.Market;
 import com.hz.service.CompanyResourceService;
 import com.hz.service.PictureVideoService;
@@ -142,7 +143,16 @@ public class HzCompanyResourceController extends BaseController {
     @RequestMapping(value = "/api/companyResource/industryList",method = RequestMethod.GET)
     public String industryList(){
         ResJson resJson = new ResJson();
+        List<Industry> industries = companyResourceService.getIndustryInfo();
+        resJson.setData(industries);
+        return JSONObject.toJSONString(resJson);
+    }
 
+    @RequestMapping(value = "/api/companyResource/customerList",method = RequestMethod.GET)
+    public String customerList(@Valid int userId){
+        ResJson resJson = new ResJson();
+        List<Industry> industries = companyResourceService.getIndustryInfo();
+        resJson.setData(industries);
         return JSONObject.toJSONString(resJson);
     }
 

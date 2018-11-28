@@ -34,6 +34,8 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     MarketMapper marketMapper;
     @Autowired
     MethodResourceMapper methodResourceMapper;
+    @Autowired
+    IndustryMapper industryMapper;
 
     @Override
     public List<Home> selectHomeList(Home home, PageRequest pageRequest) {
@@ -202,6 +204,12 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     @Override
     public void insertContactUs(ContactUs contactUs) {
         contactUsMapper.insertSelective(contactUs);
+    }
+
+    @Override
+    public List<Industry> getIndustryInfo() {
+
+        return industryMapper.selectIndustryInfoList();
     }
 
 
