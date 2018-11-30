@@ -207,8 +207,7 @@ public class HzProposalController extends BaseController {
                 contactUs.setParentId(id);
                 companyResourceService.insertContactUs(contactUs);
             }
-            advertisingProposalDetail.setDataId(id);
-            insertAdvertisingProposalDetail(advertisingProposalDetail,resJson);
+            insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,id);
             resJson.setData(id);
         }else{
             home.setId(homeParamBean.getDataId());
@@ -251,7 +250,7 @@ public class HzProposalController extends BaseController {
         if(marketParamBean.getDataId()==null){
             int id = companyResourceService.createMarket(market,list,sysUser);
             advertisingProposalDetail.setDataId(id);
-            insertAdvertisingProposalDetail(advertisingProposalDetail,resJson);
+            insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,id);
             resJson.setData(id);
         }else{
             market.setId(marketParamBean.getDataId());
@@ -264,10 +263,10 @@ public class HzProposalController extends BaseController {
     @RequestMapping(value = "/api/hzProposal/insertMethodModule")
     public String insertMethodModule(@Valid AdvertisingProposalDetail advertisingProposalDetail){
         ResJson resJson = new ResJson();
-        insertAdvertisingProposalDetail(advertisingProposalDetail,resJson);
+        insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,advertisingProposalDetail.getDataId());
         return JSONObject.toJSONString(resJson);
     }
-    void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,ResJson resJson){
+    void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,ResJson resJson,int id){
         if(advertisingProposalDetail.getModuleId()==null){
             resJson.setStatus(0);
             resJson.setDesc("缺少模块id");
@@ -277,15 +276,15 @@ public class HzProposalController extends BaseController {
         }else if(advertisingProposalDetail.getParentId()==null){
             resJson.setDesc("缺少方案id");
             resJson.setStatus(0);
-        }else if(advertisingProposalDetail.getDataId()==null){
-            resJson.setDesc("缺少资源id");
-            resJson.setStatus(0);
+//        }else if(advertisingProposalDetail.getDataId()==null){
+//            resJson.setDesc("缺少资源id");
+//            resJson.setStatus(0);
         }else if(advertisingProposalDetail.getpModuleId()==null){
             resJson.setDesc("缺少子模块id");
             resJson.setStatus(0);
         }else{
             advertisingProposalDetail.setCreaterId(sysUser.getId());
-            proposalService.insertAdvertisingProposalDetail(advertisingProposalDetail);
+            proposalService.insertAdvertisingProposalDetail(advertisingProposalDetail,id);
         }
     }
 

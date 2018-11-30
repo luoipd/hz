@@ -144,10 +144,12 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail) {
-        if(advertisingProposalDetail.getpModuleId()!=1&&advertisingProposalDetail.getpModuleId()!=2){
+    public void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,int id) {
+        if(advertisingProposalDetail.getpModuleId()==1||advertisingProposalDetail.getpModuleId()==2){
+        }else{
             advertisingProposalDetailMapper.deleteOldAdvertisingProposal(advertisingProposalDetail);
         }
+        advertisingProposalDetail.setDataId(id);
         advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
     }
 
