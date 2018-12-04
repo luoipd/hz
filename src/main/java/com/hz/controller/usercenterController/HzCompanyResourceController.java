@@ -2,10 +2,7 @@ package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hz.controller.BaseController;
-import com.hz.domain.DataPic;
-import com.hz.domain.Home;
-import com.hz.domain.Industry;
-import com.hz.domain.Market;
+import com.hz.domain.*;
 import com.hz.service.CompanyResourceService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
@@ -149,10 +146,10 @@ public class HzCompanyResourceController extends BaseController {
     }
 
     @RequestMapping(value = "/api/companyResource/customerList",method = RequestMethod.GET)
-    public String customerList(@Valid int userId){
+    public String customerList(@Valid Customer customer){
         ResJson resJson = new ResJson();
-        List<Industry> industries = companyResourceService.getIndustryInfo();
-        resJson.setData(industries);
+        List<Customer> customers = companyResourceService.getCustomerList(customer);
+        resJson.setData(customers);
         return JSONObject.toJSONString(resJson);
     }
 

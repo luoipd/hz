@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.hz.domain.Industry;
 import com.hz.domain.Tag;
 import com.hz.domain.User;
 
@@ -18,4 +19,6 @@ public interface BasicService {
     void deleteTag(int id, User user);
 
     void updateTag(Tag tag);
+
+    List<Industry> getIndustryList();
 }

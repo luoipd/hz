@@ -36,6 +36,20 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     MethodResourceMapper methodResourceMapper;
     @Autowired
     IndustryMapper industryMapper;
+    @Autowired
+    AdvertisingStandardDetailMapper advertisingStandardDetailMapper;
+    @Autowired
+    AdvertisingUnstandardDetailMapper advertisingUnstandardDetailMapper;
+    @Autowired
+    AdvertisingStyleMapper advertisingStyleMapper;
+    @Autowired
+    HuiBaoMapper huiBaoMapper;
+    @Autowired
+    MediaMapper mediaMapper;
+    @Autowired
+    TagMapper tagMapper;
+    @Autowired
+    CustomerMapper customerMapper;
 
     @Override
     public List<Home> selectHomeList(Home home, PageRequest pageRequest) {
@@ -193,6 +207,24 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     @Override
     public List<MethodResource> getMethodInfo(ProposalModuleBean proposalModuleBean) {
         List<MethodResource> methodResources = methodResourceMapper.selectMethodAllModuleList(proposalModuleBean);
+        for(MethodResource methodResource:methodResources){
+            methodResource.setMediaName(mediaMapper.selectByPrimaryKey(methodResource.getMediaId()).getMediaName());
+            List<Tag> tagList = tagMapper.selectTagListByMethodId(methodResource.getId());
+            methodResource.setTags(tagList);
+            if(methodResource.getMethodType()==1){
+                AdvertisingStandardDetail advertisingStandardDetail = advertisingStandardDetailMapper.selectByPid(methodResource.getId());
+                methodResource.setAdvertisingStandardDetail(advertisingStandardDetail);
+                List<AdvertisingStyle> advertisingStyles = advertisingStyleMapper.selectListByPid(methodResource.getId());
+                methodResource.setAdvertisingStyles(advertisingStyles);
+
+            }
+            if(methodResource.getMethodType()==2){
+                AdvertisingUnstandardDetail advertisingUnstandardDetail  = advertisingUnstandardDetailMapper.selectByPid(methodResource.getId());
+                methodResource.setAdvertisingUnstandardDetail(advertisingUnstandardDetail);
+                List<HuiBao> huiBaos = huiBaoMapper.selectListByPid(methodResource.getId());
+                methodResource.setHuiBaos(huiBaos);
+            }
+        }
         return methodResources;
     }
 
@@ -210,6 +242,11 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     public List<Industry> getIndustryInfo() {
 
         return industryMapper.selectIndustryInfoList();
+    }
+
+    @Override
+    public List<Customer> getCustomerList(Customer customer) {
+        return customerMapper.selectCustomerList(customer);
     }
 
 

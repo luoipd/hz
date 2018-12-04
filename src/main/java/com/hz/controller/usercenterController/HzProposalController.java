@@ -308,6 +308,22 @@ public class HzProposalController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/hzProposal/saveVersion" ,method = RequestMethod.POST)
+    public String saveVersion(@Valid int proposalId){
+        ResJson resJson = new ResJson();
+        try {
+            proposalService.saveVersion(proposalId,sysUser.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+            resJson.setDesc("保存版本失败！！");
+            resJson.setStatus(0);
+        }
+        return JSONObject.toJSONString(resJson);
+    }
+
+
+
+
 
     @RequestMapping(value="/api/hzProposal/getResourceListByModuleId" ,method = RequestMethod.GET)
     public String getResourceListByModuleId(){

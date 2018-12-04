@@ -18,6 +18,9 @@
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+  <select id="selectDataPicList" resultMap="BaseResultMap">
+    select data_id,module_id,pic_id from h_data_pic where module_id = #{arg0} and data_id = #{arg1}
+  </select>
   <insert id="insertSelective" parameterType="com.hz.domain.DataPic" >
     insert into h_data_pic
     <trim prefix="(" suffix=")" suffixOverrides="," >

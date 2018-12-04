@@ -17,7 +17,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, customer_name, pic_id, mobile, email, companny, content, desc, status, creater_id, 
+    id, customer_name, pic_id, mobile, email, companny, content, `desc`, status, creater_id,
     create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -26,6 +26,17 @@
     from h_customer
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectCustomerList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    <if test="mobile!=null"><bind name="pattern1" value="'%'+mobile+'%'"></bind></if>
+    select
+    <include refid="Base_Column_List" />
+    from h_customer
+    <where>
+      <if test="customerName != null">customer_name like #{pattern}</if>
+      <if test="mobile != null">and mobile like #{pattern1}</if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_customer
     where id = #{id,jdbcType=INTEGER}
@@ -33,7 +44,7 @@
   <insert id="insert" parameterType="com.hz.domain.Customer" >
     insert into h_customer (id, customer_name, pic_id, 
       mobile, email, companny, 
-      content, desc, status, 
+      content, `desc`, status,
       creater_id, create_time, updater_id, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{picId,jdbcType=INTEGER}, 
@@ -67,7 +78,7 @@
         content,
       </if>
       <if test="desc != null" >
-        desc,
+        `desc`,
       </if>
       <if test="status != null" >
         status,
@@ -149,7 +160,7 @@
         content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -177,7 +188,7 @@
       email = #{email,jdbcType=VARCHAR},
       companny = #{companny,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       creater_id = #{createrId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

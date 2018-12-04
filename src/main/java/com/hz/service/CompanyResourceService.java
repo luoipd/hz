@@ -50,5 +50,7 @@ public interface CompanyResourceService {
 
     List<Industry> getIndustryInfo();
 
+    List<Customer> getCustomerList(Customer customer);
+
 
 }

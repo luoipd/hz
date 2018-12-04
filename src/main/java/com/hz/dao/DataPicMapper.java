@@ -11,6 +11,8 @@ public interface DataPicMapper {
 
     void deleteDataPic(DataPic dataPic);
 
+    List<DataPic> selectDataPicList(int moduleId,int dataId);
+
 
 
 }

@@ -15,8 +15,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, module_id, title, industry_id, content, status, proposal_id, creater_id, create_time, 
-    updater_id, update_time
+    id, module_id, title, industry_id, content, status, proposal_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

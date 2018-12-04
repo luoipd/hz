@@ -59,6 +59,14 @@ public class HzResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/hzProposal/methodResources",method = RequestMethod.GET)
+    public String getMethodSources(@Valid MethodResource methodResource,@Valid PageRequest pageRequest ){
+        ResJson resJson = new ResJson();
+        List<MethodResource> methodResources = methodResourceService.getMethodResources(methodResource,pageRequest);
+        resJson.setData(methodResources);
+        return JSONObject.toJSONString(resJson);
+    }
+
     @RequestMapping(value = "/api/hzResource/methodResourceInfo",method = RequestMethod.GET)
     @ResponseBody
     public String getResourceInfo(@Valid int id){

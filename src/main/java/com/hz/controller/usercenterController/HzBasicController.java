@@ -2,6 +2,7 @@ package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hz.controller.BaseController;
+import com.hz.domain.Industry;
 import com.hz.domain.Tag;
 import com.hz.service.BasicService;
 import com.hz.util.ResJson;
@@ -31,6 +32,15 @@ public class HzBasicController extends BaseController {
         ResJson resJson = new ResJson();
         List<Tag> tagList =  basicService.getTagList(tagType);
         resJson.setData(tagList);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/hzBasic/getIndustryList",method = RequestMethod.GET)
+    @ResponseBody
+    public String getIndustryList(){
+        ResJson resJson = new ResJson();
+        List<Industry> industries =  basicService.getIndustryList();
+        resJson.setData(industries);
         return JSONObject.toJSONString(resJson);
     }
 

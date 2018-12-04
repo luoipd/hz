@@ -49,6 +49,14 @@ public class MethodResource {
 
     private List<Tag> tags;
 
+    private AdvertisingStandardDetail advertisingStandardDetail;
+
+    private AdvertisingUnstandardDetail advertisingUnstandardDetail;
+
+    private List<HuiBao> huiBaos;
+
+    private List<AdvertisingStyle> advertisingStyles;
+
     public List<Tag> getTags() {
         return tags;
     }
@@ -223,5 +231,37 @@ public class MethodResource {
 
     public void setTagIds(Integer[] tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public AdvertisingStandardDetail getAdvertisingStandardDetail() {
+        return advertisingStandardDetail;
+    }
+
+    public void setAdvertisingStandardDetail(AdvertisingStandardDetail advertisingStandardDetail) {
+        this.advertisingStandardDetail = advertisingStandardDetail;
+    }
+
+    public AdvertisingUnstandardDetail getAdvertisingUnstandardDetail() {
+        return advertisingUnstandardDetail;
+    }
+
+    public void setAdvertisingUnstandardDetail(AdvertisingUnstandardDetail advertisingUnstandardDetail) {
+        this.advertisingUnstandardDetail = advertisingUnstandardDetail;
+    }
+
+    public List<HuiBao> getHuiBaos() {
+        return huiBaos;
+    }
+
+    public void setHuiBaos(List<HuiBao> huiBaos) {
+        this.huiBaos = huiBaos;
+    }
+
+    public List<AdvertisingStyle> getAdvertisingStyles() {
+        return advertisingStyles;
+    }
+
+    public void setAdvertisingStyles(List<AdvertisingStyle> advertisingStyles) {
+        this.advertisingStyles = advertisingStyles;
     }
 }

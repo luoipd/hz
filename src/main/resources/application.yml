@@ -10,9 +10,9 @@ spring:
     static-path-pattern: /static/**
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/test
-    username: test
-    password: 123456
+    url: jdbc:mysql://121.201.108.8:3306/hzdb
+    username: admin
+    password: admin123456
     driver-class-name: com.mysql.jdbc.Driver
     filters: stat
     maxActive: 20

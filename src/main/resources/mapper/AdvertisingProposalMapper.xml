@@ -19,7 +19,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, industry_id, proposal_name, customer_id, customer_name, `desc`, light_exposure,
-    pv, version, theme_id,creater_id, create_time, updater_id, update_time
+    pv, version, theme_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

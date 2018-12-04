@@ -1,6 +1,8 @@
 package com.hz.service.impl;
 
+import com.hz.dao.IndustryMapper;
 import com.hz.dao.TagMapper;
+import com.hz.domain.Industry;
 import com.hz.domain.Tag;
 import com.hz.domain.User;
 import com.hz.service.BasicService;
@@ -19,6 +21,8 @@ public class BasicSerivceImpl implements BasicService {
 
     @Autowired
     TagMapper tagMapper;
+    @Autowired
+    IndustryMapper industryMapper;
 
     @Override
     public List<Tag> getTagList(int tagType) {
@@ -42,5 +46,11 @@ public class BasicSerivceImpl implements BasicService {
     @Override
     public void updateTag(Tag tag) {
         tagMapper.updateByPrimaryKey(tag);
+    }
+
+    @Override
+    public List<Industry> getIndustryList() {
+
+        return industryMapper.selectIndustryInfoList();
     }
 }

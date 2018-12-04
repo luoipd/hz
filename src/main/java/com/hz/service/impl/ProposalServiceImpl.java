@@ -2,15 +2,16 @@ package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.hz.dao.*;
-import com.hz.domain.AdvertisingProposal;
-import com.hz.domain.AdvertisingProposalDetail;
-import com.hz.domain.Module;
+import com.hz.domain.*;
 import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.service.ProposalService;
 import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -151,6 +152,62 @@ public class ProposalServiceImpl implements ProposalService {
         }
         advertisingProposalDetail.setDataId(id);
         advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
+    }
+
+    /**
+     * 根据方案id生成一套新的方案版本（copied）版本历史纪录
+     * @param proposalId
+     */
+    @Override
+    @Transactional
+    public void saveVersion(int proposalId,int createId) {
+        String version = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        AdvertisingProposal advertisingProposal = advertisingProposalMapper.selectByPrimaryKey(proposalId);
+        advertisingProposal.setVersion(version);
+        List<AdvertisingProposalDetail> advertisingProposalDetails = advertisingProposalDetailMapper.selectListByParentId(proposalId);
+        advertisingProposal.setCreaterId(createId);
+        advertisingProposal.setId(null);
+        advertisingProposalMapper.insertSelective(advertisingProposal);
+        for(AdvertisingProposalDetail advertisingProposalDetail:advertisingProposalDetails){
+            advertisingProposalDetail.setParentId(advertisingProposal.getId());
+            advertisingProposalDetail.setCreaterId(createId);
+            if(advertisingProposalDetail.getModuleType()==1){
+                Home home = homeMapper.selectByPrimaryKey(advertisingProposalDetail.getDataId());
+                List<DataPic> dataPics = dataPicMapper.selectDataPicList(advertisingProposalDetail.getModuleId(),advertisingProposalDetail.getDataId());
+                home.setId(null);
+                home.setCreaterId(createId);
+                homeMapper.insertSelective(home);
+                advertisingProposalDetail.setDataId(home.getId());
+                advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
+                if(dataPics.size()!=0){
+                    for(DataPic dataPic:dataPics){
+                        dataPic.setDataId(home.getId());
+                        dataPic.setCreaterId(createId);
+                        dataPicMapper.insertSelective(dataPic);
+                    }
+                }
+            }else if(advertisingProposalDetail.getModuleType()==2){
+                Market market = marketMapper.selectByPrimaryKey(advertisingProposalDetail.getDataId());
+                List<DataPic> dataPics = dataPicMapper.selectDataPicList(advertisingProposalDetail.getModuleId(),advertisingProposalDetail.getDataId());
+                market.setId(null);
+                market.setCreaterId(createId);
+                marketMapper.insertSelective(market);
+                advertisingProposalDetail.setDataId(market.getId());
+                advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
+                if(dataPics.size()!=0){
+                    for(DataPic dataPic:dataPics){
+                        dataPic.setDataId(market.getId());
+                        dataPic.setCreaterId(createId);
+                        dataPicMapper.insertSelective(dataPic);
+                    }
+                }
+            }else if(advertisingProposalDetail.getModuleType()==3){
+                advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
+            }
+        }
+
+
+
     }
 
 }

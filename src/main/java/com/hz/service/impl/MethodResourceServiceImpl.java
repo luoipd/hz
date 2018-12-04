@@ -61,6 +61,34 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     }
 
     @Override
+    public List<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+        List<MethodResource> resourceList =  methodResourceMapper.selectResourceList(methodResource);
+        for(MethodResource methodResource1:resourceList){
+            methodResource1.setMediaName(mediaMapper.selectByPrimaryKey(methodResource1.getMediaId()).getMediaName());
+            //资源不区分行业，行业字段废弃
+//            methodResource1.setIndustryName(industryMapper.selectByPrimaryKey(methodResource1.getIndustryId()).getIndustryName());
+            List<Tag> tagList = tagMapper.selectTagListByMethodId(methodResource1.getId());
+            methodResource1.setTags(tagList);
+            if(methodResource1.getMethodType()==1){
+                AdvertisingStandardDetail advertisingStandardDetail = advertisingStandardDetailMapper.selectByPid(methodResource1.getId());
+                methodResource1.setAdvertisingStandardDetail(advertisingStandardDetail);
+                List<AdvertisingStyle> advertisingStyles = advertisingStyleMapper.selectListByPid(methodResource1.getId());
+                methodResource1.setAdvertisingStyles(advertisingStyles);
+
+            }
+            if(methodResource1.getMethodType()==2){
+                AdvertisingUnstandardDetail advertisingUnstandardDetail  = advertisingUnstandardDetailMapper.selectByPid(methodResource1.getId());
+                methodResource1.setAdvertisingUnstandardDetail(advertisingUnstandardDetail);
+                List<HuiBao> huiBaos = huiBaoMapper.selectListByPid(methodResource1.getId());
+                methodResource1.setHuiBaos(huiBaos);
+            }
+
+        }
+        return resourceList;
+    }
+
+    @Override
     public int countMethodResource(MethodResource methodResource){
         return methodResourceMapper.countResources(methodResource);
     }

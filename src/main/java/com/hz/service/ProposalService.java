@@ -35,6 +35,8 @@ public interface ProposalService {
 
     void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,int id);
 
+    void saveVersion(int proposalId,int createId);
+
 
 
 }

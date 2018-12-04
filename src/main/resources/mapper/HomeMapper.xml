@@ -15,8 +15,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, content, module_id, status, proposal_id, creater_id, create_time, updater_id, 
-    update_time
+    id, title, content, module_id, status, proposal_id
   </sql>
   <select id="selectHomeList" parameterType="com.hz.domain.Home" resultMap="BaseResultMap">
     <if test="title!=null"><bind name="pattern" value="'%'+title+'%'"></bind></if>

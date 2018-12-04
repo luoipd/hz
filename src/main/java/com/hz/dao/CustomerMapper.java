@@ -2,6 +2,8 @@ package com.hz.dao;
 
 import com.hz.domain.Customer;
 
+import java.util.List;
+
 public interface CustomerMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface CustomerMapper {
     int updateByPrimaryKeySelective(Customer record);
 
     int updateByPrimaryKey(Customer record);
+
+    List<Customer> selectCustomerList(Customer customer);
 }

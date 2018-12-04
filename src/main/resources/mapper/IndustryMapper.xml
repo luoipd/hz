@@ -18,7 +18,7 @@
     from h_industry
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectIndustryInfoList">
+  <select id="selectIndustryInfoList" resultMap="BaseResultMap" >
     select
     id, industry_name
     from h_industry

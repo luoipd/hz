@@ -239,15 +239,18 @@
   </update>
 
   <select id="selectResourceList" parameterType="com.hz.domain.MethodResource" resultMap="BaseResultMap">
+    <if test="name!=null"><bind name="pattern" value="'%'+name+'%'"></bind></if>
     select
     a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.light_exposure,a.pv, a.import_level, a.desc,
     a.characteristic, a.status
     from h_method a
     <if test="tagIds!=null"> join h_tag_method b on a.id = b.method_id</if>
       <where>
+        <if test="name != null">a.name like #{pattern}</if>
         <if test="mediaId != null">a.media_id = #{mediaId,jdbcType=INTEGER}</if>
         <if test="industryId != null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
         <if test="importLevel != null"> and a.import_level = #{importLevel,jdbcType=VARCHAR}</if>
+        <if test="methodType != null"> and a.method_type = #{methodType,jdbcType=INTEGER}</if>
         <if test="tagIds !=null"> and b.tag_id in
           <foreach collection="tagIds" item="tagId" index="index" open="(" close=")" separator=",">
           #{tagId}

@@ -15,6 +15,8 @@ public interface MethodResourceService {
 
         List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest);
 
+        List<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest);
+
         int countMethodResource(MethodResource methodResource);
 
         ResourceBean getResourceBeanById(int id);
