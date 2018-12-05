@@ -26,4 +26,5 @@ public class Customer {
     private Integer updaterId;
     private Date updateTime;
     private List<Integer> createrIds;
+    private String url;
 }

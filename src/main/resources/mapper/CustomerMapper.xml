@@ -5,9 +5,10 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="companny" property="companny" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
@@ -22,11 +23,11 @@
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from h_customer
-    where id = #{id,jdbcType=INTEGER}
+    a.id, a.customer_name, a.pic_id, a.mobile, a.email, a.companny, a.content, a.desc, a.status,b.url
+    from h_customer a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectCustomerList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectCustomerList" resultMap="BaseResultMap" parameterType="com.hz.domain.Customer">
     <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
     <if test="mobile!=null"><bind name="pattern1" value="'%'+mobile+'%'"></bind></if>
     select
@@ -35,11 +36,25 @@
     <where>
       <if test="customerName != null">customer_name like #{pattern}</if>
       <if test="mobile != null">and mobile like #{pattern1}</if>
-      <if test="createrId != null">and createrId = #{createrId,jdbcType=INTEGER}</if>
+      <if test="createrId != null">and creater_id = #{createrId,jdbcType=INTEGER}</if>
+      and status =1
+    </where>
+  </select>
+  <select id="countCustomerList" resultType="java.lang.Integer" parameterType="com.hz.domain.Customer">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    <if test="mobile!=null"><bind name="pattern1" value="'%'+mobile+'%'"></bind></if>
+    select
+    count(0)
+    from h_customer
+    <where>
+      <if test="customerName != null">customer_name like #{pattern}</if>
+      <if test="mobile != null">and mobile like #{pattern1}</if>
+      <if test="createrId != null">and creater_id = #{createrId,jdbcType=INTEGER}</if>
+      and status =1
     </where>
   </select>
 
-  <select id="selectCustomerListByIds" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectCustomerListByIds" resultMap="BaseResultMap" parameterType="com.hz.domain.Customer">
     <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
     <if test="mobile!=null"><bind name="pattern1" value="'%'+mobile+'%'"></bind></if>
     select
@@ -48,11 +63,27 @@
     <where>
       <if test="customerName != null">customer_name like #{pattern}</if>
       <if test="mobile != null">and mobile like #{pattern1}</if>
-      <if test="createrIds !=null"> and createrId in
+      <if test="createrIds !=null"> and creater_id in
         <foreach collection="createrIds" item="createrId" index="index" open="(" close=")" separator=",">
           #{createrId}
         </foreach>
-      </if>
+      </if> and status =1
+    </where>
+  </select>
+  <select id="countCustomerListByIds" resultType="java.lang.Integer" parameterType="com.hz.domain.Customer">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    <if test="mobile!=null"><bind name="pattern1" value="'%'+mobile+'%'"></bind></if>
+    select
+    count(0)
+    from h_customer
+    <where>
+      <if test="customerName != null">customer_name like #{pattern}</if>
+      <if test="mobile != null">and mobile like #{pattern1}</if>
+      <if test="createrIds !=null"> and creater_id in
+        <foreach collection="createrIds" item="createrId" index="index" open="(" close=")" separator=",">
+          #{createrId}
+        </foreach>
+      </if> and status =1
     </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

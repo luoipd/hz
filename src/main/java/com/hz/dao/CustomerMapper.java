@@ -20,4 +20,8 @@ public interface CustomerMapper {
     List<Customer> selectCustomerList(Customer customer);
 
     List<Customer> selectCustomerListByIds(Customer customer);
+
+    int countCustomerListByIds(Customer customer);
+
+    int countCustomerList(Customer customer);
 }

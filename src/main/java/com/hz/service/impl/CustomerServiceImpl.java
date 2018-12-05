@@ -26,16 +26,9 @@ public class CustomerServiceImpl implements CustomerService {
     UserMapper userMapper;
 
     @Override
-    public List<Customer> getCustomerList(Customer customer, User sysUser) {
+    public List<Customer> getCustomerList(Customer customer, User sysUser,boolean isDailishang) {
 
-        List<Role> roles = sysUser.getRoles();
-        boolean isDailishang =false;
-        for(Role role:roles){
-            if (role.getId()==4){
-                isDailishang=true;
-                break;
-            }
-        }
+
         if(isDailishang){
             List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
             customer.setCreaterIds(users);
@@ -44,5 +37,34 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setCreaterId(sysUser.getId());
             return customerMapper.selectCustomerList(customer);
         }
+    }
+
+    @Override
+    public int countCustomer(Customer customer, User sysUser,boolean isDailishang) {
+        if(isDailishang){
+            List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
+            customer.setCreaterIds(users);
+            return customerMapper.countCustomerListByIds(customer);
+        }else{
+            customer.setCreaterId(sysUser.getId());
+            return customerMapper.countCustomerList(customer);
+        }
+    }
+
+    @Override
+    public Customer getCustomerInfoById(int id) {
+
+        return customerMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateCustomer(Customer customer) {
+
+        customerMapper.updateByPrimaryKeySelective(customer);
+    }
+
+    @Override
+    public void createCustomer(Customer customer) {
+        customerMapper.insertSelective(customer);
     }
 }

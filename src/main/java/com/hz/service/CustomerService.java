@@ -11,5 +11,13 @@ import java.util.List;
  */
 public interface CustomerService {
 
-    List<Customer> getCustomerList(Customer customer, User sysUser);
+    List<Customer> getCustomerList(Customer customer, User sysUser,boolean isDailishang);
+
+    int countCustomer(Customer customer,User sysUser,boolean isDailishang);
+
+    Customer getCustomerInfoById(int id);
+
+    void updateCustomer(Customer customer);
+
+    void createCustomer(Customer customer);
 }
