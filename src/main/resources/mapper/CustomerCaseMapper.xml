@@ -3,12 +3,16 @@
 <mapper namespace="com.hz.dao.CustomerCaseMapper" >
   <resultMap id="BaseResultMap" type="com.hz.domain.CustomerCase" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
+    <result column="industry_name" property="industryName" jdbcType="VARCHAR" />
+    <result column="pic_id" property="picId" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
     <result column="purpose_id" property="purposeId" jdbcType="INTEGER" />
+    <result column="purpose_name" property="purposeName" jdbcType="VARCHAR" />
     <result column="purpose_col1" property="purposeCol1" jdbcType="VARCHAR" />
     <result column="purpose_col2" property="purposeCol2" jdbcType="VARCHAR" />
     <result column="purpose_col3" property="purposeCol3" jdbcType="VARCHAR" />
@@ -25,43 +29,74 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, title, module_id, industry_id, customer_name, purpose_id, purpose_col1, 
+    id, title, content, module_id, industry_id, pic_id, customer_name, purpose_id, purpose_col1, 
     purpose_col2, purpose_col3, pinpai_story, pinpai_actuality, customer_say, market_plan, 
-    effect_prediction, status, proposal_id, creater_id, create_time, updater_id, update_time
+    effect_prediction, status, proposal_id,industry_name,purpose_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from h_customer_case
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, parent_id, title, module_id, industry_id, customer_name, purpose_id, purpose_col1,
-    purpose_col2, purpose_col3, pinpai_story, pinpai_actuality, customer_say, market_plan,
-    effect_prediction, status, proposal_id
-    from h_customer_case where status =1 and parent_id = #{parentId,jdbcType=INTEGER}
+    select
+    a.id, a.title, a.content, a.module_id, a.industry_id, a.pic_id, a.customer_name, a.purpose_id, a.purpose_col1,
+    a.purpose_col2, a.purpose_col3, a.pinpai_story, a.pinpai_actuality, a.customer_say, a.market_plan,
+    a.effect_prediction, a.status, a.proposal_id,b.url,a.industry_name,a.purpose_name
+    from h_customer_case a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_customer_case
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <select id="selectProposalBean" parameterType="com.hz.domain.responseBean.ProposalModuleBean" resultMap="BaseResultMap">
+  select a.id, a.title, a.content, a.module_id, a.industry_id, a.pic_id, a.customer_name, a.purpose_id, a.purpose_col1,
+    a.purpose_col2, a.purpose_col3, a.pinpai_story, a.pinpai_actuality, a.customer_say, a.market_plan,
+    a.effect_prediction, a.status, a.proposal_id,c.url,a.industry_name,a.purpose_name
+     from
+  h_advertising_proposal_detail b join h_customer_case b on b.module_id = a.module_id and b.data_id = a.id
+  left join  h_pic_video c on a.pic_id = c.id
+  where b.p_module_id = #{pModuleId,jdbcType=INTEGER} and b.parent_id = #{proposalId,jdbcType=INTEGER} and a.status = 1
+  </select>
+  <select id="getCustomerList" parameterType="com.hz.domain.CustomerCase" resultMap="BaseResultMap">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    select
+    a.id, a.title, a.content, a.module_id, a.industry_id, a.pic_id, a.customer_name, a.purpose_id, a.purpose_col1,
+    a.purpose_col2, a.purpose_col3, a.pinpai_story, a.pinpai_actuality, a.customer_say, a.market_plan,
+    a.effect_prediction, a.status, a.proposal_id,b.url,a.industry_name,a.purpose_name
+    from h_customer_case a left join h_pic_video b on a.pic_id = b.id
+    <where>
+      <if test="industryId != null">a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+      <if test="purposeId != null">and a.purpose_id =  #{purposeId,jdbcType=INTEGER} </if>
+      <if test="customerName != null">and a.customer_name like #{pattern}</if>
+      and a.status =1
+    </where> order by a.id desc
+  </select>
+  <select id="countCustomer" parameterType="com.hz.domain.CustomerCase" resultType="java.lang.Integer">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    select
+      count(0)
+    from h_customer_case a
+    <where>
+      <if test="industryId != null">a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+      <if test="purposeId != null">and a.purpose_id =  #{purposeId,jdbcType=INTEGER} </if>
+      <if test="customerName != null">and a.customer_name like #{pattern}</if>
+      and a.status =1
+    </where> order by a.id desc
+  </select>
   <insert id="insert" parameterType="com.hz.domain.CustomerCase" >
-    insert into h_customer_case (id, parent_id, title, 
-      module_id, industry_id, customer_name, 
-      purpose_id, purpose_col1, purpose_col2, 
-      purpose_col3, pinpai_story, pinpai_actuality, 
-      customer_say, market_plan, effect_prediction, 
-      status, proposal_id, creater_id, 
-      create_time, updater_id, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
-      #{moduleId,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, 
-      #{purposeId,jdbcType=INTEGER}, #{purposeCol1,jdbcType=VARCHAR}, #{purposeCol2,jdbcType=VARCHAR}, 
-      #{purposeCol3,jdbcType=VARCHAR}, #{pinpaiStory,jdbcType=VARCHAR}, #{pinpaiActuality,jdbcType=VARCHAR}, 
-      #{customerSay,jdbcType=VARCHAR}, #{marketPlan,jdbcType=VARCHAR}, #{effectPrediction,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{proposalId,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+    insert into h_customer_case (id, title, content, 
+      module_id, industry_id,industry_name ,pic_id,
+      customer_name, purpose_id, purpose_name,purpose_col1,
+      purpose_col2, purpose_col3, pinpai_story, 
+      pinpai_actuality, customer_say, market_plan, 
+      effect_prediction, status, proposal_id, 
+      creater_id, create_time, updater_id, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{moduleId,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER},#{industryName,jdbcType=VARCHAR} ,#{picId,jdbcType=INTEGER},
+      #{customerName,jdbcType=VARCHAR}, #{purposeId,jdbcType=INTEGER}, #{purposeName,jdbcType=VARCHAR},  #{purposeCol1,jdbcType=VARCHAR},
+      #{purposeCol2,jdbcType=VARCHAR}, #{purposeCol3,jdbcType=VARCHAR}, #{pinpaiStory,jdbcType=VARCHAR}, 
+      #{pinpaiActuality,jdbcType=VARCHAR}, #{customerSay,jdbcType=VARCHAR}, #{marketPlan,jdbcType=VARCHAR}, 
+      #{effectPrediction,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{proposalId,jdbcType=INTEGER}, 
+      #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.CustomerCase" >
     insert into h_customer_case
@@ -69,11 +104,11 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="parentId != null" >
-        parent_id,
-      </if>
       <if test="title != null" >
         title,
+      </if>
+      <if test="content != null" >
+        content,
       </if>
       <if test="moduleId != null" >
         module_id,
@@ -81,11 +116,20 @@
       <if test="industryId != null" >
         industry_id,
       </if>
+      <if test="industryName != null" >
+        industry_name,
+      </if>
+      <if test="picId != null" >
+        pic_id,
+      </if>
       <if test="customerName != null" >
         customer_name,
       </if>
       <if test="purposeId != null" >
         purpose_id,
+      </if>
+      <if test="purposeName != null" >
+        purpose_name,
       </if>
       <if test="purposeCol1 != null" >
         purpose_col1,
@@ -134,11 +178,11 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="parentId != null" >
-        #{parentId,jdbcType=INTEGER},
-      </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="moduleId != null" >
         #{moduleId,jdbcType=INTEGER},
@@ -146,11 +190,20 @@
       <if test="industryId != null" >
         #{industryId,jdbcType=INTEGER},
       </if>
+      <if test="industryName != null" >
+        #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="picId != null" >
+        #{picId,jdbcType=INTEGER},
+      </if>
       <if test="customerName != null" >
         #{customerName,jdbcType=VARCHAR},
       </if>
       <if test="purposeId != null" >
         #{purposeId,jdbcType=INTEGER},
+      </if>
+      <if test="purposeName != null" >
+        #{purposeName,jdbcType=VARCHAR},
       </if>
       <if test="purposeCol1 != null" >
         #{purposeCol1,jdbcType=VARCHAR},
@@ -199,11 +252,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.domain.CustomerCase" >
     update h_customer_case
     <set >
-      <if test="parentId != null" >
-        parent_id = #{parentId,jdbcType=INTEGER},
-      </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="moduleId != null" >
         module_id = #{moduleId,jdbcType=INTEGER},
@@ -211,11 +264,20 @@
       <if test="industryId != null" >
         industry_id = #{industryId,jdbcType=INTEGER},
       </if>
+      <if test="industryName != null" >
+        industry_name = #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="picId != null" >
+        pic_id = #{picId,jdbcType=INTEGER},
+      </if>
       <if test="customerName != null" >
         customer_name = #{customerName,jdbcType=VARCHAR},
       </if>
       <if test="purposeId != null" >
         purpose_id = #{purposeId,jdbcType=INTEGER},
+      </if>
+      <if test="purposeName != null" >
+        purpose_name = #{purposeName,jdbcType=VARCHAR},
       </if>
       <if test="purposeCol1 != null" >
         purpose_col1 = #{purposeCol1,jdbcType=VARCHAR},
@@ -264,12 +326,15 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.CustomerCase" >
     update h_customer_case
-    set parent_id = #{parentId,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR},
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
       module_id = #{moduleId,jdbcType=INTEGER},
       industry_id = #{industryId,jdbcType=INTEGER},
+      industry_name = #{industryName,jdbcType=VARCHAR},
+      pic_id = #{picId,jdbcType=INTEGER},
       customer_name = #{customerName,jdbcType=VARCHAR},
       purpose_id = #{purposeId,jdbcType=INTEGER},
+      purpose_name = #{purposeName,jdbcType=VARCHAR},
       purpose_col1 = #{purposeCol1,jdbcType=VARCHAR},
       purpose_col2 = #{purposeCol2,jdbcType=VARCHAR},
       purpose_col3 = #{purposeCol3,jdbcType=VARCHAR},

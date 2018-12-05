@@ -26,10 +26,6 @@ public class Home {
 
     private Date updateTime;
 
-    private ContactUs contactUs;
-
-    private CustomerCase customerCase;
-
     private List<PictureVideo> pictureVideos;
 
     public Integer getId() {
@@ -120,21 +116,6 @@ public class Home {
         this.pictureVideos = pictureVideos;
     }
 
-    public ContactUs getContactUs() {
-        return contactUs;
-    }
-
-    public void setContactUs(ContactUs contactUs) {
-        this.contactUs = contactUs;
-    }
-
-    public CustomerCase getCustomerCase() {
-        return customerCase;
-    }
-
-    public void setCustomerCase(CustomerCase customerCase) {
-        this.customerCase = customerCase;
-    }
 
     public String getModuleName() {
         return moduleName;

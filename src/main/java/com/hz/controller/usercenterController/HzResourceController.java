@@ -59,11 +59,21 @@ public class HzResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
+    /**
+     * 板块三获取资源模板列表
+     * @param methodResource
+     * @param pageRequest
+     * @return
+     */
     @RequestMapping(value = "/api/hzProposal/methodResources",method = RequestMethod.GET)
     public String getMethodSources(@Valid MethodResource methodResource,@Valid PageRequest pageRequest ){
         ResJson resJson = new ResJson();
         List<MethodResource> methodResources = methodResourceService.getMethodResources(methodResource,pageRequest);
-        resJson.setData(methodResources);
+        int count = methodResourceService.countMethodResource(methodResource);
+        Map map = new HashMap();
+        map.put("methodResources",methodResources);
+        map.put("count",count);
+        resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
 

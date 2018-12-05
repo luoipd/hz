@@ -35,6 +35,24 @@
     <where>
       <if test="customerName != null">customer_name like #{pattern}</if>
       <if test="mobile != null">and mobile like #{pattern1}</if>
+      <if test="createrId != null">and createrId = #{createrId,jdbcType=INTEGER}</if>
+    </where>
+  </select>
+
+  <select id="selectCustomerListByIds" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    <if test="mobile!=null"><bind name="pattern1" value="'%'+mobile+'%'"></bind></if>
+    select
+    <include refid="Base_Column_List" />
+    from h_customer
+    <where>
+      <if test="customerName != null">customer_name like #{pattern}</if>
+      <if test="mobile != null">and mobile like #{pattern1}</if>
+      <if test="createrIds !=null"> and createrId in
+        <foreach collection="createrIds" item="createrId" index="index" open="(" close=")" separator=",">
+          #{createrId}
+        </foreach>
+      </if>
     </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

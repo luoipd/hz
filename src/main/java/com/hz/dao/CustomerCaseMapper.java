@@ -1,6 +1,9 @@
 package com.hz.dao;
 
 import com.hz.domain.CustomerCase;
+import com.hz.domain.responseBean.ProposalModuleBean;
+
+import java.util.List;
 
 public interface CustomerCaseMapper {
     int deleteByPrimaryKey(Integer id);
@@ -15,5 +18,11 @@ public interface CustomerCaseMapper {
 
     int updateByPrimaryKey(CustomerCase record);
 
-    CustomerCase selectByParentId(int parentId);
+    List<CustomerCase> getCustomerList(CustomerCase customerCase);
+
+    int countCustomer(CustomerCase customerCase);
+
+    List<CustomerCase> selectProposalBean(ProposalModuleBean proposalModuleBean);
+
+
 }

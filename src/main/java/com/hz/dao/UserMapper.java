@@ -26,4 +26,6 @@ public interface UserMapper {
     int countUserList(User user);
 
     User selectUserInfoByToken(String token);
+
+    List<Integer> selectAllSaler(int id);
 }

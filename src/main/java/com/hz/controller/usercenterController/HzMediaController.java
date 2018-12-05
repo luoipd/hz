@@ -58,6 +58,7 @@ public class HzMediaController extends BaseController {
         resJson.setData(map);
         return JSONObject.toJSONString(resJson);
     }
+
     @RequestMapping(value = "/api/hzMedia/mediaListForCheck", method = RequestMethod.GET)
     @ResponseBody
     public String getMediaListForCheck(){
@@ -84,6 +85,14 @@ public class HzMediaController extends BaseController {
     @ResponseBody
     public String createMedia(@Valid Media media,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
+        if(media.getMediaName()!=null&&media.getMediaName().length()>0){
+            media.setCreaterId(sysUser.getId());
+            media.setStatus(1);
+        }else{
+            resJson.setDesc("缺少媒体名称！！");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
         int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
         if(picId==0){
             log.error("图片上传失败");
@@ -94,10 +103,7 @@ public class HzMediaController extends BaseController {
         if(picId>0){
             media.setPicId(picId);
         }
-        if(media.getMediaName()!=null&&media.getMediaName().length()>0){
-            media.setCreaterId(sysUser.getId());
-            media.setStatus(1);
-        }
+
         try {
             mediaService.insertMedia(media);
         } catch (Exception e) {

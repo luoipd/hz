@@ -52,5 +52,7 @@ public interface CompanyResourceService {
 
     List<Customer> getCustomerList(Customer customer);
 
+    ContactUs getContactUsByModule(ProposalModuleBean proposalModuleBean);
+
 
 }

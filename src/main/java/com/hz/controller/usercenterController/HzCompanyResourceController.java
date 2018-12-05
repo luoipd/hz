@@ -148,6 +148,7 @@ public class HzCompanyResourceController extends BaseController {
     @RequestMapping(value = "/api/companyResource/customerList",method = RequestMethod.GET)
     public String customerList(@Valid Customer customer){
         ResJson resJson = new ResJson();
+        customer.setCreaterId(sysUser.getId());
         List<Customer> customers = companyResourceService.getCustomerList(customer);
         resJson.setData(customers);
         return JSONObject.toJSONString(resJson);

@@ -1,6 +1,7 @@
 package com.hz.dao;
 
 import com.hz.domain.ContactUs;
+import com.hz.domain.responseBean.ProposalModuleBean;
 
 public interface ContactUsMapper {
     int deleteByPrimaryKey(Integer id);
@@ -15,5 +16,5 @@ public interface ContactUsMapper {
 
     int updateByPrimaryKey(ContactUs record);
 
-    ContactUs selectByParentId(Integer parentId);
+    ContactUs getContactUsByModule(ProposalModuleBean proposalModuleBean);
 }

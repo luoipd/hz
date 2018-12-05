@@ -157,16 +157,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
         for(Home home:homes){
             List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home.getModuleId(),home.getId());
             home.setPictureVideos(pictureVideos);
-            if(home.getModuleId()==5){
-                CustomerCase customerCase = customerCaseMapper.selectByParentId(home.getId());
-                home.setCustomerCase(customerCase);
-            }
-            if(home.getModuleId()==6){
-                ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
-                home.setContactUs(contactUs);
-            }
         }
-
         return homes;
     }
 
@@ -175,14 +166,6 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
         Home home = homeMapper.selectByPrimaryKey(id);
         List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home.getModuleId(),home.getId());
         home.setPictureVideos(pictureVideos);
-        if(home.getModuleId()==5){
-            CustomerCase customerCase = customerCaseMapper.selectByParentId(home.getId());
-            home.setCustomerCase(customerCase);
-        }
-        if(home.getModuleId()==6){
-            ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
-            home.setContactUs(contactUs);
-        }
         return home;
     }
 
@@ -247,6 +230,11 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     @Override
     public List<Customer> getCustomerList(Customer customer) {
         return customerMapper.selectCustomerList(customer);
+    }
+
+    @Override
+    public ContactUs getContactUsByModule(ProposalModuleBean proposalModuleBean) {
+        return contactUsMapper.getContactUsByModule(proposalModuleBean);
     }
 
 

@@ -5,17 +5,25 @@ import java.util.Date;
 public class CustomerCase {
     private Integer id;
 
-    private Integer parentId;
-
     private String title;
+
+    private String content;
 
     private Integer moduleId;
 
     private Integer industryId;
 
+    private String industryName;
+
+    private Integer picId;
+
+    private String url;
+
     private String customerName;
 
     private Integer purposeId;
+
+    private String purposeName;
 
     private String purposeCol1;
 
@@ -53,20 +61,20 @@ public class CustomerCase {
         this.id = id;
     }
 
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public Integer getModuleId() {
@@ -83,6 +91,14 @@ public class CustomerCase {
 
     public void setIndustryId(Integer industryId) {
         this.industryId = industryId;
+    }
+
+    public Integer getPicId() {
+        return picId;
+    }
+
+    public void setPicId(Integer picId) {
+        this.picId = picId;
     }
 
     public String getCustomerName() {
@@ -211,5 +227,29 @@ public class CustomerCase {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
+
+    public String getPurposeName() {
+        return purposeName;
+    }
+
+    public void setPurposeName(String purposeName) {
+        this.purposeName = purposeName;
     }
 }

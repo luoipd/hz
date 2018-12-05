@@ -5,11 +5,13 @@ import java.util.Date;
 public class ContactUs {
     private Integer id;
 
-    private Integer parentId;
-
     private String title;
 
+    private String content;
+
     private Integer moduleId;
+
+    private Integer picId;
 
     private String vxId;
 
@@ -41,20 +43,20 @@ public class ContactUs {
         this.id = id;
     }
 
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public Integer getModuleId() {
@@ -151,5 +153,13 @@ public class ContactUs {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getPicId() {
+        return picId;
+    }
+
+    public void setPicId(Integer picId) {
+        this.picId = picId;
     }
 }

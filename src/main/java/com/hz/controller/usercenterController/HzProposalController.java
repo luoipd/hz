@@ -7,6 +7,7 @@ import com.hz.domain.responseBean.HomeParamBean;
 import com.hz.domain.responseBean.MarketParamBean;
 import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.service.CompanyResourceService;
+import com.hz.service.CustomerCaseService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.ProposalService;
 import com.hz.service.impl.ImageService;
@@ -43,6 +44,8 @@ public class HzProposalController extends BaseController {
     ImageService imageService;
     @Autowired
     PictureVideoService pictureVideoService;
+    @Autowired
+    CustomerCaseService customerCaseService;
 
     @RequestMapping(value = "/api/hzProposal/proposalList" ,method = RequestMethod.GET)
     public String proposalList(@Valid AdvertisingProposal advertisingProposal, @Valid PageRequest pageRequest){
@@ -134,8 +137,13 @@ public class HzProposalController extends BaseController {
          */
         if(proposalModuleBean.getModuleType()==1){
             List<Home> homes = companyResourceService.getHomeInfo(proposalModuleBean);
-            resJson.setData(homes);
-            //联系我们
+            List<CustomerCase> customerCases = customerCaseService.getCustomerCaseInfoByModule(proposalModuleBean);
+            ContactUs contactUs = companyResourceService.getContactUsByModule(proposalModuleBean);
+            Map map = new HashMap();
+            map.put("homes",homes);
+            map.put("customerCases",customerCases);
+            map.put("contactUs",contactUs);
+            resJson.setData(map);
         }
         if(proposalModuleBean.getModuleType()==2){
             List<Market> markets = companyResourceService.getMarketInfo(proposalModuleBean);
@@ -176,21 +184,7 @@ public class HzProposalController extends BaseController {
         home.setCreaterId(sysUser.getId());
 
         if(homeParamBean.getDataId()==null){
-            int id = companyResourceService.createHome(home,list,sysUser);
-            //客户案例
-            if(home.getModuleId()==21){
-                CustomerCase customerCase = new CustomerCase();
-                customerCase.setCustomerName(homeParamBean.getCustomerName());
-                customerCase.setIndustryId(homeParamBean.getIndustryId());
-                customerCase.setTitle(homeParamBean.getTitle());
-                customerCase.setModuleId(homeParamBean.getModuleId());
-                customerCase.setProposalId(homeParamBean.getParentId());
-                customerCase.setParentId(id);
-                customerCase.setCreaterId(sysUser.getId());
-                companyResourceService.insertCustomerCase(customerCase);
-            }
-            //联系我们
-            if(home.getModuleId()==22){
+            if(homeParamBean.getModuleId()==22){
                 ContactUs contactUs = new ContactUs();
                 contactUs.setAddress(homeParamBean.getAddress());
                 contactUs.setCreaterId(sysUser.getId());
@@ -201,17 +195,26 @@ public class HzProposalController extends BaseController {
                 contactUs.setVxId(homeParamBean.getVxId());
                 contactUs.setTitle(homeParamBean.getTitle());
                 contactUs.setStatus("1");
-                contactUs.setParentId(id);
                 contactUs.setWebsits(homeParamBean.getWebsits());
-                contactUs.setParentId(id);
+                contactUs.setProposalId(homeParamBean.getParentId());
                 companyResourceService.insertContactUs(contactUs);
+                insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,contactUs.getId());
+                resJson.setData(contactUs.getId());
+            }else{
+                int id = companyResourceService.createHome(home,list,sysUser);
+                insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,id);
+                resJson.setData(id);
             }
-            insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,id);
-            resJson.setData(id);
+
         }else{
-            home.setId(homeParamBean.getDataId());
-            companyResourceService.updateHome(home,list,sysUser);
-            resJson.setData(homeParamBean.getDataId());
+            if(homeParamBean.getModuleId()==21){
+                insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,advertisingProposalDetail.getDataId());
+                resJson.setData(advertisingProposalDetail.getDataId());
+            }else{
+                home.setId(homeParamBean.getDataId());
+                companyResourceService.updateHome(home,list,sysUser);
+                resJson.setData(homeParamBean.getDataId());
+            }
         }
         return JSONObject.toJSONString(resJson);
     }

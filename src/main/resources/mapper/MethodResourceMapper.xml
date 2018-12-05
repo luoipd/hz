@@ -260,13 +260,16 @@
       </where> order by a.id desc
   </select>
   <select id="countResources" parameterType="com.hz.domain.MethodResource" resultType="java.lang.Integer">
+    <if test="name!=null"><bind name="pattern" value="'%'+name+'%'"></bind></if>
     select count(a.id) from
     h_method a
     <if test="tagIds!=null"> join h_tag_method b on a.id = b.method_id</if>
     <where>
+      <if test="name != null">a.name like #{pattern}</if>
       <if test="mediaId != null">a.media_id = #{mediaId,jdbcType=INTEGER}</if>
       <if test="industryId != null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
       <if test="importLevel != null"> and a.import_level = #{importLevel,jdbcType=VARCHAR}</if>
+      <if test="methodType != null"> and a.method_type = #{methodType,jdbcType=INTEGER}</if>
       <if test="tagIds !=null"> and b.tag_id in
         <foreach collection="tagIds" item="tagId" index="index" open="(" close=")" separator=",">
           #{tagId}

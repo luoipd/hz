@@ -18,4 +18,6 @@ public interface CustomerMapper {
     int updateByPrimaryKey(Customer record);
 
     List<Customer> selectCustomerList(Customer customer);
+
+    List<Customer> selectCustomerListByIds(Customer customer);
 }

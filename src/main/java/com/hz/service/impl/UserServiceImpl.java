@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
             List<Role> roles = roleMapper.getRoleList(user1.getId());
             user1.setRoles(roles);
             if(roles.size()==0){
-                break;
+                continue;
             }
             StringBuffer roleName = new StringBuffer();
             for(Role role:roles){
