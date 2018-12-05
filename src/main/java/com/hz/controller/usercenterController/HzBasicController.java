@@ -35,15 +35,6 @@ public class HzBasicController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
-    @RequestMapping(value = "/api/hzBasic/getIndustryList",method = RequestMethod.GET)
-    @ResponseBody
-    public String getIndustryList(){
-        ResJson resJson = new ResJson();
-        List<Industry> industries =  basicService.getIndustryList();
-        resJson.setData(industries);
-        return JSONObject.toJSONString(resJson);
-    }
-
     @RequestMapping(value = "/api/hzBasic/insertTag",method = RequestMethod.POST)
     @ResponseBody
     public String createTag(@Valid Tag tag){
@@ -71,6 +62,8 @@ public class HzBasicController extends BaseController {
         basicService.deleteTag(id,sysUser);
         return JSONObject.toJSONString(resJson);
     }
+
+
 
 
 }
