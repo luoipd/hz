@@ -42,7 +42,7 @@
       <if test="proposalName!=null">and proposal_name like #{pattern1}</if>
       <if test="version!=null">and version like #{pattern2} </if>
       <if test="industryId!=null">and industry_id = #{industryId,jdbcType=INTEGER}</if>
-    </where>
+    </where> order by id desc 
   </select>
   <select id="countProposalList" parameterType="com.hz.domain.AdvertisingProposal" resultType="java.lang.Integer">
     <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>

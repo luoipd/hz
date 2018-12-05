@@ -8,7 +8,15 @@
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
     <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
-    <result column="advertising_type" property="advertisingType" jdbcType="VARCHAR" />
+    <result column="purpose_id" property="purposeId" jdbcType="INTEGER" />
+    <result column="purpose_col1" property="purposeCol1" jdbcType="VARCHAR" />
+    <result column="purpose_col2" property="purposeCol2" jdbcType="VARCHAR" />
+    <result column="purpose_col3" property="purposeCol3" jdbcType="VARCHAR" />
+    <result column="pinpai_story" property="pinpaiStory" jdbcType="VARCHAR" />
+    <result column="pinpai_actuality" property="pinpaiActuality" jdbcType="VARCHAR" />
+    <result column="customer_say" property="customerSay" jdbcType="VARCHAR" />
+    <result column="market_plan" property="marketPlan" jdbcType="VARCHAR" />
+    <result column="effect_prediction" property="effectPrediction" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="proposal_id" property="proposalId" jdbcType="INTEGER" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
@@ -17,8 +25,9 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, title, module_id, industry_id, customer_name, advertising_type, status, 
-    proposal_id, creater_id, create_time, updater_id, update_time
+    id, parent_id, title, module_id, industry_id, customer_name, purpose_id, purpose_col1, 
+    purpose_col2, purpose_col3, pinpai_story, pinpai_actuality, customer_say, market_plan, 
+    effect_prediction, status, proposal_id, creater_id, create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,7 +36,9 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, parent_id, title, module_id, industry_id, customer_name, advertising_type
+    select id, parent_id, title, module_id, industry_id, customer_name, purpose_id, purpose_col1,
+    purpose_col2, purpose_col3, pinpai_story, pinpai_actuality, customer_say, market_plan,
+    effect_prediction, status, proposal_id
     from h_customer_case where status =1 and parent_id = #{parentId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -37,14 +48,20 @@
   <insert id="insert" parameterType="com.hz.domain.CustomerCase" >
     insert into h_customer_case (id, parent_id, title, 
       module_id, industry_id, customer_name, 
-      advertising_type, status, proposal_id, 
-      creater_id, create_time, updater_id, 
-      update_time)
+      purpose_id, purpose_col1, purpose_col2, 
+      purpose_col3, pinpai_story, pinpai_actuality, 
+      customer_say, market_plan, effect_prediction, 
+      status, proposal_id, creater_id, 
+      create_time, updater_id, update_time
+      )
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{moduleId,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, 
-      #{advertisingType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{proposalId,jdbcType=INTEGER}, 
-      #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{purposeId,jdbcType=INTEGER}, #{purposeCol1,jdbcType=VARCHAR}, #{purposeCol2,jdbcType=VARCHAR}, 
+      #{purposeCol3,jdbcType=VARCHAR}, #{pinpaiStory,jdbcType=VARCHAR}, #{pinpaiActuality,jdbcType=VARCHAR}, 
+      #{customerSay,jdbcType=VARCHAR}, #{marketPlan,jdbcType=VARCHAR}, #{effectPrediction,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{proposalId,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hz.domain.CustomerCase" >
     insert into h_customer_case
@@ -67,8 +84,32 @@
       <if test="customerName != null" >
         customer_name,
       </if>
-      <if test="advertisingType != null" >
-        advertising_type,
+      <if test="purposeId != null" >
+        purpose_id,
+      </if>
+      <if test="purposeCol1 != null" >
+        purpose_col1,
+      </if>
+      <if test="purposeCol2 != null" >
+        purpose_col2,
+      </if>
+      <if test="purposeCol3 != null" >
+        purpose_col3,
+      </if>
+      <if test="pinpaiStory != null" >
+        pinpai_story,
+      </if>
+      <if test="pinpaiActuality != null" >
+        pinpai_actuality,
+      </if>
+      <if test="customerSay != null" >
+        customer_say,
+      </if>
+      <if test="marketPlan != null" >
+        market_plan,
+      </if>
+      <if test="effectPrediction != null" >
+        effect_prediction,
       </if>
       <if test="status != null" >
         status,
@@ -108,8 +149,32 @@
       <if test="customerName != null" >
         #{customerName,jdbcType=VARCHAR},
       </if>
-      <if test="advertisingType != null" >
-        #{advertisingType,jdbcType=VARCHAR},
+      <if test="purposeId != null" >
+        #{purposeId,jdbcType=INTEGER},
+      </if>
+      <if test="purposeCol1 != null" >
+        #{purposeCol1,jdbcType=VARCHAR},
+      </if>
+      <if test="purposeCol2 != null" >
+        #{purposeCol2,jdbcType=VARCHAR},
+      </if>
+      <if test="purposeCol3 != null" >
+        #{purposeCol3,jdbcType=VARCHAR},
+      </if>
+      <if test="pinpaiStory != null" >
+        #{pinpaiStory,jdbcType=VARCHAR},
+      </if>
+      <if test="pinpaiActuality != null" >
+        #{pinpaiActuality,jdbcType=VARCHAR},
+      </if>
+      <if test="customerSay != null" >
+        #{customerSay,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPlan != null" >
+        #{marketPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="effectPrediction != null" >
+        #{effectPrediction,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -149,8 +214,32 @@
       <if test="customerName != null" >
         customer_name = #{customerName,jdbcType=VARCHAR},
       </if>
-      <if test="advertisingType != null" >
-        advertising_type = #{advertisingType,jdbcType=VARCHAR},
+      <if test="purposeId != null" >
+        purpose_id = #{purposeId,jdbcType=INTEGER},
+      </if>
+      <if test="purposeCol1 != null" >
+        purpose_col1 = #{purposeCol1,jdbcType=VARCHAR},
+      </if>
+      <if test="purposeCol2 != null" >
+        purpose_col2 = #{purposeCol2,jdbcType=VARCHAR},
+      </if>
+      <if test="purposeCol3 != null" >
+        purpose_col3 = #{purposeCol3,jdbcType=VARCHAR},
+      </if>
+      <if test="pinpaiStory != null" >
+        pinpai_story = #{pinpaiStory,jdbcType=VARCHAR},
+      </if>
+      <if test="pinpaiActuality != null" >
+        pinpai_actuality = #{pinpaiActuality,jdbcType=VARCHAR},
+      </if>
+      <if test="customerSay != null" >
+        customer_say = #{customerSay,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPlan != null" >
+        market_plan = #{marketPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="effectPrediction != null" >
+        effect_prediction = #{effectPrediction,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -180,7 +269,15 @@
       module_id = #{moduleId,jdbcType=INTEGER},
       industry_id = #{industryId,jdbcType=INTEGER},
       customer_name = #{customerName,jdbcType=VARCHAR},
-      advertising_type = #{advertisingType,jdbcType=VARCHAR},
+      purpose_id = #{purposeId,jdbcType=INTEGER},
+      purpose_col1 = #{purposeCol1,jdbcType=VARCHAR},
+      purpose_col2 = #{purposeCol2,jdbcType=VARCHAR},
+      purpose_col3 = #{purposeCol3,jdbcType=VARCHAR},
+      pinpai_story = #{pinpaiStory,jdbcType=VARCHAR},
+      pinpai_actuality = #{pinpaiActuality,jdbcType=VARCHAR},
+      customer_say = #{customerSay,jdbcType=VARCHAR},
+      market_plan = #{marketPlan,jdbcType=VARCHAR},
+      effect_prediction = #{effectPrediction,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       proposal_id = #{proposalId,jdbcType=INTEGER},
       creater_id = #{createrId,jdbcType=INTEGER},

@@ -180,7 +180,6 @@ public class HzProposalController extends BaseController {
             //客户案例
             if(home.getModuleId()==21){
                 CustomerCase customerCase = new CustomerCase();
-                customerCase.setAdvertisingType(homeParamBean.getAdvertisingType());
                 customerCase.setCustomerName(homeParamBean.getCustomerName());
                 customerCase.setIndustryId(homeParamBean.getIndustryId());
                 customerCase.setTitle(homeParamBean.getTitle());
@@ -320,6 +319,7 @@ public class HzProposalController extends BaseController {
         }
         return JSONObject.toJSONString(resJson);
     }
+
 
 
 

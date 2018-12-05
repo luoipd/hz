@@ -42,6 +42,9 @@ public class ProposalServiceImpl implements ProposalService {
     @Autowired
     ModuleMapper moduleMapper;
 
+    @Autowired
+    ContactUsMapper contactUsMapper;
+
 
     @Override
     public int createProposal(AdvertisingProposal advertisingProposal) {
@@ -147,6 +150,9 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,int id) {
         if(advertisingProposalDetail.getpModuleId()==1||advertisingProposalDetail.getpModuleId()==2){
+            if(advertisingProposalDetail.getDataId()!=null){
+                advertisingProposalDetailMapper.deleteOldAdvertisingProposal(advertisingProposalDetail);
+            }
         }else{
             advertisingProposalDetailMapper.deleteOldAdvertisingProposal(advertisingProposalDetail);
         }
@@ -177,6 +183,15 @@ public class ProposalServiceImpl implements ProposalService {
                 home.setId(null);
                 home.setCreaterId(createId);
                 homeMapper.insertSelective(home);
+                if(home.getModuleId()==21){
+                    
+                }
+                if(home.getModuleId()==22){
+                    ContactUs contactUs = contactUsMapper.selectByParentId(home.getId());
+                    contactUs.setCreaterId(createId);
+                    contactUs.setParentId(home.getId());
+                    contactUsMapper.insertSelective(contactUs);
+                }
                 advertisingProposalDetail.setDataId(home.getId());
                 advertisingProposalDetailMapper.insertSelective(advertisingProposalDetail);
                 if(dataPics.size()!=0){

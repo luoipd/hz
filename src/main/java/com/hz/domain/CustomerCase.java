@@ -15,7 +15,23 @@ public class CustomerCase {
 
     private String customerName;
 
-    private String advertisingType;
+    private Integer purposeId;
+
+    private String purposeCol1;
+
+    private String purposeCol2;
+
+    private String purposeCol3;
+
+    private String pinpaiStory;
+
+    private String pinpaiActuality;
+
+    private String customerSay;
+
+    private String marketPlan;
+
+    private String effectPrediction;
 
     private String status;
 
@@ -77,12 +93,76 @@ public class CustomerCase {
         this.customerName = customerName == null ? null : customerName.trim();
     }
 
-    public String getAdvertisingType() {
-        return advertisingType;
+    public Integer getPurposeId() {
+        return purposeId;
     }
 
-    public void setAdvertisingType(String advertisingType) {
-        this.advertisingType = advertisingType == null ? null : advertisingType.trim();
+    public void setPurposeId(Integer purposeId) {
+        this.purposeId = purposeId;
+    }
+
+    public String getPurposeCol1() {
+        return purposeCol1;
+    }
+
+    public void setPurposeCol1(String purposeCol1) {
+        this.purposeCol1 = purposeCol1 == null ? null : purposeCol1.trim();
+    }
+
+    public String getPurposeCol2() {
+        return purposeCol2;
+    }
+
+    public void setPurposeCol2(String purposeCol2) {
+        this.purposeCol2 = purposeCol2 == null ? null : purposeCol2.trim();
+    }
+
+    public String getPurposeCol3() {
+        return purposeCol3;
+    }
+
+    public void setPurposeCol3(String purposeCol3) {
+        this.purposeCol3 = purposeCol3 == null ? null : purposeCol3.trim();
+    }
+
+    public String getPinpaiStory() {
+        return pinpaiStory;
+    }
+
+    public void setPinpaiStory(String pinpaiStory) {
+        this.pinpaiStory = pinpaiStory == null ? null : pinpaiStory.trim();
+    }
+
+    public String getPinpaiActuality() {
+        return pinpaiActuality;
+    }
+
+    public void setPinpaiActuality(String pinpaiActuality) {
+        this.pinpaiActuality = pinpaiActuality == null ? null : pinpaiActuality.trim();
+    }
+
+    public String getCustomerSay() {
+        return customerSay;
+    }
+
+    public void setCustomerSay(String customerSay) {
+        this.customerSay = customerSay == null ? null : customerSay.trim();
+    }
+
+    public String getMarketPlan() {
+        return marketPlan;
+    }
+
+    public void setMarketPlan(String marketPlan) {
+        this.marketPlan = marketPlan == null ? null : marketPlan.trim();
+    }
+
+    public String getEffectPrediction() {
+        return effectPrediction;
+    }
+
+    public void setEffectPrediction(String effectPrediction) {
+        this.effectPrediction = effectPrediction == null ? null : effectPrediction.trim();
     }
 
     public String getStatus() {
