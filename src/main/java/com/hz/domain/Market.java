@@ -8,9 +8,13 @@ public class Market {
 
     private Integer moduleId;
 
+    private String moduleName;
+
     private String title;
 
     private Integer industryId;
+
+    private String industryName;
 
     private String content;
 
@@ -121,5 +125,21 @@ public class Market {
 
     public void setPictureVideos(List<PictureVideo> pictureVideos) {
         this.pictureVideos = pictureVideos;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 }

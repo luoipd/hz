@@ -48,6 +48,8 @@ public interface CompanyResourceService {
 
     void insertContactUs(ContactUs contactUs);
 
+    void updateContactUs(ContactUs contactUs);
+
     List<Industry> getIndustryInfo();
 
     List<Customer> getCustomerList(Customer customer);

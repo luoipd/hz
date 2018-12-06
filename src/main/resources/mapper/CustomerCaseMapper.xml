@@ -50,7 +50,7 @@
     a.purpose_col2, a.purpose_col3, a.pinpai_story, a.pinpai_actuality, a.customer_say, a.market_plan,
     a.effect_prediction, a.status, a.proposal_id,c.url,a.industry_name,a.purpose_name
      from
-  h_advertising_proposal_detail b join h_customer_case b on b.module_id = a.module_id and b.data_id = a.id
+  h_advertising_proposal_detail b join h_customer_case a on b.module_id = a.module_id and b.data_id = a.id
   left join  h_pic_video c on a.pic_id = c.id
   where b.p_module_id = #{pModuleId,jdbcType=INTEGER} and b.parent_id = #{proposalId,jdbcType=INTEGER} and a.status = 1
   </select>

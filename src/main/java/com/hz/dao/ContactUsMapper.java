@@ -3,6 +3,8 @@ package com.hz.dao;
 import com.hz.domain.ContactUs;
 import com.hz.domain.responseBean.ProposalModuleBean;
 
+import java.util.List;
+
 public interface ContactUsMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -17,4 +19,8 @@ public interface ContactUsMapper {
     int updateByPrimaryKey(ContactUs record);
 
     ContactUs getContactUsByModule(ProposalModuleBean proposalModuleBean);
+
+    List<ContactUs> getContactUsList(ContactUs contactUs);
+
+    int countContactUs(ContactUs contactUs);
 }

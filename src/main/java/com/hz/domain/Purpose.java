@@ -2,10 +2,12 @@ package com.hz.domain;
 
 import java.util.Date;
 
-public class Industry {
+public class Purpose {
     private Integer id;
 
-    private String industryName;
+    private String purposeName;
+
+    private String purposeDesc;
 
     private Integer status;
 
@@ -25,12 +27,28 @@ public class Industry {
         this.id = id;
     }
 
-    public String getIndustryName() {
-        return industryName;
+    public String getPurposeName() {
+        return purposeName;
     }
 
-    public void setIndustryName(String industryName) {
-        this.industryName = industryName == null ? null : industryName.trim();
+    public void setPurposeName(String purposeName) {
+        this.purposeName = purposeName == null ? null : purposeName.trim();
+    }
+
+    public String getPurposeDesc() {
+        return purposeDesc;
+    }
+
+    public void setPurposeDesc(String purposeDesc) {
+        this.purposeDesc = purposeDesc == null ? null : purposeDesc.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getCreaterId() {
@@ -63,13 +81,5 @@ public class Industry {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 }

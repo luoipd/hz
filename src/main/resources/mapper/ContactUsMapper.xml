@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
     <result column="vx_id" property="vxId" jdbcType="VARCHAR" />
@@ -32,9 +33,17 @@
   <select id="getContactUsByModule" resultMap="BaseResultMap" parameterType="com.hz.domain.responseBean.ProposalModuleBean">
     select a.id,a.title,a.content,a.module_id,a.vx_id, a.address, a.websits, a.phone, a.email,c.url,a.pic_id
     from
-   h_advertising_proposal_detail b join h_customer_case b on b.module_id = a.module_id and b.data_id = a.id
+   h_advertising_proposal_detail b join h_contact_us a on b.module_id = a.module_id and b.data_id = a.id
   left join  h_pic_video c on a.pic_id = c.id
   where b.p_module_id = #{pModuleId,jdbcType=INTEGER} and b.parent_id = #{proposalId,jdbcType=INTEGER} and a.status = 1
+  </select>
+  <select id="getContactUsList" resultMap="BaseResultMap" parameterType="com.hz.domain.ContactUs">
+    select a.id, a.title, a.content, a.module_id, a.vx_id, a.address, a.websits, a.phone, a.email, a.status, a.proposal_id,a.pic_id
+    ,b.url from h_contact_us a left join h_pic_video b on a.pic_id = b.id
+    where a.status = 1 and a.proposal_id = 0
+  </select>
+  <select id="countContactUs" resultType="java.lang.Integer" parameterType="com.hz.domain.ContactUs">
+    select count(0) from h_contact_us where status = 1 and proposal_id = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_contact_us

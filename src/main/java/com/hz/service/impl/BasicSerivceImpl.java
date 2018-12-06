@@ -1,8 +1,10 @@
 package com.hz.service.impl;
 
 import com.hz.dao.IndustryMapper;
+import com.hz.dao.PurposeMapper;
 import com.hz.dao.TagMapper;
 import com.hz.domain.Industry;
+import com.hz.domain.Purpose;
 import com.hz.domain.Tag;
 import com.hz.domain.User;
 import com.hz.service.BasicService;
@@ -23,6 +25,8 @@ public class BasicSerivceImpl implements BasicService {
     TagMapper tagMapper;
     @Autowired
     IndustryMapper industryMapper;
+    @Autowired
+    PurposeMapper purposeMapper;
 
     @Override
     public List<Tag> getTagList(int tagType) {
@@ -45,12 +49,48 @@ public class BasicSerivceImpl implements BasicService {
 
     @Override
     public void updateTag(Tag tag) {
-        tagMapper.updateByPrimaryKey(tag);
+        tagMapper.updateByPrimaryKeySelective(tag);
     }
 
     @Override
     public List<Industry> getIndustryList() {
 
         return industryMapper.selectIndustryInfoList();
+    }
+
+    @Override
+    public void insertIndustry(Industry industry){
+        industryMapper.insertSelective(industry);
+    }
+
+    @Override
+    public void updateIndustry(Industry industry) {
+        industryMapper.updateByPrimaryKeySelective(industry);
+    }
+
+    @Override
+    public void deleteIndustryById(int id) {
+        industryMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Purpose> getPurposeList() {
+
+        return purposeMapper.selectPurposeInfoList();
+    }
+
+    @Override
+    public void insertPurpose(Purpose purpose){
+        purposeMapper.insertSelective(purpose);
+    }
+
+    @Override
+    public void updatePurpose(Purpose purpose) {
+        purposeMapper.updateByPrimaryKeySelective(purpose);
+    }
+
+    @Override
+    public void deletePurposeById(int id) {
+        purposeMapper.deleteByPrimaryKey(id);
     }
 }

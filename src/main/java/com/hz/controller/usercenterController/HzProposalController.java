@@ -129,7 +129,7 @@ public class HzProposalController extends BaseController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/api/hzProposal/getModuleInfo")
+    @RequestMapping(value = "/api/hzProposal/getModuleInfo",method = RequestMethod.GET)
     public String getModuleInfo(@Valid ProposalModuleBean proposalModuleBean){
         ResJson resJson = new ResJson();
         /**
@@ -171,9 +171,15 @@ public class HzProposalController extends BaseController {
         advertisingProposalDetail.setpModuleId(homeParamBean.getPModuleId());
         advertisingProposalDetail.setModuleType(homeParamBean.getModuleType());
         //上传图片
+        int picId =0;
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
         if(picIds!=null&&picIds.length!=0){
-            list.addAll(Arrays.asList(picIds));
+            if(homeParamBean.getModuleId()==22){
+                picId = list.get(0);
+            }else{
+                list.addAll(Arrays.asList(picIds));
+            }
+
         }
         Home home = new Home();
         home.setStatus(1);
@@ -200,7 +206,9 @@ public class HzProposalController extends BaseController {
                 companyResourceService.insertContactUs(contactUs);
                 insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,contactUs.getId());
                 resJson.setData(contactUs.getId());
-            }else{
+            }else if(homeParamBean.getModuleId()==21){
+
+            }else {
                 int id = companyResourceService.createHome(home,list,sysUser);
                 insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,id);
                 resJson.setData(id);
@@ -210,6 +218,25 @@ public class HzProposalController extends BaseController {
             if(homeParamBean.getModuleId()==21){
                 insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,advertisingProposalDetail.getDataId());
                 resJson.setData(advertisingProposalDetail.getDataId());
+            }else if(homeParamBean.getModuleId()==22){
+                ContactUs contactUs = new ContactUs();
+                contactUs.setAddress(homeParamBean.getAddress());
+                contactUs.setCreaterId(sysUser.getId());
+                contactUs.setEmail(homeParamBean.getEmail());
+                contactUs.setModuleId(homeParamBean.getModuleId());
+                contactUs.setProposalId(homeParamBean.getParentId());
+                contactUs.setPhone(homeParamBean.getPhone());
+                contactUs.setVxId(homeParamBean.getVxId());
+                contactUs.setTitle(homeParamBean.getTitle());
+                contactUs.setStatus("1");
+                contactUs.setWebsits(homeParamBean.getWebsits());
+                contactUs.setProposalId(homeParamBean.getParentId());
+                contactUs.setId(homeParamBean.getDataId());
+                if(picId!=0){
+                    contactUs.setPicId(picId);
+                }
+                companyResourceService.updateContactUs(contactUs);
+                resJson.setData(homeParamBean.getDataId());
             }else{
                 home.setId(homeParamBean.getDataId());
                 companyResourceService.updateHome(home,list,sysUser);

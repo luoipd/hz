@@ -9,8 +9,8 @@
     <result column="media_id" property="mediaId" jdbcType="INTEGER" />
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="light_exposure" property="lightExposure" jdbcType="VARCHAR" />
-    <result column="pv" property="pv" jdbcType="VARCHAR" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
     <result column="import_level" property="importLevel" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="characteristic" property="characteristic" jdbcType="VARCHAR" />
@@ -22,18 +22,18 @@
     <result column="media_name" property="mediaName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, module_id, method_type, media_id, industry_id, price,light_exposure,pv, import_level, `desc`,
+    id, name, module_id, method_type, media_id, industry_id, price,col1,col2, import_level, `desc`,
     characteristic, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.light_exposure,a.pv, a.import_level, a.desc,
+    a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.col1,a.col2, a.import_level, a.desc,
     a.characteristic, a.status ,b.media_name
     from h_method a join h_media b on a.media_id = b.id
     where a.id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectMethodAllModuleList" resultMap="BaseResultMap" parameterType="com.hz.domain.responseBean.ProposalModuleBean">
-     select a.data_id as id,b.name,b.method_type,b.media_id,b.industry_id,b.price,b.light_exposure,b.pv,b.import_level,b.desc ,b.characteristic from
+     select a.data_id as id,b.name,b.method_type,b.media_id,b.industry_id,b.price,b.col1,b.col2,b.import_level,b.desc ,b.characteristic from
   h_advertising_proposal_detail a join h_method b on a.p_module_id = b.method_type and a.data_id = b.id
   where a.p_module_id = #{pModuleId,jdbcType=INTEGER} and a.parent_id = #{proposalId,jdbcType=INTEGER} and b.status = 1
 
@@ -80,11 +80,11 @@
       <if test="price != null" >
         price,
       </if>
-      <if test="lightExposure != null" >
-        light_exposure,
+      <if test="col1 != null" >
+        col1,
       </if>
-      <if test="pv != null" >
-        pv,
+      <if test="col2 != null" >
+        col2,
       </if>
       <if test="importLevel != null" >
         import_level,
@@ -133,11 +133,11 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
-      <if test="lightExposure != null" >
-        #{lightExposure,jdbcType=VARCHAR},
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
       </if>
-      <if test="pv != null" >
-        #{pv,jdbcType=VARCHAR},
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
       </if>
       <if test="importLevel != null" >
         #{importLevel,jdbcType=VARCHAR},
@@ -189,11 +189,11 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="lightExposure != null" >
-        light_exposure = #{lightExposure,jdbcType=VARCHAR},
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
       </if>
-      <if test="pv != null" >
-        pv = #{pv,jdbcType=VARCHAR},
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
       </if>
       <if test="importLevel != null" >
         import_level = #{importLevel,jdbcType=VARCHAR},
@@ -241,7 +241,7 @@
   <select id="selectResourceList" parameterType="com.hz.domain.MethodResource" resultMap="BaseResultMap">
     <if test="name!=null"><bind name="pattern" value="'%'+name+'%'"></bind></if>
     select
-    a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.light_exposure,a.pv, a.import_level, a.desc,
+    a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.col1,a.col2, a.import_level, a.desc,
     a.characteristic, a.status
     from h_method a
     <if test="tagIds!=null"> join h_tag_method b on a.id = b.method_id</if>

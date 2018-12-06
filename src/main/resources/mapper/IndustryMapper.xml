@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.hz.domain.Industry" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="industry_name" property="industryName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, industry_name, creater_id, create_time, updater_id, update_time
+    id, industry_name,status, creater_id, create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -20,18 +21,18 @@
   </select>
   <select id="selectIndustryInfoList" resultMap="BaseResultMap" >
     select
-    id, industry_name
-    from h_industry
+    id, industry_name,status
+    from h_industry where status = 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_industry
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.Industry" >
-    insert into h_industry (id, industry_name, creater_id, 
+    insert into h_industry (id, industry_name, status,creater_id,
       create_time, updater_id, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{industryName,jdbcType=VARCHAR}, #{createrId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{industryName,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -43,6 +44,9 @@
       </if>
       <if test="industryName != null" >
         industry_name,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="createrId != null" >
         creater_id,
@@ -64,6 +68,9 @@
       <if test="industryName != null" >
         #{industryName,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
       <if test="createrId != null" >
         #{createrId,jdbcType=INTEGER},
       </if>
@@ -84,6 +91,9 @@
       <if test="industryName != null" >
         industry_name = #{industryName,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        creater_id = #{status,jdbcType=INTEGER},
+      </if>
       <if test="createrId != null" >
         creater_id = #{createrId,jdbcType=INTEGER},
       </if>
@@ -102,6 +112,7 @@
   <update id="updateByPrimaryKey" parameterType="com.hz.domain.Industry" >
     update h_industry
     set industry_name = #{industryName,jdbcType=VARCHAR},
+    status = #{status,jdbcType=INTEGER},
       creater_id = #{createrId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       updater_id = #{updaterId,jdbcType=INTEGER},

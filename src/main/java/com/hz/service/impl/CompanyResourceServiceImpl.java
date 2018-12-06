@@ -118,6 +118,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     @Override
     public int createHome(Home home, List<Integer> picIds, User user) {
         home.setStatus(1);
+        home.setCreaterId(user.getId());
         homeMapper.insertSelective(home);
         insertDataPicHome(picIds,home,user);
         return home.getId();
@@ -219,6 +220,11 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     @Override
     public void insertContactUs(ContactUs contactUs) {
         contactUsMapper.insertSelective(contactUs);
+    }
+
+    @Override
+    public void updateContactUs(ContactUs contactUs) {
+        contactUsMapper.updateByPrimaryKeySelective(contactUs);
     }
 
     @Override

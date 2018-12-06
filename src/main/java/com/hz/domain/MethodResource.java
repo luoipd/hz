@@ -25,9 +25,9 @@ public class MethodResource {
 
     private BigDecimal price;
 
-    private String lightExposure;
+    private String col1;
 
-    private String pv;
+    private String col2;
 
     private String importLevel;
 
@@ -209,20 +209,20 @@ public class MethodResource {
         this.industryName = industryName;
     }
 
-    public String getLightExposure() {
-        return lightExposure;
+    public String getCol1() {
+        return col1;
     }
 
-    public void setLightExposure(String lightExposure) {
-        this.lightExposure = lightExposure;
+    public void setCol1(String col1) {
+        this.col1 = col1;
     }
 
-    public String getPv() {
-        return pv;
+    public String getCol2() {
+        return col2;
     }
 
-    public void setPv(String pv) {
-        this.pv = pv;
+    public void setCol2(String col2) {
+        this.col2 = col2;
     }
 
     public Integer[] getTagIds() {

@@ -21,9 +21,9 @@ public class ResourceParamBean {
 
     private BigDecimal price;
 
-    private String lightExposure;
+    private String col1;
 
-    private String pv;
+    private String col2;
 
     private String importLevel;
 

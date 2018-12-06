@@ -4,8 +4,10 @@
   <resultMap id="BaseResultMap" type="com.hz.domain.Market" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
+    <result column="industry_name" property="industryName" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="proposal_id" property="proposalId" jdbcType="INTEGER" />
@@ -19,9 +21,9 @@
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from h_market
-    where id = #{id,jdbcType=INTEGER}
+    a.id, a.module_id, a.title, a.industry_id, a.content, a.status, a.proposal_id
+    from h_market a
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_market
@@ -34,8 +36,8 @@
   </select>
   <select id="selectMarketList" parameterType="com.hz.domain.Market" resultMap="BaseResultMap">
     <if test="title!=null"><bind name="pattern" value="'%'+title+'%'"></bind></if>
-    select a.id,a.title,a.content,a.module_id,a.status,a.proposal_id,b.module_name,a.industry_id
-    from h_market a join h_module b on a.module_id = b.id
+    select a.id,a.title,a.content,a.module_id,a.status,a.proposal_id,b.module_name,a.industry_id,c.industry_name
+    from h_market a left join h_module b on a.module_id = b.id left join h_industry c on a.industry_id = c.id
     <where>
       <if test="title!=null"> a.title like #{pattern}</if>
       <if test="status!=null"> and a.status =  #{status,jdbcType=INTEGER}</if>

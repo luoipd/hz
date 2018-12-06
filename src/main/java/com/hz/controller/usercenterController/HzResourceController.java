@@ -122,8 +122,8 @@ public class HzResourceController extends BaseController {
         methodResource1.setMethodType(resourceParamBean.getMethodType());
         methodResource1.setMediaId(resourceParamBean.getMediaId());
         methodResource1.setPrice(resourceParamBean.getPrice());
-        methodResource1.setLightExposure(resourceParamBean.getLightExposure());
-        methodResource1.setPv(resourceParamBean.getPv());
+        methodResource1.setCol1(resourceParamBean.getCol1());
+        methodResource1.setCol2(resourceParamBean.getCol2());
         methodResource1.setImportLevel(resourceParamBean.getImportLevel());
         methodResource1.setDesc(resourceParamBean.getDesc());
         methodResource1.setTagIds(resourceParamBean.getTagIds());

@@ -18,12 +18,12 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, customer_name, pic_id, mobile, email, companny, content, `desc`, status, creater_id,
+    id, customer_name, pic_id, mobile, email, company, content, `desc`, status, creater_id,
     create_time, updater_id, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    a.id, a.customer_name, a.pic_id, a.mobile, a.email, a.companny, a.content, a.desc, a.status,b.url
+    a.id, a.customer_name, a.pic_id, a.mobile, a.email, a.company, a.content, a.desc, a.status,b.url
     from h_customer a left join h_pic_video b on a.pic_id = b.id
     where a.id = #{id,jdbcType=INTEGER}
   </select>
@@ -92,12 +92,12 @@
   </delete>
   <insert id="insert" parameterType="com.hz.domain.Customer" >
     insert into h_customer (id, customer_name, pic_id, 
-      mobile, email, companny, 
+      mobile, email, company, 
       content, `desc`, status,
       creater_id, create_time, updater_id, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{picId,jdbcType=INTEGER}, 
-      #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{companny,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
@@ -120,8 +120,8 @@
       <if test="email != null" >
         email,
       </if>
-      <if test="companny != null" >
-        companny,
+      <if test="company != null" >
+        company,
       </if>
       <if test="content != null" >
         content,
@@ -161,8 +161,8 @@
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="companny != null" >
-        #{companny,jdbcType=VARCHAR},
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
@@ -202,8 +202,8 @@
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="companny != null" >
-        companny = #{companny,jdbcType=VARCHAR},
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
@@ -235,7 +235,7 @@
       pic_id = #{picId,jdbcType=INTEGER},
       mobile = #{mobile,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      companny = #{companny,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},

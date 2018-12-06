@@ -1,11 +1,13 @@
 package com.hz.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.hz.dao.CustomerMapper;
 import com.hz.dao.UserMapper;
 import com.hz.domain.Customer;
 import com.hz.domain.Role;
 import com.hz.domain.User;
 import com.hz.service.CustomerService;
+import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,16 +28,20 @@ public class CustomerServiceImpl implements CustomerService {
     UserMapper userMapper;
 
     @Override
-    public List<Customer> getCustomerList(Customer customer, User sysUser,boolean isDailishang) {
+    public List<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, PageRequest pageRequest) {
 
 
         if(isDailishang){
             List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
             customer.setCreaterIds(users);
-            return customerMapper.selectCustomerListByIds(customer);
+            PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+            List<Customer> customers = customerMapper.selectCustomerListByIds(customer);
+            return customers;
         }else{
             customer.setCreaterId(sysUser.getId());
-            return customerMapper.selectCustomerList(customer);
+            PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+            List<Customer> customers = customerMapper.selectCustomerList(customer);
+            return customers;
         }
     }
 

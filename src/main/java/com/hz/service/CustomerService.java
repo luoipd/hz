@@ -2,6 +2,7 @@ package com.hz.service;
 
 import com.hz.domain.Customer;
 import com.hz.domain.User;
+import com.hz.util.page.PageRequest;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface CustomerService {
 
-    List<Customer> getCustomerList(Customer customer, User sysUser,boolean isDailishang);
+    List<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, PageRequest pageRequest);
 
     int countCustomer(Customer customer,User sysUser,boolean isDailishang);
 

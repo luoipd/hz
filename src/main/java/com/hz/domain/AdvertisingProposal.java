@@ -18,9 +18,13 @@ public class AdvertisingProposal {
 
     private String desc;
 
-    private String lightExposure;
+    private Integer purposeId;
 
-    private String pv;
+    private String purposeCol1;
+
+    private String purposeCol2;
+
+    private String purposeCol3;
 
     private String version;
 
@@ -84,20 +88,36 @@ public class AdvertisingProposal {
         this.desc = desc == null ? null : desc.trim();
     }
 
-    public String getLightExposure() {
-        return lightExposure;
+    public Integer getPurposeId() {
+        return purposeId;
     }
 
-    public void setLightExposure(String lightExposure) {
-        this.lightExposure = lightExposure == null ? null : lightExposure.trim();
+    public void setPurposeId(Integer purposeId) {
+        this.purposeId = purposeId;
     }
 
-    public String getPv() {
-        return pv;
+    public String getPurposeCol1() {
+        return purposeCol1;
     }
 
-    public void setPv(String pv) {
-        this.pv = pv == null ? null : pv.trim();
+    public void setPurposeCol1(String purposeCol1) {
+        this.purposeCol1 = purposeCol1;
+    }
+
+    public String getPurposeCol2() {
+        return purposeCol2;
+    }
+
+    public void setPurposeCol2(String purposeCol2) {
+        this.purposeCol2 = purposeCol2;
+    }
+
+    public String getPurposeCol3() {
+        return purposeCol3;
+    }
+
+    public void setPurposeCol3(String purposeCol3) {
+        this.purposeCol3 = purposeCol3;
     }
 
     public String getVersion() {

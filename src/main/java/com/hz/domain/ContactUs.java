@@ -13,6 +13,8 @@ public class ContactUs {
 
     private Integer picId;
 
+    private String url;
+
     private String vxId;
 
     private String address;
@@ -161,5 +163,13 @@ public class ContactUs {
 
     public void setPicId(Integer picId) {
         this.picId = picId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

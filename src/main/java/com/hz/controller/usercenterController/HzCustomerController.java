@@ -8,6 +8,7 @@ import com.hz.service.CustomerService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
 import com.hz.util.ResJson;
+import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class HzCustomerController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/customer/getCustomerList",method = RequestMethod.GET)
-    public String getCustomerList(Customer customer){
+    public String getCustomerList(@Valid Customer customer, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
         List<Role> roles = sysUser.getRoles();
         boolean isDailishang =false;
@@ -52,7 +53,7 @@ public class HzCustomerController extends BaseController {
                 break;
             }
         }
-        List<Customer> customers = customerService.getCustomerList(customer,sysUser,isDailishang);
+        List<Customer> customers = customerService.getCustomerList(customer,sysUser,isDailishang,pageRequest);
         int count = customerService.countCustomer(customer,sysUser,isDailishang);
         Map map = new HashMap();
         map.put("customers",customers);
