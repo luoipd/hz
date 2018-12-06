@@ -173,13 +173,13 @@ public class HzProposalController extends BaseController {
         //上传图片
         int picId =0;
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
-        if(picIds!=null&&picIds.length!=0){
-            if(homeParamBean.getModuleId()==22){
+        if(homeParamBean.getModuleId()==22){
+            if(list.size()>0){
                 picId = list.get(0);
-            }else{
-                list.addAll(Arrays.asList(picIds));
             }
-
+        }
+        if(picIds!=null&&picIds.length!=0){
+            list.addAll(Arrays.asList(picIds));
         }
         Home home = new Home();
         home.setStatus(1);
@@ -200,9 +200,13 @@ public class HzProposalController extends BaseController {
                 contactUs.setPhone(homeParamBean.getPhone());
                 contactUs.setVxId(homeParamBean.getVxId());
                 contactUs.setTitle(homeParamBean.getTitle());
+                contactUs.setContent(homeParamBean.getContent());
                 contactUs.setStatus("1");
                 contactUs.setWebsits(homeParamBean.getWebsits());
                 contactUs.setProposalId(homeParamBean.getParentId());
+                if(picId!=0){
+                    contactUs.setPicId(picId);
+                }
                 companyResourceService.insertContactUs(contactUs);
                 insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,contactUs.getId());
                 resJson.setData(contactUs.getId());
@@ -228,6 +232,7 @@ public class HzProposalController extends BaseController {
                 contactUs.setPhone(homeParamBean.getPhone());
                 contactUs.setVxId(homeParamBean.getVxId());
                 contactUs.setTitle(homeParamBean.getTitle());
+                contactUs.setContent(homeParamBean.getContent());
                 contactUs.setStatus("1");
                 contactUs.setWebsits(homeParamBean.getWebsits());
                 contactUs.setProposalId(homeParamBean.getParentId());
