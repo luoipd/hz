@@ -1,12 +1,14 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.CustomerCase;
 import com.hz.domain.PictureVideo;
 import com.hz.service.CustomerCaseService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
+import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -39,19 +41,15 @@ public class HzCustomerCaseController extends BaseController {
     @RequestMapping(value = "/api/customerCase/getCustomerCaseList",method = RequestMethod.GET)
     public String CustomerCaseList(@Valid PageRequest pageRequest,@Valid CustomerCase customerCase){
         ResJson resJson = new ResJson();
-        List<CustomerCase> customerCases =  customerCaseService.getCustomerCaseList(customerCase,pageRequest);
-        int count = customerCaseService.countCustomerCase(customerCase);
-        Map map = new HashMap();
-        map.put("customerCases",customerCases);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<CustomerCase> customerCases =  customerCaseService.getCustomerCaseList(customerCase,pageRequest);
+        resJson.setData(customerCases);
         return JSONObject.toJSONString(resJson);
     }
 
     @RequestMapping(value = "/api/customerCase/updateCustomerCase" ,method = RequestMethod.POST)
     public String updateCustomerCase(@Valid CustomerCase customerCase,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.CustomerCaseFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);
@@ -77,7 +75,7 @@ public class HzCustomerCaseController extends BaseController {
             customerCase.setStatus("1");
             customerCase.setModuleId(21);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.CustomerCaseFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);

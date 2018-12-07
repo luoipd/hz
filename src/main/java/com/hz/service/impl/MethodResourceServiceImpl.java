@@ -1,6 +1,7 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hz.dao.*;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.ResourceBean;
@@ -47,7 +48,7 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     TagMapper tagMapper;
 
     @Override
-    public List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest) {
+    public PageInfo<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<MethodResource> resourceList =  methodResourceMapper.selectResourceList(methodResource);
         for(MethodResource methodResource1:resourceList){
@@ -57,11 +58,12 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             List<Tag> tagList = tagMapper.selectTagListByMethodId(methodResource1.getId());
             methodResource1.setTags(tagList);
         }
-        return resourceList;
+        PageInfo<MethodResource> methodResourcePageInfo =  new PageInfo<>(resourceList);
+        return methodResourcePageInfo;
     }
 
     @Override
-    public List<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest) {
+    public PageInfo<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<MethodResource> resourceList =  methodResourceMapper.selectResourceList(methodResource);
         for(MethodResource methodResource1:resourceList){
@@ -85,7 +87,8 @@ public class MethodResourceServiceImpl implements MethodResourceService {
             }
 
         }
-        return resourceList;
+        PageInfo<MethodResource> methodResourcePageInfo = new PageInfo<>(resourceList);
+        return methodResourcePageInfo;
     }
 
     @Override
@@ -252,10 +255,11 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     }
 
     @Override
-    public List<HuiBao> getHuiBaoList(int pid,PageRequest pageRequest) {
+    public PageInfo<HuiBao> getHuiBaoList(int pid,PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<HuiBao> huiBaos = huiBaoMapper.selectListByPid(pid);
-        return huiBaos;
+        PageInfo<HuiBao> huiBaoPageInfo = new PageInfo<>(huiBaos);
+        return huiBaoPageInfo;
     }
 
     @Override
@@ -264,10 +268,11 @@ public class MethodResourceServiceImpl implements MethodResourceService {
     }
 
     @Override
-    public List<AdvertisingStyle> getAdvertisingStyleList(int id, PageRequest pageRequest) {
+    public PageInfo<AdvertisingStyle> getAdvertisingStyleList(int id, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<AdvertisingStyle> advertisingStyles = advertisingStyleMapper.selectListByPid(id);
-        return advertisingStyles;
+        PageInfo<AdvertisingStyle> advertisingStylePageInfo = new PageInfo<>(advertisingStyles);
+        return advertisingStylePageInfo;
     }
     @Override
     public int countAdvertisingStyleList(int id) {

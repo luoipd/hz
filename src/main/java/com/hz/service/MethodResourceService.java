@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.ResourceBean;
 import com.hz.util.page.PageRequest;
@@ -13,9 +14,9 @@ import java.util.List;
 public interface MethodResourceService {
 
 
-        List<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest);
+        PageInfo<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest);
 
-        List<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest);
+        PageInfo<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest);
 
         int countMethodResource(MethodResource methodResource);
 
@@ -49,11 +50,11 @@ public interface MethodResourceService {
 
         List<Tag> selectTagList(int methodId);
 
-        List<HuiBao> getHuiBaoList(int id,PageRequest pageRequest);
+        PageInfo<HuiBao> getHuiBaoList(int id,PageRequest pageRequest);
 
         int countHuiBaoList(int id);
 
-        List<AdvertisingStyle> getAdvertisingStyleList(int id,PageRequest pageRequest);
+        PageInfo<AdvertisingStyle> getAdvertisingStyleList(int id,PageRequest pageRequest);
 
         int countAdvertisingStyleList(int id);
 

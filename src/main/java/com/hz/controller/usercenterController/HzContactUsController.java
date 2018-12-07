@@ -1,11 +1,13 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.ContactUs;
 import com.hz.service.ContactUsService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
+import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +42,8 @@ public class HzContactUsController extends BaseController {
     @RequestMapping(value = "/api/contactUs/getContactUsList",method = RequestMethod.GET)
     public String ContactUsList(@Valid PageRequest pageRequest, @Valid ContactUs contactUs){
         ResJson resJson = new ResJson();
-        List<ContactUs> contactUss =  contactUsService.getContactUsList(contactUs,pageRequest);
-        int count = contactUsService.countContactUs(contactUs);
-        Map map = new HashMap();
-        map.put("contactUss",contactUss);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<ContactUs> contactUss =  contactUsService.getContactUsList(contactUs,pageRequest);
+        resJson.setData(contactUss);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -60,7 +58,7 @@ public class HzContactUsController extends BaseController {
     @RequestMapping(value = "/api/contactUs/updateContactUs" ,method = RequestMethod.POST)
     public String updateContactUs(@Valid ContactUs contactUs,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.ContactUsFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);
@@ -86,7 +84,7 @@ public class HzContactUsController extends BaseController {
             contactUs.setStatus("1");
             contactUs.setModuleId(22);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.ContactUsFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);

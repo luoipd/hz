@@ -1,6 +1,7 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hz.dao.*;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.ProposalModuleBean;
@@ -67,10 +68,11 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, PageRequest pageRequest) {
+    public PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<AdvertisingProposal> advertisingProposals = advertisingProposalMapper.selectProposalList(advertisingProposal);
-        return advertisingProposals;
+        PageInfo<AdvertisingProposal> advertisingProposalPageInfo = new PageInfo<>(advertisingProposals);
+        return advertisingProposalPageInfo;
     }
 
     @Override

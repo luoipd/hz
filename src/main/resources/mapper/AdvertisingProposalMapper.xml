@@ -14,6 +14,8 @@
     <result column="purpose_col3" property="purposeCol3" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="VARCHAR" />
     <result column="theme_id" property="themeId" jdbcType="INTEGER" />
+    <result column="pic_id" property="picId" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
@@ -21,13 +23,13 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, industry_id, proposal_name, customer_id, customer_name, `desc`, purpose_id,purpose_col1,purpose_col2,
-    purpose_col3, version, theme_id
+    purpose_col3, version, theme_id,pic_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from h_advertising_proposal
-    where id = #{id,jdbcType=INTEGER}
+    select a.id, a.industry_id, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,a.purpose_col1,a.purpose_col2,
+    a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
+    from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_advertising_proposal
@@ -37,14 +39,15 @@
     <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
     <if test="proposalName!=null"><bind name="pattern1" value="'%'+proposalName+'%'"></bind></if>
     <if test="version!=null"><bind name="pattern2" value="'%'+version+'%'"></bind></if>
-    select     <include refid="Base_Column_List" />
-    from h_advertising_proposal
+    select     a.id, a.industry_id, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,a.purpose_col1,a.purpose_col2,
+    a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
+    from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
     <where>
-      <if test="customerName!=null">customer_name like #{pattern}</if>
-      <if test="proposalName!=null">and proposal_name like #{pattern1}</if>
-      <if test="version!=null">and version like #{pattern2} </if>
-      <if test="industryId!=null">and industry_id = #{industryId,jdbcType=INTEGER}</if>
-    </where> order by id desc
+      <if test="customerName!=null">a.customer_name like #{pattern}</if>
+      <if test="proposalName!=null">and a.proposal_name like #{pattern1}</if>
+      <if test="version!=null">and a.version like #{pattern2} </if>
+      <if test="industryId!=null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+    </where> order by a.id desc
   </select>
   <select id="countProposalList" parameterType="com.hz.domain.AdvertisingProposal" resultType="java.lang.Integer">
     <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
@@ -62,13 +65,13 @@
   <insert id="insert" parameterType="com.hz.domain.AdvertisingProposal" >
     insert into h_advertising_proposal (id, industry_id, proposal_name, 
       customer_id, customer_name, `desc`,purpose_id,purpose_col1
-      purpose_col2, purpose_col3, version, theme_id
+      purpose_col2, purpose_col3, version, theme_id,pic_id
       creater_id, create_time, updater_id, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER}, #{proposalName,jdbcType=VARCHAR}, 
       #{customerId,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
        #{purposeId,jdbcType=INTEGER}, #{purposeCol1,jdbcType=VARCHAR},
-      #{purposeCol2,jdbcType=VARCHAR}, #{purposeCol3,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{themeId,jdbcType=INTEGER},
+      #{purposeCol2,jdbcType=VARCHAR}, #{purposeCol3,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{themeId,jdbcType=INTEGER},#{picId,jdbcType=INTEGER},
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -110,6 +113,9 @@
       </if>
       <if test="themeId != null" >
         theme_id,
+      </if>
+      <if test="picId != null" >
+        pic_id,
       </if>
       <if test="createrId != null" >
         creater_id,
@@ -159,7 +165,10 @@
         #{version,jdbcType=VARCHAR},
       </if>
       <if test="themeId != null" >
-        #{themeId,jdbcType=INTEGER},
+      #{themeId,jdbcType=INTEGER},
+    </if>
+      <if test="picId != null" >
+        #{picId,jdbcType=INTEGER},
       </if>
       <if test="createrId != null" >
         #{createrId,jdbcType=INTEGER},
@@ -214,6 +223,9 @@
       <if test="themeId != null" >
         theme_id = #{themeId,jdbcType=INTEGER},
       </if>
+      <if test="picId != null" >
+        pic_id = #{picId,jdbcType=INTEGER},
+      </if>
       <if test="createrId != null" >
         creater_id = #{createrId,jdbcType=INTEGER},
       </if>
@@ -240,7 +252,7 @@
       purpose_col1 = #{purposeCol1,jdbcType=VARCHAR},
       purpose_col2 = #{purposeCol2,jdbcType=VARCHAR},
       purpose_col3 = #{purposeCol3,jdbcType=VARCHAR},
-      version = #{version,jdbcType=VARCHAR},theme_id = #{themeId,jdbcType=INTEGER},
+      version = #{version,jdbcType=VARCHAR},theme_id = #{themeId,jdbcType=INTEGER},pic_id = #{picId,jdbcType=INTEGER},
       updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

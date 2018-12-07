@@ -6,14 +6,13 @@ package com.hz.controller.usercenterController;
  */
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.*;
 import com.hz.service.*;
 import com.hz.service.impl.ImageService;
-import com.hz.util.Constants;
-import com.hz.util.FunctionTree;
-import com.hz.util.ResJson;
-import com.hz.util.UserException;
+import com.hz.util.*;
 import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -141,17 +140,39 @@ public class HzUserController extends BaseController {
     @ResponseBody
     public String getUserList(@Valid PageRequest page,@Valid User user){
         ResJson resJson = new ResJson();
-        List<User> users = userService.getUserList(user,page);
-        int count = userService.countUser(user);
-        Map map = new HashMap();
-        map.put("users",users);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<User> users = userService.getUserList(user,page);
+        resJson.setData(users);
         return JSONObject.toJSONString(resJson);
     }
 
+    @RequestMapping(value = "/api/sys/getSalorUserList",method = RequestMethod.GET)
+    public String getSalorUserList(@Valid PageRequest pageRequest,@Valid User user){
+        ResJson resJson = new ResJson();
+        List<Role> roles = sysUser.getRoles();
+        for(Role role:roles){
+            if (role.getId()==4){
+                user.setPid(sysUser.getId());
+            }
+            if(role.getId()==1){
+                List<Integer> dailishangIdList = userService.getDailishangIdList();
+                user.setPids(dailishangIdList);
+            }
+        }
+        PageInfo<User> users = userService.getUserList(user,pageRequest);
+        resJson.setData(users);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/sys/getRoleUserList" ,method = RequestMethod.GET)
+    public String getDailishangList(@Valid int roleId){
+        ResJson resJson = new ResJson();
+        List<User> users = userService.getRoluUserList(roleId);
+        resJson.setData(users);
+        return JSONObject.toJSONString(resJson);
+    }
+
+
     @RequestMapping(value = "/api/sys/getUserInfoById", method = RequestMethod.GET)
-    @ResponseBody
     public String getUserInfoById(@RequestParam("uid") int uid){
         ResJson resJson = new ResJson();
         User user = userService.getUserInfo(uid);
@@ -162,14 +183,13 @@ public class HzUserController extends BaseController {
 
 
     @RequestMapping(value = "/api/sys/editUser",method = RequestMethod.POST)
-    @ResponseBody
     public String updateUser(@Valid User user, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(user.getPassword()!=null){
             String password = new Md5Hash(user.getPassword(), "www", 1024).toBase64();
             user.setPassword(password);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.UserFolder);
         if(picId>0){
             user.setPicId(picId);
         }
@@ -190,7 +210,6 @@ public class HzUserController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/sys/delUser",method = RequestMethod.DELETE)
-    @ResponseBody
     public String deleteUser(@Valid int id){
         ResJson resJson = new ResJson();
         try{
@@ -206,7 +225,6 @@ public class HzUserController extends BaseController {
     }
 
     @RequestMapping(value = "/api/sys/createUser",method = RequestMethod.POST)
-    @ResponseBody
     public String createUser(@Valid User user,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(user.getPassword()!=null){
@@ -217,7 +235,7 @@ public class HzUserController extends BaseController {
             resJson.setDesc("请设置密码");
             return JSONObject.toJSONString(resJson);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.UserFolder);
         if(picId>0){
             user.setPicId(picId);
         }
@@ -247,7 +265,6 @@ public class HzUserController extends BaseController {
         给用户新增角色
      */
     @RequestMapping(value = "/api/sys/roleManage",method = RequestMethod.POST)
-    @ResponseBody
     public String insertRole(@Valid String userRoles) throws Exception{
         ResJson resJson = new ResJson();
         List<UserRole> userRoles1 = JSONObject.parseArray(userRoles,UserRole.class);
@@ -265,7 +282,6 @@ public class HzUserController extends BaseController {
     获取角色列表
      */
     @RequestMapping(value = "/api/sys/roleList",method = RequestMethod.GET)
-    @ResponseBody
     public String getRoleList(@Valid Role role){
 
         ResJson resJson = new ResJson();
@@ -280,7 +296,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/sys/createRole",method = RequestMethod.POST)
-    @ResponseBody
     public String insertRole(@Valid Role role){
 
         ResJson resJson = new ResJson();
@@ -299,7 +314,6 @@ public class HzUserController extends BaseController {
      * 角色修改
      */
     @RequestMapping(value = "/api/sys/editRole",method = RequestMethod.POST)
-    @ResponseBody
     public String editRole(@Valid Role role){
         ResJson resJson = new ResJson();
         if(role.getId()==null||role.getId()==0){
@@ -318,7 +332,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/sys/delRole",method = RequestMethod.POST)
-    @ResponseBody
     public String delRole(@Valid int id){
         ResJson resJson = new ResJson();
         if(id==0){
@@ -338,7 +351,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/sys/getFunctionList",method = RequestMethod.GET)
-    @ResponseBody
     public String getFunctionList(@Valid int roleId,@Valid int pId){
         ResJson resJson = new ResJson();
         List<FunctionTree> functions =  functionService.selectFunctionByRolePid(roleId,pId);
@@ -351,7 +363,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "functionManage",method = RequestMethod.POST)
-    @ResponseBody
     public String functionManage(@Valid RoleFunction roleFunction){
         ResJson resJson = new ResJson();
         try{
@@ -370,7 +381,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/sys/addFunction",method = RequestMethod.POST)
-    @ResponseBody
     public String addFunction(@Valid Function function){
         ResJson resJson = new ResJson();
         if(function.getFunctionName()!=null&&function.getPid()!=null){
@@ -407,7 +417,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/sys/editFunction",method = RequestMethod.POST)
-    @ResponseBody
     public String editFunction(@Valid Function function){
         ResJson resJson = new ResJson();
         try{
@@ -429,7 +438,6 @@ public class HzUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/sys/addRoleFunction",method = RequestMethod.POST)
-    @ResponseBody
     public String addRoleFunction(@Valid List<RoleFunction> roleFunctions){
         ResJson resJson = new ResJson();
         try{
@@ -444,7 +452,6 @@ public class HzUserController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/sys/insertRoleFunction",method = RequestMethod.POST)
-    @ResponseBody
     public String insertRoleFunction(@RequestParam("functions") List<String> functions,@RequestParam("roleId") int roleId){
         ResJson resJson = new ResJson();
         try{
@@ -461,7 +468,6 @@ public class HzUserController extends BaseController {
 
 
     @RequestMapping(value = "/api/sys/getUserInfo",method = RequestMethod.GET)
-    @ResponseBody
     public String getUserInfo(@RequestParam("uid") int uid){
         ResJson resJson = new ResJson();
         User user = userService.getUserInfo(uid);
@@ -480,7 +486,6 @@ public class HzUserController extends BaseController {
 
 
     @RequestMapping(value = "/api/sys/getModuleList",method = RequestMethod.GET)
-    @ResponseBody
     public String getModuleList(@RequestParam("pId") int pModule){
         ResJson resJson = new ResJson();
         List<FunctionTree> function = functionService.selectFunctionByPid(pModule);
@@ -490,7 +495,6 @@ public class HzUserController extends BaseController {
     }
 
     @RequestMapping(value="/api/sys/listModule",method = RequestMethod.GET)
-    @ResponseBody
     public String listModule(@RequestParam("pId") int pid){
         ResJson resJson = new ResJson();
         List<Function> function = functionService.getFunctionList(pid);
@@ -499,7 +503,6 @@ public class HzUserController extends BaseController {
     }
 
     @RequestMapping(value="/api/sys/listCheckedModule",method = RequestMethod.GET)
-    @ResponseBody
     public String getModule(@Valid int roleId){
         ResJson resJson = new ResJson();
         List<String> datas = functionService.getCheckedFunction(roleId);

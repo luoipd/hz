@@ -28,4 +28,6 @@ public interface UserMapper {
     User selectUserInfoByToken(String token);
 
     List<Integer> selectAllSaler(int id);
+
+    List<User> getUserNameByRoleId(int roleId);
 }

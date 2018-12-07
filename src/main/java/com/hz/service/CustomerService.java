@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.Customer;
 import com.hz.domain.User;
 import com.hz.util.page.PageRequest;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface CustomerService {
 
-    List<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, PageRequest pageRequest);
+    PageInfo<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang,boolean isAdmin, PageRequest pageRequest);
 
     int countCustomer(Customer customer,User sysUser,boolean isDailishang);
 

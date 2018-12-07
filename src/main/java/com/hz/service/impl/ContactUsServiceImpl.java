@@ -1,6 +1,7 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hz.dao.ContactUsMapper;
 import com.hz.domain.ContactUs;
 import com.hz.domain.CustomerCase;
@@ -21,10 +22,11 @@ public class ContactUsServiceImpl implements ContactUsService {
     @Autowired
     ContactUsMapper contactUsMapper;
     @Override
-    public List<ContactUs> getContactUsList(ContactUs contactUs, PageRequest pageRequest) {
+    public PageInfo<ContactUs> getContactUsList(ContactUs contactUs, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<ContactUs> contactUses = contactUsMapper.getContactUsList(contactUs);
-        return contactUses;
+        PageInfo<ContactUs> contactUsPageInfo = new PageInfo<>(contactUses);
+        return contactUsPageInfo;
     }
 
     @Override

@@ -38,12 +38,12 @@ public class ImageService {
      * @param user
      * @return
      */
-    public int insertPictureFile(MultipartFile file, PictureVideoService pictureVideoService, User user){
+    public int insertPictureFile(MultipartFile file, PictureVideoService pictureVideoService, User user,String folderName){
         int id= 0;
         if(file!=null){
             //上传图片
-            String filePath = webAppConfig.location + ImageUtil.MediaFolder;
-            String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
+            String filePath = webAppConfig.location + folderName;
+            String fileName = imageUtil.getFileName(folderName,file.getOriginalFilename());
             try {
                 fileName = imageUtil.saveImg(file,filePath,fileName);
             } catch (IOException e) {
@@ -54,8 +54,8 @@ public class ImageService {
             PictureVideo pictureVideo = new PictureVideo();
             pictureVideo.setFileName(fileName);
             pictureVideo.setStoragePath(filePath);
-            pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
-            pictureVideo.setSource(ImageUtil.MediaFolder);
+            pictureVideo.setUrl(imageUtil.getPicUrl(folderName,fileName));
+            pictureVideo.setSource(folderName);
             pictureVideo.setType(file.getContentType());
 
             pictureVideo.setCreaterId(user.getId());
@@ -77,14 +77,14 @@ public class ImageService {
      * @param user
      * @return
      */
-    public List<Integer> insertPictureFiles(MultipartFile[] files, PictureVideoService pictureVideoService, User user){
+    public List<Integer> insertPictureFiles(MultipartFile[] files, PictureVideoService pictureVideoService, User user,String folderName){
         List list = new ArrayList();
         if(files.length!=0){
             //上传图片
             for(MultipartFile file:files){
                 int id;
-                String filePath = webAppConfig.location + ImageUtil.MediaFolder;
-                String fileName = imageUtil.getFileName(ImageUtil.MediaFolder,file.getOriginalFilename());
+                String filePath = webAppConfig.location + folderName;
+                String fileName = imageUtil.getFileName(folderName,file.getOriginalFilename());
                 try {
                     fileName = imageUtil.saveImg(file,filePath,fileName);
                 } catch (IOException e) {
@@ -94,8 +94,8 @@ public class ImageService {
                 PictureVideo pictureVideo = new PictureVideo();
                 pictureVideo.setFileName(fileName);
                 pictureVideo.setStoragePath(filePath);
-                pictureVideo.setUrl(imageUtil.getPicUrl(ImageUtil.MediaFolder,fileName));
-                pictureVideo.setSource(ImageUtil.MediaFolder);
+                pictureVideo.setUrl(imageUtil.getPicUrl(folderName,fileName));
+                pictureVideo.setSource(folderName);
                 pictureVideo.setType(file.getContentType());
 
                 pictureVideo.setCreaterId(user.getId());

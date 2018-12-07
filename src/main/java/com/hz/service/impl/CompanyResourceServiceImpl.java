@@ -1,6 +1,7 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hz.dao.*;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.ProposalModuleBean;
@@ -52,7 +53,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     CustomerMapper customerMapper;
 
     @Override
-    public List<Home> selectHomeList(Home home, PageRequest pageRequest) {
+    public PageInfo<Home> selectHomeList(Home home, PageRequest pageRequest) {
         home.setStatus(1);
         home.setProposalId(0);
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
@@ -61,7 +62,8 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
             List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(home1.getModuleId(),home1.getId());
             home1.setPictureVideos(pictureVideos);
         }
-        return homes;
+        PageInfo<Home> homePageInfo = new PageInfo<>(homes);
+        return homePageInfo;
     }
 
     @Override
@@ -77,7 +79,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     }
 
     @Override
-    public List<Market> selectMarketList(Market market, PageRequest pageRequest) {
+    public PageInfo<Market> selectMarketList(Market market, PageRequest pageRequest) {
         market.setStatus(1);
         market.setProposalId(0);
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
@@ -86,7 +88,8 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
             List<PictureVideo> pictureVideos = pictureVideoMapper.selectPicVideoByModuleAndDataId(market1.getModuleId(),market1.getId());
             market1.setPictureVideos(pictureVideos);
         }
-        return markets;
+        PageInfo<Market> marketPageInfo = new PageInfo<>(markets);
+        return marketPageInfo;
     }
 
     @Override

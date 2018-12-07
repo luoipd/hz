@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.ContactUs;
 import com.hz.util.page.PageRequest;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface ContactUsService {
 
-    List<ContactUs> getContactUsList(ContactUs contactUs, PageRequest pageRequest);
+    PageInfo<ContactUs> getContactUsList(ContactUs contactUs, PageRequest pageRequest);
 
     List<ContactUs> getContactUsListStencil(ContactUs contactUs);
 

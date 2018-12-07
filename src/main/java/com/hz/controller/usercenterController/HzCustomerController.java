@@ -1,12 +1,14 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.Customer;
 import com.hz.domain.Role;
 import com.hz.service.CustomerService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
+import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -47,18 +49,19 @@ public class HzCustomerController extends BaseController {
         ResJson resJson = new ResJson();
         List<Role> roles = sysUser.getRoles();
         boolean isDailishang =false;
+        boolean isAdmin = false;
         for(Role role:roles){
             if (role.getId()==4){
                 isDailishang=true;
                 break;
             }
+            if(role.getId()==1){
+                isAdmin=true;
+                break;
+            }
         }
-        List<Customer> customers = customerService.getCustomerList(customer,sysUser,isDailishang,pageRequest);
-        int count = customerService.countCustomer(customer,sysUser,isDailishang);
-        Map map = new HashMap();
-        map.put("customers",customers);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<Customer> customers = customerService.getCustomerList(customer,sysUser,isDailishang,isAdmin,pageRequest);
+        resJson.setData(customers);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -78,7 +81,7 @@ public class HzCustomerController extends BaseController {
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.CustomerFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);
@@ -110,7 +113,7 @@ public class HzCustomerController extends BaseController {
             customer.setCreaterId(sysUser.getId());
             customer.setStatus("1");
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.CustomerFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);

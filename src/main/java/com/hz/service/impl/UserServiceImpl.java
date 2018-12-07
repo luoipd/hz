@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public List<User> getUserList(User user, PageRequest pageRequest){
+    public PageInfo<User> getUserList(User user, PageRequest pageRequest){
 
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<User> users = userMapper.selectUserList(user);
@@ -115,12 +115,23 @@ public class UserServiceImpl implements UserService {
             }
             user1.setRoleName(roleName.substring(0,roleName.length()-1));
         }
-        return users;
+        PageInfo<User> userPageInfo = new PageInfo<>(users);
+        return userPageInfo;
     }
 
     public int countUser(User user){
         int counts = userMapper.countUserList(user);
         return counts;
+    }
+
+    @Override
+    public List<Integer> getDailishangIdList() {
+        return userRoleMapper.getIdListByRole(4);
+    }
+
+    @Override
+    public List<User> getRoluUserList(int roleId) {
+        return userMapper.getUserNameByRoleId(roleId);
     }
 
     public void deleteUserById(int id){

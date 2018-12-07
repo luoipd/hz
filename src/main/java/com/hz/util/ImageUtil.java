@@ -19,6 +19,14 @@ public class ImageUtil {
 
     public static String UserFolder = "user";//用户图片存储路径
     public static String MediaFolder = "media";//媒体图片存储路径
+    public static String ContactUsFolder = "contactUs";//联系我们
+    public static String CustomerCaseFolder = "customerCase";
+    public static String HuiBaoFolder = "huiBao";
+    public static String AdvertisingStyleFolder = "advertisingStyle";
+    public static String HomeFolder = "home";
+    public static String MarketFolder = "market";
+    public static String CustomerFolder = "customer";
+    public static String ProposalFolder = "proposal";
 
     /**
      * 保存文件，直接以multipartFile形式

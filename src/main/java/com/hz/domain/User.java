@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 public class User implements Serializable {
+
+
     private Integer id;
 
     private String username;
@@ -46,6 +48,8 @@ public class User implements Serializable {
     private String roleName;
 
     private String picUrl;
+
+    private List<Integer> pids;
 
     public Integer getId() {
         return id;
@@ -213,5 +217,13 @@ public class User implements Serializable {
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
+    }
+
+    public List<Integer> getPids() {
+        return pids;
+    }
+
+    public void setPids(List<Integer> pids) {
+        this.pids = pids;
     }
 }

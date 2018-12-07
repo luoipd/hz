@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.UserBean;
 import com.hz.util.page.PageRequest;
@@ -30,11 +31,15 @@ public interface UserService {
 
     void updateUserAll(User user);
 
-    List<User> getUserList(User user, PageRequest pageRequest);
+    PageInfo<User> getUserList(User user, PageRequest pageRequest);
 
     void deleteUserById(int id);
 
     void createUser(User user) throws Exception;
 
     int countUser(User user);
+
+    List<Integer> getDailishangIdList();
+
+    List<User> getRoluUserList(int roleId);
 }

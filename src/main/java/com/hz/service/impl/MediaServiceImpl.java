@@ -24,12 +24,12 @@ public class MediaServiceImpl implements MediaService {
     @Autowired
     MediaMapper mediaMapper;
     @Override
-    public List<Media> getMediaList(Media media, PageRequest pageRequest) {
+    public PageInfo<Media> getMediaList(Media media, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<Media> media1 = mediaMapper.selectListMedia(media);
         PageInfo<Media> mediaPageInfo = new PageInfo<>(media1);
         log.info(mediaPageInfo.getTotal()+"!!!");
-        return media1;
+        return mediaPageInfo;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hz.dao.AdvertisingStandardDetailMapper;
 import com.hz.dao.CustomerCaseMapper;
 import com.hz.domain.CustomerCase;
@@ -26,10 +27,11 @@ public class CustomerCaseServiceImpl implements CustomerCaseService {
 
 
     @Override
-    public List<CustomerCase> getCustomerCaseList(CustomerCase customerCase, PageRequest pageRequest) {
+    public PageInfo<CustomerCase> getCustomerCaseList(CustomerCase customerCase, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<CustomerCase> customerCases = customerCaseMapper.getCustomerList(customerCase);
-        return customerCases;
+        PageInfo<CustomerCase> customerCasePageInfo = new PageInfo<>(customerCases);
+        return customerCasePageInfo;
     }
 
     @Override

@@ -1,17 +1,20 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.*;
 import com.hz.service.CompanyResourceService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
+import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,27 +39,26 @@ public class HzCompanyResourceController extends BaseController {
     @RequestMapping(value = "/api/companyResource/homeList",method = RequestMethod.GET)
     public String homeList(@Valid Home home, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<Home> homeList =companyResourceService.selectHomeList(home,pageRequest);
-        int count = companyResourceService.countHomeList(home);
-        Map map = new HashMap();
-        map.put("homeList",homeList);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<Home> homeList =companyResourceService.selectHomeList(home,pageRequest);
+        resJson.setData(homeList);
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/companyResource/createHome",method = RequestMethod.POST)
     public String createHome(@Valid Home home, @RequestParam("files") MultipartFile[] files){
         ResJson resJson = new ResJson();
         //插入图片
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser, ImageUtil.HomeFolder);
         int id = companyResourceService.createHome(home,list,sysUser);
         resJson.setData(id);
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/companyResource/updateHome",method = RequestMethod.POST)
-    public String updateHome(@Valid Home home ,@RequestParam("files") MultipartFile[] files){
+    public String updateHome(@Valid Home home ,@RequestParam("files") MultipartFile[] files,@Valid Integer[] picIds){
         ResJson resJson = new ResJson();
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.HomeFolder);
+        if(picIds!=null&&picIds.length!=0){
+            list.addAll(Arrays.asList(picIds));
+        }
         companyResourceService.updateHome(home,list,sysUser);
         return JSONObject.toJSONString(resJson);
     }
@@ -72,28 +74,27 @@ public class HzCompanyResourceController extends BaseController {
     @RequestMapping(value = "/api/companyResource/marketList",method = RequestMethod.GET)
     public String homeList(@Valid Market market, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<Market> markets = companyResourceService.selectMarketList(market,pageRequest);
-        int count = companyResourceService.countMarketList(market);
-        Map map = new HashMap();
-        map.put("marketList",markets);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<Market> markets = companyResourceService.selectMarketList(market,pageRequest);
+        resJson.setData(markets);
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/companyResource/createMarket",method = RequestMethod.POST)
     public String createMarket(@Valid Market market, @RequestParam("files") MultipartFile[] files){
         ResJson resJson = new ResJson();
         //插入图片
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.MarketFolder);
         int id = companyResourceService.createMarket(market,list,sysUser);
         resJson.setData(id);
         return JSONObject.toJSONString(resJson);
     }
 
     @RequestMapping(value = "/api/companyResource/updateMarket",method = RequestMethod.POST)
-    public String updateMarket(@Valid Market market ,@RequestParam("files") MultipartFile[] files){
+    public String updateMarket(@Valid Market market ,@RequestParam("files") MultipartFile[] files,@Valid Integer[] picIds){
         ResJson resJson = new ResJson();
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.MarketFolder);
+        if(picIds!=null&&picIds.length!=0){
+            list.addAll(Arrays.asList(picIds));
+        }
         companyResourceService.updateMarket(market,list,sysUser);
         return JSONObject.toJSONString(resJson);
     }

@@ -38,6 +38,10 @@ public class AdvertisingProposal {
 
     private Integer themeId;
 
+    private Integer picId;
+
+    private String url;
+
     private List<ProposalModuleBean> proposalModuleBeans;
 
     public Integer getId() {
@@ -174,5 +178,21 @@ public class AdvertisingProposal {
 
     public void setThemeId(Integer themeId) {
         this.themeId = themeId;
+    }
+
+    public Integer getPicId() {
+        return picId;
+    }
+
+    public void setPicId(Integer picId) {
+        this.picId = picId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

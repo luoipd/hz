@@ -21,5 +21,7 @@ public interface UserRoleMapper {
 
     int deleteUserRoles(int uid);
 
+    List<Integer> getIdListByRole(int roleId);
+
 
 }

@@ -1,6 +1,7 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.HomeParamBean;
@@ -11,9 +12,11 @@ import com.hz.service.CustomerCaseService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.ProposalService;
 import com.hz.service.impl.ImageService;
+import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,7 @@ import java.util.Map;
  * @date 2018/11/21
  */
 @RestController
+@Slf4j
 public class HzProposalController extends BaseController {
 
     @Autowired
@@ -50,22 +54,28 @@ public class HzProposalController extends BaseController {
     @RequestMapping(value = "/api/hzProposal/proposalList" ,method = RequestMethod.GET)
     public String proposalList(@Valid AdvertisingProposal advertisingProposal, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal,pageRequest);
-        int count = proposalService.countProposalList(advertisingProposal);
-        Map map = new HashMap();
-        map.put("advertisingProposals",advertisingProposals);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal,pageRequest);
+        resJson.setData(advertisingProposals);
         return JSONObject.toJSONString(resJson);
     }
 
     @RequestMapping(value = "/api/hzProposal/createProposal",method = RequestMethod.POST)
-    public String createProposal(@Valid AdvertisingProposal advertisingProposal){
+    public String createProposal(@Valid AdvertisingProposal advertisingProposal,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(advertisingProposal.getCustomerId()==null||advertisingProposal.getIndustryId()==null||advertisingProposal.getThemeId()==null){
             resJson.setDesc("请选择客户、主题和行业！！！");
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
+        }
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.ProposalFolder);
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败");
+            return JSONObject.toJSONString(resJson);
+        }
+        if(picId>0){
+            advertisingProposal.setPicId(picId);
         }
 
         advertisingProposal.setCreaterId(sysUser.getId());
@@ -85,12 +95,22 @@ public class HzProposalController extends BaseController {
     }
 
     @RequestMapping(value = "/api/hzProposal/updateProposal" ,method = RequestMethod.POST)
-    public String updateProposal(@Valid AdvertisingProposal advertisingProposal){
+    public String updateProposal(@Valid AdvertisingProposal advertisingProposal,@Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(advertisingProposal.getId()==0){
             resJson.setStatus(0);
             resJson.setDesc("缺少id");
             return JSONObject.toJSONString(resJson);
+        }
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.ProposalFolder);
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败");
+            return JSONObject.toJSONString(resJson);
+        }
+        if(picId>0){
+            advertisingProposal.setPicId(picId);
         }
         advertisingProposal.setUpdaterId(sysUser.getId());
         proposalService.updateProposal(advertisingProposal);
@@ -172,7 +192,7 @@ public class HzProposalController extends BaseController {
         advertisingProposalDetail.setModuleType(homeParamBean.getModuleType());
         //上传图片
         int picId =0;
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser, ImageUtil.HomeFolder);
         if(homeParamBean.getModuleId()==22){
             if(list.size()>0){
                 picId = list.get(0);
@@ -267,7 +287,7 @@ public class HzProposalController extends BaseController {
         advertisingProposalDetail.setpModuleId(marketParamBean.getPModuleId());
         advertisingProposalDetail.setModuleType(marketParamBean.getModuleType());
         //上传图片
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.MarketFolder);
         if(picIds!=null&&picIds.length!=0){
             list.addAll(Arrays.asList(picIds));
         }

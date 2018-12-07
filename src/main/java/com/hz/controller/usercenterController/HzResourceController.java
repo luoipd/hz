@@ -1,6 +1,7 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.ResourceBean;
@@ -8,6 +9,7 @@ import com.hz.domain.responseBean.ResourceParamBean;
 import com.hz.service.MethodResourceService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
+import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -50,12 +52,8 @@ public class HzResourceController extends BaseController {
     @ResponseBody
         public String getMethodSourceList(@Valid MethodResource methodResource, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<MethodResource> methodResources = methodResourceService.getMethodResourceList(methodResource,pageRequest);
-        int cout = methodResourceService.countMethodResource(methodResource);
-        Map map = new HashMap();
-        map.put("methodResources",methodResources);
-        map.put("total",cout);
-        resJson.setData(map);
+        PageInfo<MethodResource> methodResources = methodResourceService.getMethodResourceList(methodResource,pageRequest);
+        resJson.setData(methodResources);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -68,12 +66,8 @@ public class HzResourceController extends BaseController {
     @RequestMapping(value = "/api/hzProposal/methodResources",method = RequestMethod.GET)
     public String getMethodSources(@Valid MethodResource methodResource,@Valid PageRequest pageRequest ){
         ResJson resJson = new ResJson();
-        List<MethodResource> methodResources = methodResourceService.getMethodResources(methodResource,pageRequest);
-        int count = methodResourceService.countMethodResource(methodResource);
-        Map map = new HashMap();
-        map.put("methodResources",methodResources);
-        map.put("count",count);
-        resJson.setData(map);
+        PageInfo<MethodResource> methodResources = methodResourceService.getMethodResources(methodResource,pageRequest);
+        resJson.setData(methodResources);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -222,12 +216,8 @@ public class HzResourceController extends BaseController {
     @ResponseBody
     public String huiBaoList(@Valid int id,@Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<HuiBao> huiBaos = methodResourceService.getHuiBaoList(id,pageRequest);
-        int count = methodResourceService.countHuiBaoList(id);
-        Map map = new HashMap();
-        map.put("huiBaos",huiBaos);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<HuiBao> huiBaos = methodResourceService.getHuiBaoList(id,pageRequest);
+        resJson.setData(huiBaos);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -240,7 +230,7 @@ public class HzResourceController extends BaseController {
         ResJson resJson = new ResJson();
 
         if(huiBao.getHuibaoName()!=null&&huiBao.getHuibaoName().length()>0){
-            int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+            int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.HuiBaoFolder);
             if(picId==0){
                 log.error("图片上传失败");
                 resJson.setStatus(0);
@@ -273,7 +263,7 @@ public class HzResourceController extends BaseController {
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.HuiBaoFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);
@@ -319,12 +309,8 @@ public class HzResourceController extends BaseController {
     @ResponseBody
     public String advertisingStyleList(@Valid int id,@Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<AdvertisingStyle> advertisingStyles = methodResourceService.getAdvertisingStyleList(id,pageRequest);
-        int count = methodResourceService.countAdvertisingStyleList(id);
-        Map map  = new HashMap();
-        map.put("advertisingStyles",advertisingStyles);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<AdvertisingStyle> advertisingStyles = methodResourceService.getAdvertisingStyleList(id,pageRequest);
+        resJson.setData(advertisingStyles);
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/hzResource/createAdvertisingStyle",method = RequestMethod.POST)
@@ -332,7 +318,7 @@ public class HzResourceController extends BaseController {
     public String createAdvertisingStyle(@Valid AdvertisingStyle advertisingStyle,@Valid MultipartFile file ){
         ResJson resJson = new ResJson();
         if(advertisingStyle.getStyleName()!=null&&advertisingStyle.getStyleName().length()>0){
-            int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+            int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.AdvertisingStyleFolder);
             if(picId==0){
                 log.error("图片上传失败");
                 resJson.setStatus(0);
@@ -361,7 +347,7 @@ public class HzResourceController extends BaseController {
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.AdvertisingStyleFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);

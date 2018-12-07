@@ -1,6 +1,7 @@
 package com.hz.controller.usercenterController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.Media;
 import com.hz.domain.PictureVideo;
@@ -50,12 +51,8 @@ public class HzMediaController extends BaseController {
     @ResponseBody
     public String getMediaList(@Valid Media media, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
-        List<Media> medias = mediaService.getMediaList(media,pageRequest);
-        int count = mediaService.countMedia(media);
-        Map map = new HashMap();
-        map.put("medias",medias);
-        map.put("total",count);
-        resJson.setData(map);
+        PageInfo<Media> medias = mediaService.getMediaList(media,pageRequest);
+        resJson.setData(medias);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -93,7 +90,7 @@ public class HzMediaController extends BaseController {
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.MediaFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);
@@ -124,7 +121,7 @@ public class HzMediaController extends BaseController {
             return JSONObject.toJSONString(resJson);
         }
 
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.MediaFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);

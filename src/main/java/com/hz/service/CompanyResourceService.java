@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.*;
 import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.util.page.PageRequest;
@@ -12,11 +13,11 @@ import java.util.List;
  */
 public interface CompanyResourceService {
 
-    List<Home> selectHomeList(Home home, PageRequest pageRequest);
+    PageInfo<Home> selectHomeList(Home home, PageRequest pageRequest);
 
     List<Home> selectHomeStenciList(Home home);
 
-    List<Market> selectMarketList(Market market,PageRequest pageRequest);
+    PageInfo<Market> selectMarketList(Market market,PageRequest pageRequest);
 
     List<Market> selectMarketStenciList(Market market);
 

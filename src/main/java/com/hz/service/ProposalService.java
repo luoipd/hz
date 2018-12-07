@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.AdvertisingProposal;
 import com.hz.domain.AdvertisingProposalDetail;
 import com.hz.domain.Module;
@@ -20,7 +21,7 @@ public interface ProposalService {
 
     void updateProposal(AdvertisingProposal advertisingProposal);
 
-    List<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, PageRequest pageRequest);
+    PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, PageRequest pageRequest);
 
     void deleteProposalById(int proposalId);
 

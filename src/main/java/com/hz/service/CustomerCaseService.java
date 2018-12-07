@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.CustomerCase;
 import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.util.page.PageRequest;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface CustomerCaseService {
 
-    List<CustomerCase> getCustomerCaseList(CustomerCase customerCase, PageRequest pageRequest);
+    PageInfo<CustomerCase> getCustomerCaseList(CustomerCase customerCase, PageRequest pageRequest);
 
     int countCustomerCase(CustomerCase customerCase);
 

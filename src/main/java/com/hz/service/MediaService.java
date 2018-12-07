@@ -1,5 +1,6 @@
 package com.hz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.hz.domain.Media;
 import com.hz.util.page.PageRequest;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface MediaService {
 
 
-    List<Media> getMediaList(Media media, PageRequest pageRequest);
+    PageInfo<Media> getMediaList(Media media, PageRequest pageRequest);
 
     List<Media> getMediaList();
 

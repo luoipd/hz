@@ -1,6 +1,7 @@
 package com.hz.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hz.dao.CustomerMapper;
 import com.hz.dao.UserMapper;
 import com.hz.domain.Customer;
@@ -28,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     UserMapper userMapper;
 
     @Override
-    public List<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, PageRequest pageRequest) {
+    public PageInfo<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, boolean isAdmin,PageRequest pageRequest) {
 
 
         if(isDailishang){
@@ -36,12 +37,16 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setCreaterIds(users);
             PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
             List<Customer> customers = customerMapper.selectCustomerListByIds(customer);
-            return customers;
+            PageInfo<Customer> customerPageInfo = new PageInfo<>(customers);
+            return customerPageInfo;
         }else{
-            customer.setCreaterId(sysUser.getId());
+            if(!isAdmin){
+                customer.setCreaterId(sysUser.getId());
+            }
             PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
             List<Customer> customers = customerMapper.selectCustomerList(customer);
-            return customers;
+            PageInfo<Customer> customerPageInfo = new PageInfo<>(customers);
+            return customerPageInfo;
         }
     }
 

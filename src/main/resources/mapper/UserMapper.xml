@@ -257,7 +257,17 @@
     <where>
       <if test="username!=null">username like #{pattern}</if>
       <if test="status!=null">and status = #{status,jdbcType=INTEGER}</if>
+      <if test="pid!=null">and pid = #{pid,jdbcType=INTEGER}</if>
+      <if test="pids !=null"> and pid in
+        <foreach collection="pids" item="pid" index="index" open="(" close=")" separator=",">
+          #{pid}
+        </foreach>
+      </if>
     </where> order by id desc
+  </select>
+
+  <select id="getUserNameByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select b.id ,b.username from s_user_role a join s_user b on a.user_id  = b.id where b.status =1 and a.role_id = #{arg0}
   </select>
 
   <select id="selectAllSaler" resultType="java.lang.Integer" parameterType="java.lang.Integer">
