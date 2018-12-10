@@ -19,7 +19,7 @@ public class ResourceParamBean {
 
     private Integer mediaId;
 
-    private BigDecimal price;
+    private String price;
 
     private String col1;
 

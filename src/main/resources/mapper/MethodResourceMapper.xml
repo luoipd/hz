@@ -8,7 +8,7 @@
     <result column="method_type" property="methodType" jdbcType="INTEGER" />
     <result column="media_id" property="mediaId" jdbcType="INTEGER" />
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
     <result column="col1" property="col1" jdbcType="VARCHAR" />
     <result column="col2" property="col2" jdbcType="VARCHAR" />
     <result column="import_level" property="importLevel" jdbcType="VARCHAR" />
@@ -26,7 +26,7 @@
     characteristic, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     a.id, a.name, a.module_id, a.method_type, a.media_id, a.industry_id, a.price,a.col1,a.col2, a.import_level, a.desc,
     a.characteristic, a.status ,b.media_name
     from h_method a join h_media b on a.media_id = b.id
@@ -43,16 +43,16 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.MethodResource" >
-    insert into h_method (id, name, module_id, 
-      method_type, media_id, industry_id, 
+    insert into h_method (id, name, module_id,
+      method_type, media_id, industry_id,
       price, import_level, `desc`,
-      characteristic, status, creater_id, 
+      characteristic, status, creater_id,
       create_time, updater_id, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{moduleId,jdbcType=INTEGER}, 
-      #{methodType,jdbcType=INTEGER}, #{mediaId,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER}, 
-      #{price,jdbcType=DECIMAL}, #{importLevel,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
-      #{characteristic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{moduleId,jdbcType=INTEGER},
+      #{methodType,jdbcType=INTEGER}, #{mediaId,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER},
+      #{price,jdbcType=DECIMAL}, #{importLevel,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+      #{characteristic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>

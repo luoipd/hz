@@ -23,7 +23,7 @@ public class MethodResource {
 
     private String industryName;
 
-    private BigDecimal price;
+    private String price;
 
     private String col1;
 
@@ -113,11 +113,11 @@ public class MethodResource {
         this.industryId = industryId;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
