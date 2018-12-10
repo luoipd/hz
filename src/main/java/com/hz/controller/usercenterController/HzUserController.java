@@ -149,17 +149,22 @@ public class HzUserController extends BaseController {
     public String getSalorUserList(@Valid PageRequest pageRequest,@Valid User user){
         ResJson resJson = new ResJson();
         List<Role> roles = sysUser.getRoles();
+        boolean b = false;
         for(Role role:roles){
             if (role.getId()==4){
                 user.setPid(sysUser.getId());
+                b=true;
             }
             if(role.getId()==1){
                 List<Integer> dailishangIdList = userService.getDailishangIdList();
                 user.setPids(dailishangIdList);
+                b=true;
             }
         }
-        PageInfo<User> users = userService.getUserList(user,pageRequest);
-        resJson.setData(users);
+        if(b){
+            PageInfo<User> users = userService.getUserList(user,pageRequest);
+            resJson.setData(users);
+        }
         return JSONObject.toJSONString(resJson);
     }
 
@@ -265,11 +270,11 @@ public class HzUserController extends BaseController {
         给用户新增角色
      */
     @RequestMapping(value = "/api/sys/roleManage",method = RequestMethod.POST)
-    public String insertRole(@Valid String userRoles) throws Exception{
+    public String insertRole(@Valid String userRoles,@Valid Integer pid) throws Exception{
         ResJson resJson = new ResJson();
         List<UserRole> userRoles1 = JSONObject.parseArray(userRoles,UserRole.class);
         try {
-            roleService.insertRoles(userRoles1);
+            roleService.insertRoles(userRoles1,pid);
         } catch (UserException e) {
             e.printStackTrace();
             resJson.setStatus(1);

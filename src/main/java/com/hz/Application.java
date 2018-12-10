@@ -17,6 +17,7 @@ import org.springframework.cache.annotation.EnableCaching;
 // mapper 接口类扫描包配置
 //@EnableCaching
 @MapperScan("com.hz.dao")
+//@EnableEncryptableProperties
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

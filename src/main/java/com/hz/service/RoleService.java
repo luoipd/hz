@@ -20,7 +20,7 @@ public interface RoleService {
 
     void addRoleFunction(List<RoleFunction> roleFunctions);
 
-    void insertRoles(List<UserRole> userRoles) throws Exception;
+    void insertRoles(List<UserRole> userRoles,Integer pid) throws Exception;
 
     void insertRoleFunction(List<String> functions,int roleId);
 

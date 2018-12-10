@@ -4,15 +4,17 @@
 server:
   port: 8080
   context-path: /
-
+jasypt:
+  encryptor:
+    password: 123456
 spring:
   mvc:
     static-path-pattern: /static/**
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/hztest
-    username: test
-    password: 123456
+    url: jdbc:mysql://121.201.108.8:3306/hzdbtest
+    username: admin
+    password: ENC(TVDrvtye9u0enpIC5F1RN56/Swq1CUH3)
     driver-class-name: com.mysql.jdbc.Driver
     filters: stat
     maxActive: 20

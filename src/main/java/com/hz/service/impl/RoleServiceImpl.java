@@ -2,9 +2,11 @@ package com.hz.service.impl;
 
 import com.hz.dao.RoleFunctionMapper;
 import com.hz.dao.RoleMapper;
+import com.hz.dao.UserMapper;
 import com.hz.dao.UserRoleMapper;
 import com.hz.domain.Role;
 import com.hz.domain.RoleFunction;
+import com.hz.domain.User;
 import com.hz.domain.UserRole;
 import com.hz.service.RoleService;
 import com.hz.util.UserException;
@@ -30,6 +32,8 @@ public class RoleServiceImpl implements RoleService {
     RoleMapper roleMapper;
     @Autowired
     RoleFunctionMapper roleFunctionMapper;
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public void insertRole(UserRole userRole) {
@@ -68,8 +72,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void insertRoles(List<UserRole> userRoles) throws Exception{
+    public void insertRoles(List<UserRole> userRoles,Integer pid) throws Exception{
+
         if(userRoles.size()!=0){
+            if(pid!=null&&pid!=0){
+                User user = new User();
+                user.setId(userRoles.get(0).getUserId());
+                user.setPid(pid);
+                userMapper.updateByPrimaryKeySelective(user);
+            }
             userRoleMapper.deleteUserRoles(userRoles.get(0).getUserId());
             userRoleMapper.insertRoles(userRoles);
         }

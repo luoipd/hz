@@ -26,9 +26,9 @@
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from h_contact_us
-    where id = #{id,jdbcType=INTEGER}
+    a.id,a.title,a.content,a.module_id,a.vx_id, a.address, a.websits, a.phone, a.email,b.url,a.pic_id
+    from h_contact_us a left join h_pic_video b on a.pic_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getContactUsByModule" resultMap="BaseResultMap" parameterType="com.hz.domain.responseBean.ProposalModuleBean">
     select a.id,a.title,a.content,a.module_id,a.vx_id, a.address, a.websits, a.phone, a.email,c.url,a.pic_id

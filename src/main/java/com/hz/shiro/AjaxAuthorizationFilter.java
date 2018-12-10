@@ -2,6 +2,8 @@ package com.hz.shiro;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hz.domain.User;
+import com.hz.util.Constants;
+import com.hz.util.MD5Util;
 import com.hz.util.ResJson;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -29,8 +31,16 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 	public boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		// super.onAccessDenied(request, response);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-
-		ServletContext sc = httpRequest.getSession().getServletContext();
+		ResJson resJson = new ResJson();
+//		if(!isAvlidRequest(httpRequest)){
+//			resJson.setDesc("非法请求！！！！");
+//			resJson.setStatus(0);
+//			response.setCharacterEncoding("UTF-8");
+//			response.setContentType("text/html;charset=UTF-8");
+//			PrintWriter printWriter = response.getWriter();
+//			printWriter.write(JSONObject.toJSONString(resJson));
+//			return false;
+//		}
 		String token = httpRequest.getHeader("token");
 		String url = httpRequest.getRequestURI();
 		if("/api/sys/login".equals(url)){
@@ -46,7 +56,6 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		}
 		Set<String> stringSet = (Set<String>) session.getAttribute("urls");
 		// If the subject isn't identified, redirect to login URL
-		ResJson resJson = new ResJson();
 		if (subject.getPrincipal() == null) {
 			if (isAjaxRequest(httpRequest)) {
 
@@ -78,6 +87,25 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 			if(url.contains(url1)){
 				return true;
 			}
+		}
+		return false;
+	}
+
+	boolean isAvlidRequest(HttpServletRequest request){
+		String timestamp = request.getHeader("timestamp");
+		long currentTime = System.currentTimeMillis();
+		long requetsTime = Long.parseLong(timestamp);
+		if((currentTime-requetsTime)/1000>30){
+			return false;
+		}
+		String salt_id = request.getHeader("saltId");
+		String token = request.getHeader("token");
+		String salt = (String) Constants.map.get(salt_id);
+		String sdf = timestamp+"#"+salt+"$"+token;
+		String md4 = MD5Util.encryptMD5(sdf);
+		String tokenfake = request.getParameter("token");
+		if(tokenfake.equals(md4)){
+			return true;
 		}
 		return false;
 	}

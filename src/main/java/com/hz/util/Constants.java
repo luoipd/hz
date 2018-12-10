@@ -1,5 +1,9 @@
 package com.hz.util;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
 
 	 
@@ -12,6 +16,19 @@ public class Constants {
     public static Integer userStatus_7 = 7;
     public static Integer userStatus_8 = 8;
 	public static Integer userStatus_9 = 9;
+
+	public  static final Map map ;
+	static {
+		Map aMap = new HashMap();
+		aMap.put(1001, "hz_onefgdfghgf");
+		aMap.put(1002, "hz_twojyfhvc");
+		aMap.put(1003, "hz_threeiuhgj");
+		aMap.put(1004, "hz_fourghjtty");
+		aMap.put(1005, "hz_fourghjttyds");
+		aMap.put(1006, "hz_fourghjttas");
+		map = Collections.unmodifiableMap(aMap);
+	}
+
 	
 	 
 	
