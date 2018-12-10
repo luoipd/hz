@@ -4,11 +4,13 @@
   <resultMap id="BaseResultMap" type="com.hz.domain.AdvertisingProposal" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
+    <result column="industry_name" property="industryName" jdbcType="VARCHAR" />
     <result column="proposal_name" property="proposalName" jdbcType="VARCHAR" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="purpose_id" property="purposeId" jdbcType="INTEGER" />
+    <result column="purpose_name" property="purposeName" jdbcType="VARCHAR" />
     <result column="purpose_col1" property="purposeCol1" jdbcType="INTEGER" />
     <result column="purpose_col2" property="purposeCol2" jdbcType="VARCHAR" />
     <result column="purpose_col3" property="purposeCol3" jdbcType="VARCHAR" />
@@ -39,9 +41,10 @@
     <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
     <if test="proposalName!=null"><bind name="pattern1" value="'%'+proposalName+'%'"></bind></if>
     <if test="version!=null"><bind name="pattern2" value="'%'+version+'%'"></bind></if>
-    select     a.id, a.industry_id, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,a.purpose_col1,a.purpose_col2,
+    select     a.id, a.industry_id,c.industry_name, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,d.purpose_name,a.purpose_col1,a.purpose_col2,
     a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
     from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
+    left join h_industry c on a.industry_id = c.id left join h_purpose d on a.purpose_id = d.id
     <where>
       <if test="customerName!=null">a.customer_name like #{pattern}</if>
       <if test="proposalName!=null">and a.proposal_name like #{pattern1}</if>

@@ -10,6 +10,8 @@ public class AdvertisingProposal {
 
     private Integer industryId;
 
+    private String industryName;
+
     private String proposalName;
 
     private Integer customerId;
@@ -19,6 +21,8 @@ public class AdvertisingProposal {
     private String desc;
 
     private Integer purposeId;
+
+    private String purposeName;
 
     private String purposeCol1;
 
@@ -194,5 +198,21 @@ public class AdvertisingProposal {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
+
+    public String getPurposeName() {
+        return purposeName;
+    }
+
+    public void setPurposeName(String purposeName) {
+        this.purposeName = purposeName;
     }
 }
