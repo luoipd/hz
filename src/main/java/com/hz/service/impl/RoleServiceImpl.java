@@ -75,16 +75,37 @@ public class RoleServiceImpl implements RoleService {
     public void insertRoles(List<UserRole> userRoles,Integer pid) throws Exception{
 
         if(userRoles.size()!=0){
+            List<UserRole> userRoles1 = userRoleMapper.getUserRoles(userRoles.get(0).getUserId());
+            UserRole userRole = checkUserRolesHasxiaoshou(userRoles1);
+            if(userRole!=null){
+                User u = new User();
+                u.setId(userRole.getUserId());
+                u.setPid(0);
+                userMapper.updateByPrimaryKeySelective(u);
+            }
+            userRoleMapper.deleteUserRoles(userRoles.get(0).getUserId());
             if(pid!=null&&pid!=0){
                 User user = new User();
                 user.setId(userRoles.get(0).getUserId());
                 user.setPid(pid);
                 userMapper.updateByPrimaryKeySelective(user);
             }
-            userRoleMapper.deleteUserRoles(userRoles.get(0).getUserId());
+
             userRoleMapper.insertRoles(userRoles);
         }
     }
+
+    UserRole checkUserRolesHasxiaoshou(List<UserRole> userRoles){
+        UserRole isxiaoshou = null;
+        for (UserRole userRole: userRoles){
+            if(userRole.getRoleId()==2){
+                isxiaoshou = userRole;
+                break;
+            }
+        }
+        return isxiaoshou;
+    }
+
 
     @Override
     @Transactional

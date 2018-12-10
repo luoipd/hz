@@ -66,5 +66,5 @@ pagehelper:
   params: count=countSql
 
 img:
-  location: D:/upload/
-  url: http://192.168.0.178:8000
+  location: /work/web/imgfile
+  url: http://121.201.108.9:18083

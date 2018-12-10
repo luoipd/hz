@@ -60,7 +60,7 @@ public class HzProposalController extends BaseController {
     }
 
     @RequestMapping(value = "/api/hzProposal/createProposal",method = RequestMethod.POST)
-    public String createProposal(@Valid AdvertisingProposal advertisingProposal,@Valid MultipartFile file){
+    public String createProposal(@Valid AdvertisingProposal advertisingProposal,@RequestParam(value = "file",required = false) MultipartFile file){
         ResJson resJson = new ResJson();
         if(advertisingProposal.getCustomerId()==null||advertisingProposal.getIndustryId()==null||advertisingProposal.getThemeId()==null){
             resJson.setDesc("请选择客户、主题和行业！！！");
@@ -82,6 +82,11 @@ public class HzProposalController extends BaseController {
         int id = proposalService.createProposal(advertisingProposal);
         resJson.setData(id);
         return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/hzProposal/testUpload",method = RequestMethod.POST)
+    public String upload(@Valid MultipartFile file){
+        return String.valueOf(file);
     }
 
     @RequestMapping(value = "/api/hzProposal/proposalInfo" ,method = RequestMethod.GET)

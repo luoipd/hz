@@ -22,7 +22,7 @@ public class test {
 
     @Test
     public void encryptPwd() {
-        String result = stringEncryptor.encrypt("admin123$%^");
+        String result = stringEncryptor.encrypt("121.201.108.8:3306/hzdbtest^");
         System.out.println(result+":::dfadsfadf");
     }
 
