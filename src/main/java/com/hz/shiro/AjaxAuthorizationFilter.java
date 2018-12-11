@@ -8,6 +8,8 @@ import com.hz.util.ResJson;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -15,6 +17,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,21 +31,20 @@ import java.util.Set;
  */
 public class AjaxAuthorizationFilter extends AuthorizationFilter {
 
-
 	@Override
 	public boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		// super.onAccessDenied(request, response);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		ResJson resJson = new ResJson();
-//		if(!isAvlidRequest(httpRequest)){
-//			resJson.setDesc("非法请求！！！！");
-//			resJson.setStatus(0);
-//			response.setCharacterEncoding("UTF-8");
-//			response.setContentType("text/html;charset=UTF-8");
-//			PrintWriter printWriter = response.getWriter();
-//			printWriter.write(JSONObject.toJSONString(resJson));
-//			return false;
-//		}
+		if(!isAvlidRequest(httpRequest)){
+			resJson.setDesc("非法请求！！！！");
+			resJson.setStatus(0);
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter printWriter = response.getWriter();
+			printWriter.write(JSONObject.toJSONString(resJson));
+			return false;
+		}
 		String token = httpRequest.getHeader("token");
 		String url = httpRequest.getRequestURI();
 		if("/api/sys/login".equals(url)){
@@ -91,19 +95,19 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		return false;
 	}
 
-	boolean isAvlidRequest(HttpServletRequest request){
+	static boolean isAvlidRequest(HttpServletRequest request){
 		String timestamp = request.getHeader("timestamp");
 		long currentTime = System.currentTimeMillis();
 		long requetsTime = Long.parseLong(timestamp);
-		if((currentTime-requetsTime)/1000>30){
-			return false;
-		}
-		String salt_id = request.getHeader("saltId");
+//		if((currentTime-requetsTime)/1000>30){
+//			return false;
+//		}
+		int salt_id = Integer.parseInt(request.getHeader("saltId"));
 		String token = request.getHeader("token");
-		String salt = (String) Constants.map.get(salt_id);
+		String salt = (String)Constants.map.get(salt_id);
 		String sdf = timestamp+"#"+salt+"$"+token;
 		String md4 = MD5Util.encryptMD5(sdf);
-		String tokenfake = request.getParameter("token");
+		String tokenfake = request.getParameter("sessionId");
 		if(tokenfake.equals(md4)){
 			return true;
 		}
