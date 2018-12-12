@@ -144,6 +144,7 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUserById(int id){
         userMapper.deleteByPrimaryKey(id);
+        userRoleMapper.deleteUserRoles(id);
     }
 
     public void createUser(User user) throws Exception{

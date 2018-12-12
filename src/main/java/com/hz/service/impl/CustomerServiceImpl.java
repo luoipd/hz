@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     public PageInfo<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, boolean isAdmin,PageRequest pageRequest) {
 
 
-        if(isDailishang){
+        if(isDailishang&&customer.getCreaterId()==null){
             List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
             customer.setCreaterIds(users);
             PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
             PageInfo<Customer> customerPageInfo = new PageInfo<>(customers);
             return customerPageInfo;
         }else{
-            if(!isAdmin){
+            if(!isAdmin&&customer.getCreaterId()==null){
                 customer.setCreaterId(sysUser.getId());
             }
             PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
