@@ -238,6 +238,11 @@ public class HzUserController extends BaseController {
             resJson.setDesc("请设置密码");
             return JSONObject.toJSONString(resJson);
         }
+        if(userService.checkHasUser(user.getUsername())){
+            resJson.setStatus(0);
+            resJson.setDesc("已存在的用户");
+            return JSONObject.toJSONString(resJson);
+        }
         int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.UserFolder);
         if(picId>0){
             user.setPicId(picId);

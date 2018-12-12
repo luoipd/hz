@@ -134,6 +134,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserNameByRoleId(roleId);
     }
 
+    @Override
+    public boolean checkHasUser(String userName) {
+        if(userMapper.selectByUserName1(userName)==null){
+            return false;
+        }
+        return true;
+    }
+
     public void deleteUserById(int id){
         userMapper.deleteByPrimaryKey(id);
     }
@@ -141,6 +149,12 @@ public class UserServiceImpl implements UserService {
     public void createUser(User user) throws Exception{
         if(user.getUsername().isEmpty()){
             throw new Exception();
+        }
+        if(user.getPid()!=null||user.getPid()!=0){
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(2);
+            userRole.setUserId(user.getId());
+            userRoleMapper.insert(userRole);
         }
         userMapper.insertSelective(user);
     }

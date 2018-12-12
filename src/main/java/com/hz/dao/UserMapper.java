@@ -30,4 +30,6 @@ public interface UserMapper {
     List<Integer> selectAllSaler(int id);
 
     List<User> getUserNameByRoleId(int roleId);
+
+    User selectByUserName1(String name);
 }

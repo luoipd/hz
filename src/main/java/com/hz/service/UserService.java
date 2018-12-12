@@ -42,4 +42,6 @@ public interface UserService {
     List<Integer> getDailishangIdList();
 
     List<User> getRoluUserList(int roleId);
+
+    boolean checkHasUser(String userName);
 }

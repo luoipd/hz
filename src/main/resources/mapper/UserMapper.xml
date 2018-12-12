@@ -250,6 +250,13 @@
     where username = #{username,jdbcType=VARCHAR} and status = 1
   </select>
 
+  <select id="selectByUserName1" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    id,username,name
+    from s_user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectUserList" resultMap="BaseResultMap" parameterType="com.hz.domain.User">
     <if test="username!=null"><bind name="pattern" value="'%'+username+'%'"></bind></if>
     select <include refid="Base_Column_List" />
