@@ -35,7 +35,7 @@
   <select id="selectMethodAllModuleList" resultMap="BaseResultMap" parameterType="com.hz.domain.responseBean.ProposalModuleBean">
      select a.data_id as id,b.name,b.method_type,b.media_id,b.industry_id,b.price,b.col1,b.col2,b.import_level,b.desc ,b.characteristic from
   h_advertising_proposal_detail a join h_method b on a.p_module_id = b.method_type and a.data_id = b.id
-  where a.p_module_id = #{pModuleId,jdbcType=INTEGER} and a.parent_id = #{proposalId,jdbcType=INTEGER} and b.status = 1
+  where a.p_module_id = #{pModuleId,jdbcType=INTEGER} and a.parent_id = #{proposalId,jdbcType=INTEGER}
 
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

@@ -54,6 +54,19 @@ public class HzProposalController extends BaseController {
     @RequestMapping(value = "/api/hzProposal/proposalList" ,method = RequestMethod.GET)
     public String proposalList(@Valid AdvertisingProposal advertisingProposal, @Valid PageRequest pageRequest){
         ResJson resJson = new ResJson();
+        List<Role> roles = sysUser.getRoles();
+        boolean isDailishang =false;
+        boolean isAdmin = false;
+        for(Role role:roles){
+            if (role.getId()==4){
+                isDailishang=true;
+                break;
+            }
+            if(role.getId()==1){
+                isAdmin=true;
+                break;
+            }
+        }
         PageInfo<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal,pageRequest);
         resJson.setData(advertisingProposals);
         return JSONObject.toJSONString(resJson);
