@@ -150,13 +150,14 @@ public class UserServiceImpl implements UserService {
         if(user.getUsername().isEmpty()){
             throw new Exception();
         }
+
+        userMapper.insertSelective(user);
         if(user.getPid()!=null||user.getPid()!=0){
             UserRole userRole = new UserRole();
             userRole.setRoleId(2);
             userRole.setUserId(user.getId());
             userRoleMapper.insert(userRole);
         }
-        userMapper.insertSelective(user);
     }
 
 
