@@ -9,6 +9,8 @@ public class Media {
 
     private String summary;
 
+    private String character;
+
     private String mobile;
 
     private String email;
@@ -131,5 +133,13 @@ public class Media {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(String character) {
+        this.character = character;
     }
 }

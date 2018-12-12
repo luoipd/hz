@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="media_name" property="mediaName" jdbcType="VARCHAR" />
     <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="character" property="character" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
@@ -17,12 +18,12 @@
     <result column="url" property="url" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, media_name, summary, mobile,email, pic_id, import_level, creater_id, create_time, updater_id,
+    id, media_name, summary,`character`, mobile,email, pic_id, import_level, creater_id, create_time, updater_id,
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    a.id,a.media_name,a.summary,a.mobile,a.email,a.import_level,b.url
+    a.id,a.media_name,a.summary,a.character,a.mobile,a.email,a.import_level,b.url
     from h_media a left join h_pic_video b on a.pic_id = b.id
     where a.id = #{id,jdbcType=INTEGER}
   </select>
@@ -31,11 +32,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hz.domain.Media" >
-    insert into h_media (id, media_name, summary, 
+    insert into h_media (id, media_name, summary, `character`
       mobile, pic_id, import_level, 
       creater_id, create_time, updater_id, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{mediaName,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{mediaName,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{character,jdbcType=VARCHAR},
       #{mobile,jdbcType=VARCHAR}, #{picId,jdbcType=INTEGER}, #{importLevel,jdbcType=VARCHAR}, 
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
@@ -51,6 +52,9 @@
       </if>
       <if test="summary != null" >
         summary,
+      </if>
+      <if test="character != null" >
+        `character`,
       </if>
       <if test="mobile != null" >
         mobile,
@@ -90,6 +94,9 @@
       <if test="summary != null" >
         #{summary,jdbcType=VARCHAR},
       </if>
+      <if test="character != null" >
+        #{character,jdbcType=VARCHAR},
+      </if>
       <if test="mobile != null" >
         #{mobile,jdbcType=VARCHAR},
       </if>
@@ -128,6 +135,9 @@
       <if test="summary != null" >
         summary = #{summary,jdbcType=VARCHAR},
       </if>
+      <if test="character != null" >
+        `character` = #{character,jdbcType=VARCHAR},
+      </if>
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
@@ -162,6 +172,7 @@
     update h_media
     set media_name = #{mediaName,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
+      `character` = #{character,jdbcType=VARCHAR}
       mobile = #{mobile,jdbcType=VARCHAR},
       pic_id = #{picId,jdbcType=INTEGER},
       import_level = #{importLevel,jdbcType=VARCHAR},
@@ -171,7 +182,7 @@
 
   <select id="selectListMedia" parameterType="com.hz.domain.Media" resultMap="BaseResultMap">
     <if test="mediaName!=null"><bind name="pattern" value="'%'+mediaName+'%'"></bind></if>
-    select a.id,a.media_name,a.summary,a.mobile,a.email,a.pic_id,a.import_level,b.url
+    select a.id,a.media_name,a.summary,a.character,a.mobile,a.email,a.pic_id,a.import_level,b.url
     from h_media a left join h_pic_video b on a.pic_id = b.id
     <where>
       <if test="mediaName!=null">a.media_name like #{pattern}</if>
