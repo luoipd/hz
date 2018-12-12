@@ -29,10 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 @Slf4j
 @RestController
 public class HzUserController extends BaseController {
@@ -270,11 +268,17 @@ public class HzUserController extends BaseController {
         给用户新增角色
      */
     @RequestMapping(value = "/api/sys/roleManage",method = RequestMethod.POST)
-    public String insertRole(@Valid String userRoles,@Valid Integer pid) throws Exception{
+    public String insertRole(@RequestParam(value = "roleIds") Integer[] roleIds,@Valid Integer userId,@Valid Integer pid) throws Exception{
         ResJson resJson = new ResJson();
-        List<UserRole> userRoles1 = JSONObject.parseArray(userRoles,UserRole.class);
+        List<UserRole> userRoles = new ArrayList<>();
+        for(Integer roleId:roleIds){
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userId);
+            userRole.setRoleId(roleId);
+            userRoles.add(userRole);
+        }
         try {
-            roleService.insertRoles(userRoles1,pid);
+            roleService.insertRoles(userRoles,pid);
         } catch (UserException e) {
             e.printStackTrace();
             resJson.setStatus(1);

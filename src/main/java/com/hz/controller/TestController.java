@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -36,7 +37,7 @@ public class TestController {
     @Autowired
 StringEncryptor stringEncryptor;
     @RequestMapping(value = "/api/testUser", method = RequestMethod.GET)
-    public String getTest(){
+    public String getTest(HttpServletRequest request){
         userService.getUser(1);
         userPermission.getPermission("1","dfsadf");
         String result = stringEncryptor.encrypt("admin123$%^");
