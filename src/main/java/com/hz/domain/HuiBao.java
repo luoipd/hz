@@ -26,7 +26,7 @@ public class HuiBao {
 
     private String number;
 
-    private BigDecimal price;
+    private String price;
 
     private Integer createrId;
 
@@ -109,11 +109,11 @@ public class HuiBao {
         this.number = number;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

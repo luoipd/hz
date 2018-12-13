@@ -12,7 +12,7 @@
     <result column="huibao_detail" property="huibaoDetail" jdbcType="VARCHAR" />
     <result column="per" property="per" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
@@ -53,7 +53,7 @@
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{picId,jdbcType=INTEGER},#{huibaoName,jdbcType=VARCHAR},
       #{groupName,jdbcType=VARCHAR}, #{huibaoType,jdbcType=VARCHAR}, #{huibaoSite,jdbcType=VARCHAR},
       #{huibaoDetail,jdbcType=VARCHAR},
-      #{per,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+      #{per,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR},
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -138,7 +138,7 @@
         #{number,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
+        #{price,jdbcType=VARCHAR},
       </if>
       <if test="createrId != null" >
         #{createrId,jdbcType=INTEGER},
@@ -185,7 +185,7 @@
         `number` = #{number,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+        price = #{price,jdbcType=VARCHAR},
       </if>
       <if test="createrId != null" >
         creater_id = #{createrId,jdbcType=INTEGER},
@@ -213,7 +213,7 @@
       huibao_detail = #{huibaoDetail,jdbcType=VARCHAR},
       per = #{per,jdbcType=VARCHAR},
       `number` = #{number,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
+      price = #{price,jdbcType=VARCHAR},
       updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

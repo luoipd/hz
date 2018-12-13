@@ -14,7 +14,7 @@ public class AdvertisingStyle {
 
     private String url;
 
-    private BigDecimal price;
+    private String price;
 
     private String size;
 
@@ -50,14 +50,6 @@ public class AdvertisingStyle {
 
     public void setPicId(Integer picId) {
         this.picId = picId;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public String getSize() {
@@ -123,5 +115,13 @@ public class AdvertisingStyle {
 
     public void setStyleName(String styleName) {
         this.styleName = styleName;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

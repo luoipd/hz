@@ -50,6 +50,28 @@
       <if test="proposalName!=null">and a.proposal_name like #{pattern1}</if>
       <if test="version!=null">and a.version like #{pattern2} </if>
       <if test="industryId!=null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+      <if test="createrId != null">and a.creater_id = #{createrId,jdbcType=INTEGER}</if>
+    </where> order by a.id desc
+  </select>
+
+  <select id="selectProposalListByDailishang" parameterType="com.hz.domain.AdvertisingProposal" resultMap="BaseResultMap">
+    <if test="customerName!=null"><bind name="pattern" value="'%'+customerName+'%'"></bind></if>
+    <if test="proposalName!=null"><bind name="pattern1" value="'%'+proposalName+'%'"></bind></if>
+    <if test="version!=null"><bind name="pattern2" value="'%'+version+'%'"></bind></if>
+    select     a.id, a.industry_id,c.industry_name, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,d.purpose_name,a.purpose_col1,a.purpose_col2,
+    a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
+    from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
+    left join h_industry c on a.industry_id = c.id left join h_purpose d on a.purpose_id = d.id
+    <where>
+      <if test="customerName!=null">a.customer_name like #{pattern}</if>
+      <if test="proposalName!=null">and a.proposal_name like #{pattern1}</if>
+      <if test="version!=null">and a.version like #{pattern2} </if>
+      <if test="industryId!=null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+      <if test="createrIds !=null"> and a.creater_id in
+        <foreach collection="createrIds" item="createrId" index="index" open="(" close=")" separator=",">
+          #{createrId}
+        </foreach>
+      </if>
     </where> order by a.id desc
   </select>
   <select id="countProposalList" parameterType="com.hz.domain.AdvertisingProposal" resultType="java.lang.Integer">

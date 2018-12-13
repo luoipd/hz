@@ -67,7 +67,7 @@ public class HzProposalController extends BaseController {
                 break;
             }
         }
-        PageInfo<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal,pageRequest);
+        PageInfo<AdvertisingProposal> advertisingProposals = proposalService.getProposalList(advertisingProposal,isDailishang,isAdmin,sysUser,pageRequest);
         resJson.setData(advertisingProposals);
         return JSONObject.toJSONString(resJson);
     }

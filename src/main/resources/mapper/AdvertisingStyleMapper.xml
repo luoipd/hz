@@ -6,7 +6,7 @@
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="style_name" property="styleName" jdbcType="VARCHAR" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
     <result column="size" property="size" jdbcType="VARCHAR" />
     <result column="requirement" property="requirement" jdbcType="VARCHAR" />
     <result column="creater_id" property="createrId" jdbcType="INTEGER" />
@@ -45,7 +45,7 @@
       creater_id, create_time, updater_id, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER},#{styleName,jdbcType=VARCHAR}, #{picId,jdbcType=INTEGER},
-      #{price,jdbcType=DECIMAL}, #{size,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR},
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -100,7 +100,7 @@
         #{picId,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
+        #{price,jdbcType=VARCHAR},
       </if>
       <if test="size != null" >
         #{size,jdbcType=VARCHAR},
@@ -135,7 +135,7 @@
         pic_id = #{picId,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+        price = #{price,jdbcType=VARCHAR},
       </if>
       <if test="size != null" >
         size = #{size,jdbcType=VARCHAR},
@@ -163,7 +163,7 @@
     set parent_id = #{parentId,jdbcType=INTEGER},
       style_name = #{styleName,jdbcType=VARCHAR},
       pic_id = #{picId,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
+      price = #{price,jdbcType=VARCHAR},
       size = #{size,jdbcType=VARCHAR},
       requirement = #{requirement,jdbcType=VARCHAR},
       updater_id = #{updaterId,jdbcType=INTEGER}

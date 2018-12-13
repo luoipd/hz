@@ -49,6 +49,9 @@ public class ProposalServiceImpl implements ProposalService {
     @Autowired
     CustomerCaseMapper customerCaseMapper;
 
+    @Autowired
+    UserMapper userMapper;
+
 
     @Override
     public int createProposal(AdvertisingProposal advertisingProposal) {
@@ -68,11 +71,26 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, PageRequest pageRequest) {
-        PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
-        List<AdvertisingProposal> advertisingProposals = advertisingProposalMapper.selectProposalList(advertisingProposal);
-        PageInfo<AdvertisingProposal> advertisingProposalPageInfo = new PageInfo<>(advertisingProposals);
-        return advertisingProposalPageInfo;
+    public PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal,boolean isDailishnag, boolean isAdmin, User sysUser, PageRequest pageRequest) {
+        if(isDailishnag){
+            List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
+            advertisingProposal.setCreaterIds(users);
+            PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+            List<AdvertisingProposal> advertisingProposals = advertisingProposalMapper.selectProposalListByDailishang(advertisingProposal);
+            PageInfo<AdvertisingProposal> advertisingProposalPageInfo = new PageInfo<>(advertisingProposals);
+            return advertisingProposalPageInfo;
+        }else {
+            if(!isAdmin&&advertisingProposal.getCreaterId()==null){
+                advertisingProposal.setCreaterId(sysUser.getId());
+            }
+            PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+            List<AdvertisingProposal> advertisingProposals = advertisingProposalMapper.selectProposalList(advertisingProposal);
+            PageInfo<AdvertisingProposal> advertisingProposalPageInfo = new PageInfo<>(advertisingProposals);
+            return advertisingProposalPageInfo;
+        }
+
+
+
     }
 
     @Override

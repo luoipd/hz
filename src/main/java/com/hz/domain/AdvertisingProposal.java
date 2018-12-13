@@ -34,6 +34,8 @@ public class AdvertisingProposal {
 
     private Integer createrId;
 
+    private List<Integer> createrIds;
+
     private Date createTime;
 
     private Integer updaterId;
@@ -214,5 +216,13 @@ public class AdvertisingProposal {
 
     public void setPurposeName(String purposeName) {
         this.purposeName = purposeName;
+    }
+
+    public List<Integer> getCreaterIds() {
+        return createrIds;
+    }
+
+    public void setCreaterIds(List<Integer> createrIds) {
+        this.createrIds = createrIds;
     }
 }

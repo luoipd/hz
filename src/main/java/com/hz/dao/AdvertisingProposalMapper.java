@@ -19,5 +19,7 @@ public interface AdvertisingProposalMapper {
 
     List<AdvertisingProposal> selectProposalList(AdvertisingProposal advertisingProposal);
 
+    List<AdvertisingProposal> selectProposalListByDailishang(AdvertisingProposal advertisingProposal);
+
     int countProposalList(AdvertisingProposal advertisingProposal);
 }

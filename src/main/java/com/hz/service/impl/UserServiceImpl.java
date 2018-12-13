@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     public User getUserInfo(int id){
         User user = userMapper.selectByPrimaryKey(id);
-        if(user.getPicId()!=null&&user.getPicId()!=0){
+        if(user.getPicId()!=null){
             PictureVideo pictureVideo = pictureVideoMapper.selectByPrimaryKey(user.getPicId());
             if(pictureVideo!=null){
                 user.setPicUrl(pictureVideo.getUrl());
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         }
 
         userMapper.insertSelective(user);
-        if(user.getPid()!=null||user.getPid()!=0){
+        if(user.getPid()!=null){
             UserRole userRole = new UserRole();
             userRole.setRoleId(2);
             userRole.setUserId(user.getId());

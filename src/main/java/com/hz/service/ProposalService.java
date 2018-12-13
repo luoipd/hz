@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.hz.domain.AdvertisingProposal;
 import com.hz.domain.AdvertisingProposalDetail;
 import com.hz.domain.Module;
+import com.hz.domain.User;
 import com.hz.domain.responseBean.ProposalModuleBean;
 import com.hz.util.page.PageRequest;
 
@@ -21,7 +22,7 @@ public interface ProposalService {
 
     void updateProposal(AdvertisingProposal advertisingProposal);
 
-    PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, PageRequest pageRequest);
+    PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal, boolean isDailishnag, boolean isAdmin, User user, PageRequest pageRequest);
 
     void deleteProposalById(int proposalId);
 
