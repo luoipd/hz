@@ -1,5 +1,6 @@
 package com.hz.dao;
 
+import com.hz.domain.AdvertisingProposalDetail;
 import com.hz.domain.Home;
 import com.hz.domain.responseBean.ProposalModuleBean;
 

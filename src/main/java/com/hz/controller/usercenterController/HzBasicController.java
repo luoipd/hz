@@ -220,56 +220,56 @@ public class HzBasicController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
 
-    @RequestMapping(value = "/api/hzBasic/upload",method = RequestMethod.POST)
-    public String upload(@RequestParam(value = "file") String file) throws UnsupportedEncodingException {
-        ResJson resJson = new ResJson();
-        request.setCharacterEncoding("UTF-8");
-        MultipartFile file1 = MultipartFileUtil.base64ToMultipart(file);
-        File file2 = null;
-        try {
-            file2 = imageUtil.saveFile(file1,webAppConfig.location + ImageUtil.ProposalCutFolder,"tet.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        response.setContentType("image/jpg");// 设置强制下载不打开
-        response.addHeader("Content-Disposition", "attachment;fileName=" + imageUtil.getFileName(ImageUtil.ProposalCutFolder
-                ,file1.getOriginalFilename()));// 设置文件名
-        byte[] buffer = new byte[1024];
-        FileInputStream fis = null;
-        BufferedInputStream bis = null;
-        try {
-            fis = new FileInputStream(webAppConfig.location + ImageUtil.ProposalCutFolder+"/tet.png");
-            bis = new BufferedInputStream(fis);
-            OutputStream os = response.getOutputStream();
-            int i = bis.read(buffer);
-            while (i != -1) {
-                os.write(buffer, 0, i);
-                i = bis.read(buffer);
-            }
-            return JSONObject.toJSONString(resJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "下载失败";
-        } finally {
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-
-    }
+//    @RequestMapping(value = "/api/hzBasic/upload",method = RequestMethod.POST)
+//    public String upload(@RequestParam(value = "file") String file) throws UnsupportedEncodingException {
+//        ResJson resJson = new ResJson();
+//        request.setCharacterEncoding("UTF-8");
+//        MultipartFile file1 = MultipartFileUtil.base64ToMultipart(file);
+//        File file2 = null;
+//        try {
+//            file2 = imageUtil.saveFile(file1,webAppConfig.location + ImageUtil.ProposalCutFolder,"tet.png");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        response.setContentType("image/jpg");// 设置强制下载不打开
+//        response.addHeader("Content-Disposition", "attachment;fileName=" + imageUtil.getFileName(ImageUtil.ProposalCutFolder
+//                ,file1.getOriginalFilename()));// 设置文件名
+//        byte[] buffer = new byte[1024];
+//        FileInputStream fis = null;
+//        BufferedInputStream bis = null;
+//        try {
+//            fis = new FileInputStream(webAppConfig.location + ImageUtil.ProposalCutFolder+"/tet.png");
+//            bis = new BufferedInputStream(fis);
+//            OutputStream os = response.getOutputStream();
+//            int i = bis.read(buffer);
+//            while (i != -1) {
+//                os.write(buffer, 0, i);
+//                i = bis.read(buffer);
+//            }
+//            return JSONObject.toJSONString(resJson);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "下载失败";
+//        } finally {
+//            if (bis != null) {
+//                try {
+//                    bis.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            if (fis != null) {
+//                try {
+//                    fis.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//
+//
+//    }
 
     public static void main(String[] args) {
         try {

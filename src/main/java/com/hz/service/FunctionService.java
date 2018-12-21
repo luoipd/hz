@@ -16,7 +16,7 @@ public interface FunctionService {
 
     List<Function> selectFunctionsByRoleId(Integer roleId);
 
-    List<FunctionTree> selectFunctionByRolePid(int roleId, int pId);
+    List<FunctionTree> selectFunctionByRolePid(int roleId,int pId);
 
     void insertFunction(RoleFunction roleFunction);
 

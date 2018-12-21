@@ -55,7 +55,7 @@ public class HzCompanyResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/companyResource/updateHome",method = RequestMethod.POST)
-    public String updateHome(@Valid Home home , @RequestParam("files") MultipartFile[] files, @Valid Integer[] picIds){
+    public String updateHome(@Valid Home home ,@RequestParam("files") MultipartFile[] files,@Valid Integer[] picIds){
         ResJson resJson = new ResJson();
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser, ImageUtil.HomeFolder);
         if(picIds!=null&&picIds.length!=0){
@@ -91,7 +91,7 @@ public class HzCompanyResourceController extends BaseController {
     }
 
     @RequestMapping(value = "/api/companyResource/updateMarket",method = RequestMethod.POST)
-    public String updateMarket(@Valid Market market , @RequestParam("files") MultipartFile[] files, @Valid Integer[] picIds){
+    public String updateMarket(@Valid Market market ,@RequestParam("files") MultipartFile[] files,@Valid Integer[] picIds){
         ResJson resJson = new ResJson();
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.MarketFolder);
         if(picIds!=null&&picIds.length!=0){

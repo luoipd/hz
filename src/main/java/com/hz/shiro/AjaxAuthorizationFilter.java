@@ -38,15 +38,15 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		request.setCharacterEncoding("UTF-8");
 		ResJson resJson = new ResJson();
-//		if(!isAvlidRequest(httpRequest)){
-//			resJson.setDesc("非法请求！！！！");
-//			resJson.setStatus(0);
-//			response.setCharacterEncoding("UTF-8");
-//			response.setContentType("text/html;charset=UTF-8");
-//			PrintWriter printWriter = response.getWriter();
-//			printWriter.write(JSONObject.toJSONString(resJson));
-//			return false;
-//		}
+		if(!isAvlidRequest(httpRequest)){
+			resJson.setDesc("非法请求！！！！");
+			resJson.setStatus(0);
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter printWriter = response.getWriter();
+			printWriter.write(JSONObject.toJSONString(resJson));
+			return false;
+		}
 		String token = httpRequest.getHeader("token");
 		String url = httpRequest.getRequestURI();
 		if("/api/sys/login".equals(url)){

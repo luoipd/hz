@@ -17,5 +17,5 @@ public interface PictureVideoMapper {
 
     int updateByPrimaryKey(PictureVideo record);
 
-    List<PictureVideo> selectPicVideoByModuleAndDataId(int moduleId, int dataId);
+    List<PictureVideo> selectPicVideoByModuleAndDataId(int moduleId,int dataId);
 }
