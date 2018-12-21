@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface CustomerService {
 
-    PageInfo<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang,boolean isAdmin, PageRequest pageRequest);
+    PageInfo<Customer> getCustomerList(Customer customer, User sysUser, boolean isDailishang, boolean isAdmin, PageRequest pageRequest);
 
-    int countCustomer(Customer customer,User sysUser,boolean isDailishang);
+    int countCustomer(Customer customer, User sysUser, boolean isDailishang);
 
     Customer getCustomerInfoById(int id);
 

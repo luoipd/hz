@@ -6,7 +6,6 @@ package com.hz.controller.usercenterController;
  */
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.*;
@@ -29,7 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -136,7 +138,7 @@ public class HzUserController extends BaseController {
 
     @RequestMapping(value = "/api/sys/userList", method = RequestMethod.GET)
     @ResponseBody
-    public String getUserList(@Valid PageRequest page,@Valid User user){
+    public String getUserList(@Valid PageRequest page, @Valid User user){
         ResJson resJson = new ResJson();
         PageInfo<User> users = userService.getUserList(user,page);
         resJson.setData(users);
@@ -144,7 +146,7 @@ public class HzUserController extends BaseController {
     }
 
     @RequestMapping(value = "/api/sys/getSalorUserList",method = RequestMethod.GET)
-    public String getSalorUserList(@Valid PageRequest pageRequest,@Valid User user){
+    public String getSalorUserList(@Valid PageRequest pageRequest, @Valid User user){
         ResJson resJson = new ResJson();
         List<Role> roles = sysUser.getRoles();
         boolean b = false;
@@ -160,6 +162,7 @@ public class HzUserController extends BaseController {
             }
         }
         if(b){
+            user.setStatus("1");
             PageInfo<User> users = userService.getUserList(user,pageRequest);
             resJson.setData(users);
         }
@@ -228,7 +231,7 @@ public class HzUserController extends BaseController {
     }
 
     @RequestMapping(value = "/api/sys/createUser",method = RequestMethod.POST)
-    public String createUser(@Valid User user,@Valid MultipartFile file){
+    public String createUser(@Valid User user, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(user.getPassword()!=null){
             String password = new Md5Hash(user.getPassword(), "www", 1024).toBase64();
@@ -529,6 +532,78 @@ public class HzUserController extends BaseController {
         // 使用权限管理工具进行用户的退出，跳出登录，给出提示信息
         ResJson resJson = new ResJson();
         SecurityUtils.getSubject().logout();
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/sys/diyIndexInfo" ,method = RequestMethod.GET)
+    public String diyIndexInfo(){
+        ResJson resJson = new ResJson();
+        List<DiyIndex> diyIndexs = userService.getDiyIndexs(sysUser);
+        resJson.setData(diyIndexs);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/sys/getDiyIndexListForCheck" ,method = RequestMethod.GET)
+    public String getDiyIndexListForCheck(){
+        ResJson resJson = new ResJson();
+        List<DiyIndex> diyIndices = userService.getDiyIndexListForCheck(sysUser);
+        resJson.setData(diyIndices);
+        return JSONObject.toJSONString(resJson);
+    }
+    @RequestMapping(value = "/api/sys/getDiyIndexList" ,method = RequestMethod.GET)
+    public String getDiyIndexList(PageRequest pageRequest){
+        ResJson resJson = new ResJson();
+        PageInfo<DiyIndex> diyIndices = userService.getDiyIndexList(pageRequest);
+        resJson.setData(diyIndices);
+        return JSONObject.toJSONString(resJson);
+    }
+    @RequestMapping(value = "/api/sys/insertDiyIndex" ,method = RequestMethod.POST)
+    public String insertDiyIndex(@Valid DiyIndex diyIndex, @Valid MultipartFile file){
+        ResJson resJson = new ResJson();
+        diyIndex.setCreaterId(sysUser.getId());
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.IndexFolder);
+        if(picId>0){
+            diyIndex.setPicId(picId);
+        }
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败!!!");
+            return JSONObject.toJSONString(resJson);
+        }
+        int id = userService.insertDiyIndex(diyIndex);
+        resJson.setData(id);
+        return JSONObject.toJSONString(resJson);
+    }
+    @RequestMapping(value = "/api/sys/updateDiyIndex" ,method = RequestMethod.POST)
+    public String updateDiyIndex(@Valid DiyIndex diyIndex, @Valid MultipartFile file){
+        ResJson resJson = new ResJson();
+        diyIndex.setUpdaterId(sysUser.getId());
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.IndexFolder);
+        if(picId>0){
+            diyIndex.setPicId(picId);
+        }
+        if(picId==0){
+            log.error("图片上传失败");
+            resJson.setStatus(0);
+            resJson.setDesc("图片上传失败!!!");
+            return JSONObject.toJSONString(resJson);
+        }
+        userService.updateDiyIndex(diyIndex);
+        return JSONObject.toJSONString(resJson);
+    }
+    @RequestMapping(value = "/api/sys/delDiyIndex" ,method = RequestMethod.POST)
+    public String delDiyIndex(@Valid int id){
+        ResJson resJson = new ResJson();
+        userService.delDiyIndex(id);
+        return JSONObject.toJSONString(resJson);
+    }
+
+    @RequestMapping(value = "/api/sys/saveUserDiyIndex",method = RequestMethod.POST)
+    public String saveUserDiyIndex(@Valid UserDiy userDiy){
+        ResJson resJson = new ResJson();
+        userDiy.setCreaterId(sysUser.getId());
+        userService.saveUserDiyIndex(userDiy);
         return JSONObject.toJSONString(resJson);
     }
 

@@ -2,8 +2,6 @@ package com.hz.domain.responseBean;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 /**
  * @author lyp
  * @date 2018/11/19

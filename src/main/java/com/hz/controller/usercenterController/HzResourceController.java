@@ -22,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyp
@@ -64,7 +62,7 @@ public class HzResourceController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/api/hzProposal/methodResources",method = RequestMethod.GET)
-    public String getMethodSources(@Valid MethodResource methodResource,@Valid PageRequest pageRequest ){
+    public String getMethodSources(@Valid MethodResource methodResource, @Valid PageRequest pageRequest ){
         ResJson resJson = new ResJson();
         PageInfo<MethodResource> methodResources = methodResourceService.getMethodResources(methodResource,pageRequest);
         resJson.setData(methodResources);
@@ -226,7 +224,7 @@ public class HzResourceController extends BaseController {
      */
     @RequestMapping(value = "/api/hzResource/createHuibao",method = RequestMethod.POST)
     @ResponseBody
-    public String createHuibao(@Valid HuiBao huiBao,@Valid MultipartFile file){
+    public String createHuibao(@Valid HuiBao huiBao, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
 
         if(huiBao.getHuibaoName()!=null&&huiBao.getHuibaoName().length()>0){
@@ -256,7 +254,7 @@ public class HzResourceController extends BaseController {
 
     @RequestMapping(value = "/api/hzResource/updateHuibao",method = RequestMethod.POST)
     @ResponseBody
-    public String updateHuibao(@Valid HuiBao huiBao,@Valid MultipartFile file){
+    public String updateHuibao(@Valid HuiBao huiBao, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(huiBao.getId()==null||huiBao.getId()==0){
             resJson.setData("缺少主键id！！");
@@ -315,7 +313,7 @@ public class HzResourceController extends BaseController {
     }
     @RequestMapping(value = "/api/hzResource/createAdvertisingStyle",method = RequestMethod.POST)
     @ResponseBody
-    public String createAdvertisingStyle(@Valid AdvertisingStyle advertisingStyle,@Valid MultipartFile file ){
+    public String createAdvertisingStyle(@Valid AdvertisingStyle advertisingStyle, @Valid MultipartFile file ){
         ResJson resJson = new ResJson();
         if(advertisingStyle.getStyleName()!=null&&advertisingStyle.getStyleName().length()>0){
             int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.AdvertisingStyleFolder);
@@ -340,7 +338,7 @@ public class HzResourceController extends BaseController {
 
     @RequestMapping(value = "/api/hzResource/updateAdvertisingStyle",method = RequestMethod.POST)
     @ResponseBody
-    public String updateAdvertisingStyle(@Valid AdvertisingStyle advertisingStyle,@Valid MultipartFile file){
+    public String updateAdvertisingStyle(@Valid AdvertisingStyle advertisingStyle, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(advertisingStyle.getId()==null||advertisingStyle.getId()==0){
             resJson.setData("缺少主键id！！");

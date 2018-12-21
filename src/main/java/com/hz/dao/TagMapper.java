@@ -17,7 +17,9 @@ public interface TagMapper {
 
     int updateByPrimaryKey(Tag record);
 
-    List<Tag> selectTagList(int tagType);
+    List<Tag> selectTagList(Tag tag);
+
+    List<Tag> selectTagListCheck(Tag tag);
 
     List<Tag> selectTagListByMethodId(int methodId);
 }

@@ -30,6 +30,14 @@ public class AdvertisingProposal {
 
     private String purposeCol3;
 
+    private String marketAnalysis;
+
+    private String brandStatus;
+
+    private String customerDemand;
+
+    private String marketingPlan;
+
     private String version;
 
     private Integer createrId;
@@ -224,5 +232,37 @@ public class AdvertisingProposal {
 
     public void setCreaterIds(List<Integer> createrIds) {
         this.createrIds = createrIds;
+    }
+
+    public String getMarketAnalysis() {
+        return marketAnalysis;
+    }
+
+    public void setMarketAnalysis(String marketAnalysis) {
+        this.marketAnalysis = marketAnalysis;
+    }
+
+    public String getBrandStatus() {
+        return brandStatus;
+    }
+
+    public void setBrandStatus(String brandStatus) {
+        this.brandStatus = brandStatus;
+    }
+
+    public String getCustomerDemand() {
+        return customerDemand;
+    }
+
+    public void setCustomerDemand(String customerDemand) {
+        this.customerDemand = customerDemand;
+    }
+
+    public String getMarketingPlan() {
+        return marketingPlan;
+    }
+
+    public void setMarketingPlan(String marketingPlan) {
+        this.marketingPlan = marketingPlan;
     }
 }

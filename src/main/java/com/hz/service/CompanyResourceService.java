@@ -17,7 +17,7 @@ public interface CompanyResourceService {
 
     List<Home> selectHomeStenciList(Home home);
 
-    PageInfo<Market> selectMarketList(Market market,PageRequest pageRequest);
+    PageInfo<Market> selectMarketList(Market market, PageRequest pageRequest);
 
     List<Market> selectMarketStenciList(Market market);
 
@@ -27,11 +27,11 @@ public interface CompanyResourceService {
 
     int createHome(Home home, List<Integer> picIds, User user);
 
-    void updateHome(Home home,List<Integer> picIds,User user);
+    void updateHome(Home home, List<Integer> picIds, User user);
 
     int createMarket(Market market, List<Integer> picIds, User user);
 
-    void updateMarket(Market market,List<Integer> picIds,User user);
+    void updateMarket(Market market, List<Integer> picIds, User user);
 
     void deleteDataPic(DataPic dataPic);
 

@@ -44,4 +44,18 @@ public interface UserService {
     List<User> getRoluUserList(int roleId);
 
     boolean checkHasUser(String userName);
+
+    List<DiyIndex> getDiyIndexs(User user);
+
+    List<DiyIndex> getDiyIndexListForCheck(User user);
+
+    PageInfo<DiyIndex> getDiyIndexList(PageRequest pageRequest);
+
+    Integer insertDiyIndex(DiyIndex diyIndex);
+
+    void updateDiyIndex(DiyIndex diyIndex);
+
+    void delDiyIndex(int id);
+
+    void saveUserDiyIndex(UserDiy userDiy);
 }

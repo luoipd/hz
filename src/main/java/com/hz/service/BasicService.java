@@ -13,7 +13,9 @@ import java.util.List;
  */
 public interface BasicService {
 
-    List<Tag> getTagList(int tagType);
+    List<Tag> getTagList(Tag tag);
+
+    List<Tag> getTagListCheck(Tag tag);
 
     void insertTag(Tag tag);
 
@@ -21,7 +23,9 @@ public interface BasicService {
 
     void updateTag(Tag tag);
 
-    List<Industry> getIndustryList();
+    List<Industry> getIndustryList(Industry industry);
+
+    List<Industry> getIndustryListCheck(String industryName);
 
     void insertIndustry(Industry industry);
 

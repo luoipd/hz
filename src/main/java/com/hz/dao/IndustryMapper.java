@@ -17,5 +17,7 @@ public interface IndustryMapper {
 
     int updateByPrimaryKey(Industry record);
 
-    List<Industry> selectIndustryInfoList();
+    List<Industry> selectIndustryInfoList(Industry industry);
+
+    List<Industry> selectIndustryInfoListCheck(String industryName);
 }

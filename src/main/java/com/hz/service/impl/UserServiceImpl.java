@@ -33,6 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PictureVideoMapper pictureVideoMapper;
+    @Autowired
+    DiyIndexMapper diyIndexMapper;
+    @Autowired
+    UserDiyMapper userDiyMapper;
 
 
     public User getUser(long id){
@@ -99,7 +103,6 @@ public class UserServiceImpl implements UserService {
 
 
     public PageInfo<User> getUserList(User user, PageRequest pageRequest){
-
         PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
         List<User> users = userMapper.selectUserList(user);
         //获取角色信息
@@ -141,6 +144,48 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+
+    @Override
+    public List<DiyIndex> getDiyIndexs(User user) {
+        return diyIndexMapper.selectDiyIndexByUserId(user.getId());
+    }
+
+    @Override
+    public List<DiyIndex> getDiyIndexListForCheck(User user) {
+
+        return diyIndexMapper.getDiyIndexListForCheck(user.getId());
+    }
+    @Override
+    public PageInfo<DiyIndex> getDiyIndexList(PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+        List<DiyIndex> diyIndices = diyIndexMapper.getDiyIndexList();
+        PageInfo<DiyIndex> pageInfo = new PageInfo<>(diyIndices);
+        return pageInfo;
+    }
+
+    @Override
+    public Integer insertDiyIndex(DiyIndex diyIndex) {
+        diyIndexMapper.insertSelective(diyIndex);
+        return diyIndex.getId();
+    }
+
+    @Override
+    public void updateDiyIndex(DiyIndex diyIndex) {
+        diyIndexMapper.updateByPrimaryKeySelective(diyIndex);
+    }
+
+    @Override
+    public void delDiyIndex(int id) {
+        diyIndexMapper.deleteByPrimaryKey(id);
+        diyIndexMapper.deleteUserIndexbyDiyId(id);
+    }
+
+    @Override
+    public void saveUserDiyIndex(UserDiy userDiy) {
+        userDiyMapper.deleteUserDiyByUserId(userDiy.getUserId());
+        userDiyMapper.insertSelective(userDiy);
+    }
+
 
     public void deleteUserById(int id){
         userMapper.deleteByPrimaryKey(id);

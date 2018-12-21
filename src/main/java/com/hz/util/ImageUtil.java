@@ -27,6 +27,8 @@ public class ImageUtil {
     public static String MarketFolder = "market";
     public static String CustomerFolder = "customer";
     public static String ProposalFolder = "proposal";
+    public static String IndexFolder = "index";
+    public static String ProposalCutFolder = "proposalCut";
 
     /**
      * 保存文件，直接以multipartFile形式
@@ -51,6 +53,25 @@ public class ImageUtil {
         bos.close();
         return fileName;
     }
+
+    public File saveFile(MultipartFile multipartFile, String path,String fileName) throws IOException {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        ByteArrayInputStream fileInputStream = (ByteArrayInputStream) multipartFile.getInputStream();
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path + File.separator + fileName));
+        byte[] bs = new byte[1024];
+        int len;
+        while ((len = fileInputStream.read(bs)) != -1) {
+            bos.write(bs, 0, len);
+        }
+        bos.flush();
+        bos.close();
+        return file;
+    }
+
+
 
     public String getFileName(String folder,String filename){
         long currentTime = System.currentTimeMillis();

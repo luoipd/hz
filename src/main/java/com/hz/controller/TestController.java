@@ -1,5 +1,6 @@
 package com.hz.controller;
 
+import com.hz.domain.User;
 import com.hz.service.UserService;
 import com.hz.shiro.UserPermission;
 import com.hz.util.Constants;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 @Controller
 public class TestController {
@@ -36,12 +39,15 @@ public class TestController {
 //    }
     @Autowired
 StringEncryptor stringEncryptor;
-    @RequestMapping(value = "/api/testUser", method = RequestMethod.GET)
-    public String getTest(HttpServletRequest request){
-        userService.getUser(1);
-        userPermission.getPermission("1","dfsadf");
-        String result = stringEncryptor.encrypt("admin123$%^");
-        return result;
+    @RequestMapping(value = "/api/testUser", method = RequestMethod.POST)
+    public String getTest(HttpServletRequest request, @Valid User user){
+        throw new RuntimeException();
+//        userService.getUser(1);
+//        String test = request.getParameter("username");
+//        Map map = request.getParameterMap();
+//        userPermission.getPermission("1","dfsadf");
+//        String result = stringEncryptor.encrypt("admin123$%^");
+//        return result;
     }
 
     public static void main(String args[]){

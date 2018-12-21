@@ -73,8 +73,10 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public PageInfo<AdvertisingProposal> getProposalList(AdvertisingProposal advertisingProposal,boolean isDailishnag, boolean isAdmin, User sysUser, PageRequest pageRequest) {
         if(isDailishnag){
-            List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
-            advertisingProposal.setCreaterIds(users);
+            if(advertisingProposal.getCreaterId()==null){
+                List<Integer> users = userMapper.selectAllSaler(sysUser.getId());
+                advertisingProposal.setCreaterIds(users);
+            }
             PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
             List<AdvertisingProposal> advertisingProposals = advertisingProposalMapper.selectProposalListByDailishang(advertisingProposal);
             PageInfo<AdvertisingProposal> advertisingProposalPageInfo = new PageInfo<>(advertisingProposals);
@@ -186,7 +188,9 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     @Transactional
     public void saveVersion(int proposalId,int createId) {
-        String version = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int i = (int) (Math.random()*2000);
+        String version = "V_"+date+"_"+String.valueOf(i);
         AdvertisingProposal advertisingProposal = advertisingProposalMapper.selectByPrimaryKey(proposalId);
         advertisingProposal.setVersion(version);
         List<AdvertisingProposalDetail> advertisingProposalDetails = advertisingProposalDetailMapper.selectListByParentId(proposalId);

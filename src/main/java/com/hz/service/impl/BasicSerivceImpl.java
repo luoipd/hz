@@ -29,8 +29,13 @@ public class BasicSerivceImpl implements BasicService {
     PurposeMapper purposeMapper;
 
     @Override
-    public List<Tag> getTagList(int tagType) {
-        return tagMapper.selectTagList(tagType);
+    public List<Tag> getTagList(Tag tag) {
+        return tagMapper.selectTagList(tag);
+    }
+
+    @Override
+    public List<Tag> getTagListCheck(Tag tag) {
+        return tagMapper.selectTagListCheck(tag);
     }
 
     @Override
@@ -53,9 +58,15 @@ public class BasicSerivceImpl implements BasicService {
     }
 
     @Override
-    public List<Industry> getIndustryList() {
+    public List<Industry> getIndustryList(Industry industry) {
 
-        return industryMapper.selectIndustryInfoList();
+        return industryMapper.selectIndustryInfoList(industry);
+    }
+
+    @Override
+    public List<Industry> getIndustryListCheck(String industryName) {
+
+        return industryMapper.selectIndustryInfoListCheck(industryName);
     }
 
     @Override

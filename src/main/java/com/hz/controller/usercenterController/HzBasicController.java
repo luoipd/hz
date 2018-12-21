@@ -7,14 +7,17 @@ import com.hz.domain.Purpose;
 import com.hz.domain.Tag;
 import com.hz.service.BasicService;
 import com.hz.service.CompanyResourceService;
+import com.hz.util.ImageUtil;
+import com.hz.util.MultipartFileUtil;
 import com.hz.util.ResJson;
+import com.hz.util.WebAppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import javax.validation.Valid;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -29,12 +32,16 @@ public class HzBasicController extends BaseController {
     BasicService basicService;
     @Autowired
     CompanyResourceService companyResourceService;
+    @Autowired
+    ImageUtil imageUtil;
+    @Autowired
+    WebAppConfig webAppConfig;
 
     @RequestMapping(value = "/api/hzBasic/getTagList",method = RequestMethod.GET)
     @ResponseBody
-    public String getTagList(@Valid int tagType){
+    public String getTagList(@Valid Tag tag){
         ResJson resJson = new ResJson();
-        List<Tag> tagList =  basicService.getTagList(tagType);
+        List<Tag> tagList =  basicService.getTagList(tag);
         resJson.setData(tagList);
         return JSONObject.toJSONString(resJson);
     }
@@ -43,10 +50,22 @@ public class HzBasicController extends BaseController {
     @ResponseBody
     public String createTag(@Valid Tag tag){
         ResJson resJson = new ResJson();
-        if(tag.getTagName()!=null&&tag.getTagName()!=""){
-            tag.setCreaterId(sysUser.getId());
-            tag.setStatus(1);
+        if(tag.getTagName()==null||tag.getTagName().equals("")){
+            resJson.setDesc("标签名不能为空！");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
         }
+        Tag tag1 = new Tag();
+        tag1.setTagName(tag.getTagName().trim());
+        tag1.setTagType(1);
+        List<Tag> tagList = basicService.getTagListCheck(tag1);
+        if(tagList.size()>0){
+            resJson.setDesc("标签名已存在");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
+        tag.setCreaterId(sysUser.getId());
+        tag.setStatus(1);
         basicService.insertTag(tag);
         return JSONObject.toJSONString(resJson);
     }
@@ -55,6 +74,21 @@ public class HzBasicController extends BaseController {
     @ResponseBody
     public String updateTag(@Valid Tag tag){
         ResJson resJson = new ResJson();
+        if(tag.getTagName()==null||tag.getTagName().equals("")){
+            resJson.setDesc("标签名不能为空！");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
+        Tag tag1 = new Tag();
+        tag1.setTagName(tag.getTagName().trim());
+        tag1.setTagType(1);
+        List<Tag> tagList = basicService.getTagListCheck(tag1);
+        if(tagList.size()>0){
+            resJson.setDesc("标签名已存在");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
+        tag.setUpdaterId(sysUser.getId());
         basicService.updateTag(tag);
         return JSONObject.toJSONString(resJson);
     }
@@ -67,9 +101,9 @@ public class HzBasicController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/hzBasic/industryList",method = RequestMethod.GET)
-    public String getIndustryList(){
+    public String getIndustryList(@Valid Industry industry){
         ResJson resJson = new ResJson();
-        List<Industry> industries = basicService.getIndustryList();
+        List<Industry> industries = basicService.getIndustryList(industry);
         resJson.setData(industries);
         return JSONObject.toJSONString(resJson);
     }
@@ -81,6 +115,13 @@ public class HzBasicController extends BaseController {
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
+        List<Industry> industries = basicService.getIndustryListCheck(industry.getIndustryName().trim());
+        if(industries.size()>0){
+            resJson.setDesc("行业已存在");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
+
         industry.setCreaterId(sysUser.getId());
         industry.setStatus(1);
         basicService.insertIndustry(industry);
@@ -100,6 +141,12 @@ public class HzBasicController extends BaseController {
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
+        List<Industry> industries = basicService.getIndustryListCheck(industry.getIndustryName().trim());
+        if(industries.size()>0){
+            resJson.setDesc("行业已存在");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
         industry.setUpdaterId(sysUser.getId());
         basicService.updateIndustry(industry);
         return JSONObject.toJSONString(resJson);
@@ -107,13 +154,19 @@ public class HzBasicController extends BaseController {
 
     /**
      * 全删除
-     * @param id
+     * @param industry
      * @return
      */
     @RequestMapping(value = "/api/hzBasic/delIndustry",method = RequestMethod.POST)
-    public String delIndustry(@Valid int id){
+    public String delIndustry(@Valid Industry industry){
         ResJson resJson = new ResJson();
-        basicService.deleteIndustryById(id);
+        if(industry.getId()==null){
+            resJson.setDesc("缺少id");
+            resJson.setStatus(0);
+            return JSONObject.toJSONString(resJson);
+        }
+        industry.setUpdaterId(sysUser.getId());
+        basicService.updateIndustry(industry);
         return JSONObject.toJSONString(resJson);
     }
 
@@ -166,6 +219,71 @@ public class HzBasicController extends BaseController {
         basicService.deletePurposeById(id);
         return JSONObject.toJSONString(resJson);
     }
+
+    @RequestMapping(value = "/api/hzBasic/upload",method = RequestMethod.POST)
+    public String upload(@RequestParam(value = "file") String file) throws UnsupportedEncodingException {
+        ResJson resJson = new ResJson();
+        request.setCharacterEncoding("UTF-8");
+        MultipartFile file1 = MultipartFileUtil.base64ToMultipart(file);
+        File file2 = null;
+        try {
+            file2 = imageUtil.saveFile(file1,webAppConfig.location + ImageUtil.ProposalCutFolder,"tet.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("image/jpg");// 设置强制下载不打开
+        response.addHeader("Content-Disposition", "attachment;fileName=" + imageUtil.getFileName(ImageUtil.ProposalCutFolder
+                ,file1.getOriginalFilename()));// 设置文件名
+        byte[] buffer = new byte[1024];
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try {
+            fis = new FileInputStream(webAppConfig.location + ImageUtil.ProposalCutFolder+"/tet.png");
+            bis = new BufferedInputStream(fis);
+            OutputStream os = response.getOutputStream();
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
+            return JSONObject.toJSONString(resJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "下载失败";
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+
+    }
+
+    public static void main(String[] args) {
+        try {
+            //转码
+            System.out.println(new sun.misc.BASE64Encoder().encode("666666".getBytes()));
+            //解码
+            BASE64Decoder decoder = new BASE64Decoder();
+            System.out.println(new String(decoder.decodeBuffer("NjY2NjY2")));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
 
 
 

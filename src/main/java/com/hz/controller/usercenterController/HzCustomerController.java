@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyp
@@ -74,7 +72,7 @@ public class HzCustomerController extends BaseController {
     }
 
     @RequestMapping(value = "/api/customer/updateCustomer",method = RequestMethod.POST)
-    public String updateCustomer(@Valid Customer customer,@Valid MultipartFile file){
+    public String updateCustomer(@Valid Customer customer, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(customer.getId()==null||customer.getId()==0){
             resJson.setDesc("缺少主键");
@@ -103,7 +101,7 @@ public class HzCustomerController extends BaseController {
     }
 
     @RequestMapping(value = "/api/customer/createCustomer",method = RequestMethod.POST)
-    public String createCustomer(@Valid Customer customer,@Valid MultipartFile file){
+    public String createCustomer(@Valid Customer customer, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(customer.getCustomerName()==null||"".equals(customer.getCustomerName())){
             resJson.setStatus(0);

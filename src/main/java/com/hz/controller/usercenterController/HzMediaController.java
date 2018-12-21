@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.Media;
-import com.hz.domain.PictureVideo;
 import com.hz.domain.User;
 import com.hz.service.MediaService;
 import com.hz.service.PictureVideoService;
@@ -22,9 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyp
@@ -80,7 +77,7 @@ public class HzMediaController extends BaseController {
 
     @RequestMapping(value = "/api/hzMedia/createMedia",method = RequestMethod.POST)
     @ResponseBody
-    public String createMedia(@Valid Media media,@Valid MultipartFile file){
+    public String createMedia(@Valid Media media, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(media.getMediaName()!=null&&media.getMediaName().length()>0){
             media.setCreaterId(sysUser.getId());
@@ -113,7 +110,7 @@ public class HzMediaController extends BaseController {
 
     @RequestMapping(value = "/api/hzMedia/updateMedia",method = RequestMethod.POST)
     @ResponseBody
-    public String updateMedia(@Valid Media media,@Valid MultipartFile file){
+    public String updateMedia(@Valid Media media, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(media.getId()==null||media.getId()==0){
             resJson.setDesc("缺少主键");

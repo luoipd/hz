@@ -36,16 +36,17 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 	public boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		// super.onAccessDenied(request, response);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		request.setCharacterEncoding("UTF-8");
 		ResJson resJson = new ResJson();
-		if(!isAvlidRequest(httpRequest)){
-			resJson.setDesc("非法请求！！！！");
-			resJson.setStatus(0);
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter printWriter = response.getWriter();
-			printWriter.write(JSONObject.toJSONString(resJson));
-			return false;
-		}
+//		if(!isAvlidRequest(httpRequest)){
+//			resJson.setDesc("非法请求！！！！");
+//			resJson.setStatus(0);
+//			response.setCharacterEncoding("UTF-8");
+//			response.setContentType("text/html;charset=UTF-8");
+//			PrintWriter printWriter = response.getWriter();
+//			printWriter.write(JSONObject.toJSONString(resJson));
+//			return false;
+//		}
 		String token = httpRequest.getHeader("token");
 		String url = httpRequest.getRequestURI();
 		if("/api/sys/login".equals(url)){
@@ -68,8 +69,11 @@ public class AjaxAuthorizationFilter extends AuthorizationFilter {
 				resJson.setStatus(110);
 				resJson.setDesc("登录信息失效,请重新登录！！");
 			}
-		}else if(token==null||!token.equals(token1)){
-			resJson.setDesc("该账号在另一个地方登录，请重新登录！！！");
+		}else if(!token.equals(token1)){
+			resJson.setDesc("无效的token！！！");
+			resJson.setStatus(0);
+		}else if(token==null){
+			resJson.setDesc("请求缺少token");
 			resJson.setStatus(0);
 		}else if(stringSet.isEmpty()||!getPermission(stringSet,url)){
 			resJson.setDesc("没有配置权限，请联系系统管理员。@—|—@！");

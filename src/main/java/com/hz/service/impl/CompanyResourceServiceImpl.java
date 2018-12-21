@@ -233,7 +233,7 @@ public class CompanyResourceServiceImpl implements CompanyResourceService {
     @Override
     public List<Industry> getIndustryInfo() {
 
-        return industryMapper.selectIndustryInfoList();
+        return industryMapper.selectIndustryInfoList(new Industry());
     }
 
     @Override

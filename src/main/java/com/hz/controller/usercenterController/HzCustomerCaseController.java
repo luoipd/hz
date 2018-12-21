@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.hz.controller.BaseController;
 import com.hz.domain.CustomerCase;
-import com.hz.domain.PictureVideo;
 import com.hz.service.CustomerCaseService;
 import com.hz.service.PictureVideoService;
 import com.hz.service.impl.ImageService;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyp
@@ -39,7 +35,7 @@ public class HzCustomerCaseController extends BaseController {
     PictureVideoService pictureVideoService;
 
     @RequestMapping(value = "/api/customerCase/getCustomerCaseList",method = RequestMethod.GET)
-    public String CustomerCaseList(@Valid PageRequest pageRequest,@Valid CustomerCase customerCase){
+    public String CustomerCaseList(@Valid PageRequest pageRequest, @Valid CustomerCase customerCase){
         ResJson resJson = new ResJson();
         PageInfo<CustomerCase> customerCases =  customerCaseService.getCustomerCaseList(customerCase,pageRequest);
         resJson.setData(customerCases);
@@ -47,7 +43,7 @@ public class HzCustomerCaseController extends BaseController {
     }
 
     @RequestMapping(value = "/api/customerCase/updateCustomerCase" ,method = RequestMethod.POST)
-    public String updateCustomerCase(@Valid CustomerCase customerCase,@Valid MultipartFile file){
+    public String updateCustomerCase(@Valid CustomerCase customerCase, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.CustomerCaseFolder);
         if(picId==0){
@@ -64,7 +60,7 @@ public class HzCustomerCaseController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/customerCase/insertCustomerCase",method = RequestMethod.POST)
-    public String insertCustomerCase(@Valid CustomerCase customerCase,@Valid MultipartFile file){
+    public String insertCustomerCase(@Valid CustomerCase customerCase, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(customerCase.getCustomerName()==null||"".equals(customerCase.getCustomerName())){
             resJson.setStatus(0);

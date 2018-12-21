@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyp
@@ -56,7 +54,7 @@ public class HzContactUsController extends BaseController {
     }
 
     @RequestMapping(value = "/api/contactUs/updateContactUs" ,method = RequestMethod.POST)
-    public String updateContactUs(@Valid ContactUs contactUs,@Valid MultipartFile file){
+    public String updateContactUs(@Valid ContactUs contactUs, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.ContactUsFolder);
         if(picId==0){
@@ -73,7 +71,7 @@ public class HzContactUsController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/contactUs/insertContactUs",method = RequestMethod.POST)
-    public String insertContactUs(@Valid ContactUs contactUs,@Valid MultipartFile file){
+    public String insertContactUs(@Valid ContactUs contactUs, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(contactUs.getTitle()==null||"".equals(contactUs.getTitle())){
             resJson.setStatus(0);

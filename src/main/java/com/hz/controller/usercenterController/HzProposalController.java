@@ -15,10 +15,8 @@ import com.hz.service.impl.ImageService;
 import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,14 +71,14 @@ public class HzProposalController extends BaseController {
     }
 
     @RequestMapping(value = "/api/hzProposal/createProposal",method = RequestMethod.POST)
-    public String createProposal(@Valid AdvertisingProposal advertisingProposal,@RequestParam(value = "file",required = false) MultipartFile file){
+    public String createProposal(@Valid AdvertisingProposal advertisingProposal, @RequestParam(value = "file",required = false) MultipartFile file){
         ResJson resJson = new ResJson();
         if(advertisingProposal.getCustomerId()==null||advertisingProposal.getIndustryId()==null||advertisingProposal.getThemeId()==null){
             resJson.setDesc("请选择客户、主题和行业！！！");
             resJson.setStatus(0);
             return JSONObject.toJSONString(resJson);
         }
-        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser,ImageUtil.ProposalFolder);
+        int picId = imageService.insertPictureFile(file,pictureVideoService,sysUser, ImageUtil.ProposalFolder);
         if(picId==0){
             log.error("图片上传失败");
             resJson.setStatus(0);
@@ -113,7 +111,7 @@ public class HzProposalController extends BaseController {
     }
 
     @RequestMapping(value = "/api/hzProposal/updateProposal" ,method = RequestMethod.POST)
-    public String updateProposal(@Valid AdvertisingProposal advertisingProposal,@Valid MultipartFile file){
+    public String updateProposal(@Valid AdvertisingProposal advertisingProposal, @Valid MultipartFile file){
         ResJson resJson = new ResJson();
         if(advertisingProposal.getId()==0){
             resJson.setStatus(0);
@@ -211,13 +209,13 @@ public class HzProposalController extends BaseController {
         //上传图片
         int picId =0;
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser, ImageUtil.HomeFolder);
+        if(picIds!=null&&picIds.length!=0){
+            list.addAll(Arrays.asList(picIds));
+        }
         if(homeParamBean.getModuleId()==22){
             if(list.size()>0){
                 picId = list.get(0);
             }
-        }
-        if(picIds!=null&&picIds.length!=0){
-            list.addAll(Arrays.asList(picIds));
         }
         Home home = new Home();
         home.setStatus(1);
@@ -338,7 +336,7 @@ public class HzProposalController extends BaseController {
         insertAdvertisingProposalDetail(advertisingProposalDetail,resJson,advertisingProposalDetail.getDataId());
         return JSONObject.toJSONString(resJson);
     }
-    void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,ResJson resJson,int id){
+    void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail, ResJson resJson, int id){
         if(advertisingProposalDetail.getModuleId()==null){
             resJson.setStatus(0);
             resJson.setDesc("缺少模块id");

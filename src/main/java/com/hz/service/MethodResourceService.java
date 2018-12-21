@@ -16,17 +16,17 @@ public interface MethodResourceService {
 
         PageInfo<MethodResource> getMethodResourceList(MethodResource methodResource, PageRequest pageRequest);
 
-        PageInfo<MethodResource> getMethodResources(MethodResource methodResource,PageRequest pageRequest);
+        PageInfo<MethodResource> getMethodResources(MethodResource methodResource, PageRequest pageRequest);
 
         int countMethodResource(MethodResource methodResource);
 
         ResourceBean getResourceBeanById(int id);
 
-        int updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail,int id);
+        int updateAll(MethodResource methodResource, AdvertisingStandardDetail advertisingStandardDetail, AdvertisingUnstandardDetail advertisingUnstandardDetail, int id);
 
-        void insertMethodResource(MethodResource methodResource,int id) throws Exception;
+        void insertMethodResource(MethodResource methodResource, int id) throws Exception;
 
-        void delMethodResourceOnlyStatus(int id,int updaterId);
+        void delMethodResourceOnlyStatus(int id, int updaterId);
 
         void insertHuibao(HuiBao huiBao);
 
@@ -46,15 +46,15 @@ public interface MethodResourceService {
 
         void deleteTagMethod(TagMethod tagMethod);
 
-        void createTagMethod(List<TagMethod> tagMethods,int methodId);
+        void createTagMethod(List<TagMethod> tagMethods, int methodId);
 
         List<Tag> selectTagList(int methodId);
 
-        PageInfo<HuiBao> getHuiBaoList(int id,PageRequest pageRequest);
+        PageInfo<HuiBao> getHuiBaoList(int id, PageRequest pageRequest);
 
         int countHuiBaoList(int id);
 
-        PageInfo<AdvertisingStyle> getAdvertisingStyleList(int id,PageRequest pageRequest);
+        PageInfo<AdvertisingStyle> getAdvertisingStyleList(int id, PageRequest pageRequest);
 
         int countAdvertisingStyleList(int id);
 

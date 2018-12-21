@@ -35,9 +35,9 @@ public interface ProposalService {
 
     int countProposalList(AdvertisingProposal advertisingProposal);
 
-    void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail,int id);
+    void insertAdvertisingProposalDetail(AdvertisingProposalDetail advertisingProposalDetail, int id);
 
-    void saveVersion(int proposalId,int createId);
+    void saveVersion(int proposalId, int createId);
 
 
 

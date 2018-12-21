@@ -11,13 +11,15 @@ import com.hz.util.ImageUtil;
 import com.hz.util.ResJson;
 import com.hz.util.page.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyp
@@ -53,9 +55,9 @@ public class HzCompanyResourceController extends BaseController {
         return JSONObject.toJSONString(resJson);
     }
     @RequestMapping(value = "/api/companyResource/updateHome",method = RequestMethod.POST)
-    public String updateHome(@Valid Home home ,@RequestParam("files") MultipartFile[] files,@Valid Integer[] picIds){
+    public String updateHome(@Valid Home home , @RequestParam("files") MultipartFile[] files, @Valid Integer[] picIds){
         ResJson resJson = new ResJson();
-        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.HomeFolder);
+        List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser, ImageUtil.HomeFolder);
         if(picIds!=null&&picIds.length!=0){
             list.addAll(Arrays.asList(picIds));
         }
@@ -89,7 +91,7 @@ public class HzCompanyResourceController extends BaseController {
     }
 
     @RequestMapping(value = "/api/companyResource/updateMarket",method = RequestMethod.POST)
-    public String updateMarket(@Valid Market market ,@RequestParam("files") MultipartFile[] files,@Valid Integer[] picIds){
+    public String updateMarket(@Valid Market market , @RequestParam("files") MultipartFile[] files, @Valid Integer[] picIds){
         ResJson resJson = new ResJson();
         List<Integer> list = imageService.insertPictureFiles(files,pictureVideoService,sysUser,ImageUtil.MarketFolder);
         if(picIds!=null&&picIds.length!=0){
