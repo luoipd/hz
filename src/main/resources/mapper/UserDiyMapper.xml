@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.dao.UserDiyMapper" >
+  <resultMap id="BaseResultMap" type="com.hz.domain.UserDiy" >
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="diy_id" property="diyId" jdbcType="INTEGER" />
+    <result column="creater_id" property="createrId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hz.domain.UserDiy" >
+    insert into s_user_diy (user_id, diy_id, creater_id, 
+      create_time
+      )
+    values (#{userId,jdbcType=INTEGER}, #{diyId,jdbcType=INTEGER}, #{createrId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <delete id="deleteUserDiyByUserId" parameterType="java.lang.Integer">
+    delete from s_user_diy where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.hz.domain.UserDiy" >
+    insert into s_user_diy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="diyId != null" >
+        diy_id,
+      </if>
+      <if test="createrId != null" >
+        creater_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="diyId != null" >
+        #{diyId,jdbcType=INTEGER},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

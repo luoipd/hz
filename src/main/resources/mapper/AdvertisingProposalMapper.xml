@@ -14,6 +14,10 @@
     <result column="purpose_col1" property="purposeCol1" jdbcType="INTEGER" />
     <result column="purpose_col2" property="purposeCol2" jdbcType="VARCHAR" />
     <result column="purpose_col3" property="purposeCol3" jdbcType="VARCHAR" />
+    <result column="market_analysis" property="marketAnalysis" jdbcType="VARCHAR" />
+    <result column="brand_status" property="brandStatus" jdbcType="VARCHAR" />
+    <result column="customer_demand" property="customerDemand" jdbcType="VARCHAR" />
+    <result column="marketing_plan" property="marketingPlan" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="VARCHAR" />
     <result column="theme_id" property="themeId" jdbcType="INTEGER" />
     <result column="pic_id" property="picId" jdbcType="INTEGER" />
@@ -25,11 +29,11 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, industry_id, proposal_name, customer_id, customer_name, `desc`, purpose_id,purpose_col1,purpose_col2,
-    purpose_col3, version, theme_id,pic_id
+    purpose_col3, market_analysis ,brand_status,customer_demand,marketing_plan ,version, theme_id,pic_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select a.id, a.industry_id, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,a.purpose_col1,a.purpose_col2,
-    a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
+    a.purpose_col3, a.market_analysis ,a.brand_status,a.customer_demand,a.marketing_plan , a.version, a.theme_id,a.pic_id,b.url
     from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
     where a.id = #{id,jdbcType=INTEGER}
   </select>
@@ -42,7 +46,7 @@
     <if test="proposalName!=null"><bind name="pattern1" value="'%'+proposalName+'%'"></bind></if>
     <if test="version!=null"><bind name="pattern2" value="'%'+version+'%'"></bind></if>
     select     a.id, a.industry_id,c.industry_name, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,d.purpose_name,a.purpose_col1,a.purpose_col2,
-    a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
+    a.purpose_col3,a.market_analysis ,a.brand_status,a.customer_demand,a.marketing_plan , a.version, a.theme_id,a.pic_id,b.url
     from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
     left join h_industry c on a.industry_id = c.id left join h_purpose d on a.purpose_id = d.id
     <where>
@@ -59,7 +63,7 @@
     <if test="proposalName!=null"><bind name="pattern1" value="'%'+proposalName+'%'"></bind></if>
     <if test="version!=null"><bind name="pattern2" value="'%'+version+'%'"></bind></if>
     select     a.id, a.industry_id,c.industry_name, a.proposal_name, a.customer_id, a.customer_name, a.desc, a.purpose_id,d.purpose_name,a.purpose_col1,a.purpose_col2,
-    a.purpose_col3, a.version, a.theme_id,a.pic_id,b.url
+    a.purpose_col3,a.market_analysis ,a.brand_status,a.customer_demand,a.marketing_plan , a.version, a.theme_id,a.pic_id,b.url
     from h_advertising_proposal a left join h_pic_video b on a.pic_id = b.id
     left join h_industry c on a.industry_id = c.id left join h_purpose d on a.purpose_id = d.id
     <where>
@@ -67,6 +71,7 @@
       <if test="proposalName!=null">and a.proposal_name like #{pattern1}</if>
       <if test="version!=null">and a.version like #{pattern2} </if>
       <if test="industryId!=null">and a.industry_id = #{industryId,jdbcType=INTEGER}</if>
+      <if test="createrId != null">and a.creater_id = #{createrId,jdbcType=INTEGER}</if>
       <if test="createrIds !=null"> and a.creater_id in
         <foreach collection="createrIds" item="createrId" index="index" open="(" close=")" separator=",">
           #{createrId}
@@ -90,13 +95,15 @@
   <insert id="insert" parameterType="com.hz.domain.AdvertisingProposal" >
     insert into h_advertising_proposal (id, industry_id, proposal_name, 
       customer_id, customer_name, `desc`,purpose_id,purpose_col1
-      purpose_col2, purpose_col3, version, theme_id,pic_id
+      purpose_col2, purpose_col3,market_analysis ,brand_status,customer_demand,marketing_plan , version, theme_id,pic_id
       creater_id, create_time, updater_id, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{industryId,jdbcType=INTEGER}, #{proposalName,jdbcType=VARCHAR}, 
       #{customerId,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
        #{purposeId,jdbcType=INTEGER}, #{purposeCol1,jdbcType=VARCHAR},
-      #{purposeCol2,jdbcType=VARCHAR}, #{purposeCol3,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{themeId,jdbcType=INTEGER},#{picId,jdbcType=INTEGER},
+      #{purposeCol2,jdbcType=VARCHAR}, #{purposeCol3,jdbcType=VARCHAR},
+       #{marketAnalysis,jdbcType=VARCHAR},#{brandStatus,jdbcType=VARCHAR},#{customerDemand,jdbcType=VARCHAR},#{marketingPlan,jdbcType=VARCHAR}
+       #{version,jdbcType=VARCHAR}, #{themeId,jdbcType=INTEGER},#{picId,jdbcType=INTEGER},
       #{createrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -132,6 +139,18 @@
       </if>
       <if test="purposeCol3 != null" >
         purpose_col3,
+      </if>
+      <if test="marketAnalysis != null" >
+        market_analysis,
+      </if>
+      <if test="brandStatus != null" >
+        brand_status,
+      </if>
+      <if test="customerDemand != null" >
+        customer_demand,
+      </if>
+      <if test="marketingPlan != null" >
+        marketing_plan,
       </if>
       <if test="version != null" >
         version,
@@ -185,6 +204,18 @@
       </if>
       <if test="purposeCol3 != null" >
         #{purposeCol3,jdbcType=VARCHAR},
+      </if>
+      <if test="marketAnalysis != null" >
+        #{marketAnalysis,jdbcType=VARCHAR},
+      </if>
+      <if test="brandStatus != null" >
+        #{brandStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="customerDemand != null" >
+        #{customerDemand,jdbcType=VARCHAR},
+      </if>
+      <if test="marketingPlan != null" >
+        #{marketingPlan,jdbcType=VARCHAR},
       </if>
       <if test="version != null" >
         #{version,jdbcType=VARCHAR},
@@ -242,6 +273,18 @@
       <if test="purposeCol3 != null" >
         purpose_col3 = #{purposeCol3,jdbcType=VARCHAR},
       </if>
+      <if test="marketAnalysis != null" >
+        market_analysis = #{marketAnalysis,jdbcType=VARCHAR},
+      </if>
+      <if test="brandStatus != null" >
+        brand_status = #{brandStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="customerDemand != null" >
+        customer_demand = #{customerDemand,jdbcType=VARCHAR},
+      </if>
+      <if test="marketingPlan != null" >
+        marketing_plan = #{marketingPlan,jdbcType=VARCHAR},
+      </if>
       <if test="version != null" >
         version = #{version,jdbcType=VARCHAR},
       </if>
@@ -277,6 +320,10 @@
       purpose_col1 = #{purposeCol1,jdbcType=VARCHAR},
       purpose_col2 = #{purposeCol2,jdbcType=VARCHAR},
       purpose_col3 = #{purposeCol3,jdbcType=VARCHAR},
+      market_analysis = #{marketAnalysis,jdbcType=VARCHAR},
+      brand_status = #{brandStatus,jdbcType=VARCHAR},
+      customer_demand = #{customerDemand,jdbcType=VARCHAR},
+      marketing_plan = #{marketingPlan,jdbcType=VARCHAR},
       version = #{version,jdbcType=VARCHAR},theme_id = #{themeId,jdbcType=INTEGER},pic_id = #{picId,jdbcType=INTEGER},
       updater_id = #{updaterId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

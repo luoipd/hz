@@ -26,8 +26,22 @@
   </delete>
 
   <select id="selectTagList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <if test="tagName!=null"><bind name="pattern" value="'%'+tagName+'%'"></bind></if>
     select id,tag_name,status,tag_type
-    from h_tag where tag_type = #{tagType,jdbcType=INTEGER} and status = 1
+    from h_tag
+    <where>
+      <if test="tagName!=null">tag_name like #{pattern}</if>
+      and tag_type = #{tagType,jdbcType=INTEGER} and status = 1
+    </where>
+  </select>
+
+  <select id="selectTagListCheck" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,tag_name,status,tag_type
+    from h_tag
+    <where>
+      tag_name = #{tagName,jdbcType=VARCHAR}
+      and tag_type = #{tagType,jdbcType=INTEGER} and status = 1
+    </where>
   </select>
 
   <select id="selectTagListByMethodId" parameterType="java.lang.Integer" resultMap="BaseResultMap">

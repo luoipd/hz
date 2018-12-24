@@ -257,7 +257,7 @@
           </foreach>
         </if>
         and a.status = 1
-      </where> order by a.id desc
+      </where> order by a.import_level desc ,a.id desc
   </select>
   <select id="countResources" parameterType="com.hz.domain.MethodResource" resultType="java.lang.Integer">
     <if test="name!=null"><bind name="pattern" value="'%'+name+'%'"></bind></if>

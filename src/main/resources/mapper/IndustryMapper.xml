@@ -19,10 +19,24 @@
     from h_industry
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectIndustryInfoList" resultMap="BaseResultMap" >
+  <select id="selectIndustryInfoList" resultMap="BaseResultMap" parameterType="com.hz.domain.Industry">
+    <if test="industryName!=null"><bind name="pattern" value="'%'+industryName+'%'"></bind></if>
     select
     id, industry_name,status
-    from h_industry where status = 1
+    from h_industry
+    <where>
+      <if test="industryName != null">industry_name like #{pattern}</if>
+      and status =1
+    </where>
+  </select>
+  <select id="selectIndustryInfoListCheck" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    id, industry_name,status
+    from h_industry
+    <where>
+      industry_name = #{industryName,jdbcType=VARCHAR}
+      and status =1
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from h_industry
